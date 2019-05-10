@@ -29,6 +29,7 @@ namespace FoodAndStyleOrderPlanning.Pages.Suppliers
         public void OnGet()
         {
             Suppliers = data.GetByName(SearchTerm).OrderBy(s => s.Name);
+
         }
     }
 }
