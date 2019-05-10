@@ -1,0 +1,28 @@
+﻿@page
+@model FoodAndStyleOrderPlanning.Pages.Orders.ListModel
+@{
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+    <table class="table table-sm table-striped">
+        <tr>
+            <th>Όνομα</th>
+            <th>Ημερ. Καταχ.</th>
+            <th>Επεξεργασία</th>
+        </tr>
+        @foreach (var i in Model.Orders)
+        {
+            <tr>
+                <td>@i.Name</td>
+                <td>@i.CreatedOn</td>
+                <td>
+                    <a class="btn btn-lg" asp-page="./Edit" asp-route-id="@i.Id">
+                        <i class="fa fa-edit"></i>
+                    </a>
+                </td>
+            </tr>
+        }
+    </table>
+
+
+<a asp-page="./Edit" class="btn btn-primary">Create New Order</a>

@@ -1,0 +1,24 @@
+﻿
+@page "/Recipes/{recipeId:int}/Ingredients/{ingredientId:int?}"
+
+@model FoodAndStyleOrderPlanning.Pages.Ingredients.EditModel
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<h3>@Model.PageTitle</h3>
+
+
+<form method="post">
+    <input type="hidden" asp-for="Ingredient.Id" />
+    <div class="form-group">
+        <label asp-for="@Model.Products">Προϊόν</label>
+        <select class="form-control" asp-for="Ingredient.ProductId" asp-items="Model.Products"></select>
+
+        <label asp-for="@Model.Ingredient.Quantity">Ποσότητα</label>
+        <input asp-for="@Model.Ingredient.Quantity" class="form-control" />
+        <span class="text-danger" asp-validation-for="@Model.Ingredient.Quantity"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Save</button>
+</form>

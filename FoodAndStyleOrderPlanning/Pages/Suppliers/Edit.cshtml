@@ -1,0 +1,26 @@
+﻿@page
+@model FoodAndStyleOrderPlanning.Pages.Suppliers.EditModel
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+    <form method="post">
+        <input type="hidden" asp-for="Supplier.Id" />
+        <div class="form-group">
+            <label asp-for="Supplier.Name">'Ονομα</label>
+            <input asp-for="Supplier.Name" class="form-control" />
+            <span class="text-danger" asp-validation-for="Supplier.Name"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Supplier.Email">Email</label>
+            <input asp-for="Supplier.Email" class="form-control" />
+            <span class="text-danger" asp-validation-for="Supplier.Email"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Supplier.Telephone">Τηλέφωνο</label>
+            <input asp-for="Supplier.Telephone" class="form-control" />
+            <span class="text-danger" asp-validation-for="Supplier.Telephone"></span>
+        </div>
+        <button type="submit" class="btn btn-primary">Save</button>
+    </form>

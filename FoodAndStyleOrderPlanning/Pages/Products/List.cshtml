@@ -1,0 +1,52 @@
+﻿@page "{orderBy?}"
+
+@model FoodAndStyleOrderPlanning.Pages.Products.ListModel
+@{
+    ViewData["Title"] = "Προϊόντα";
+}
+<form method="get">
+    <div class="form-group">
+        <div class="input-group">
+            <input class="form-control" type="search" asp-for="SearchTerm">
+            <span class="input-group-append">
+                <button class="btn btn-outline-secondary" type="submit">
+                    <i class="fa fa-search"></i>
+                </button>
+            </span>
+        </div>
+    </div>
+</form>
+<br />
+
+<table class="table table-sm table-striped">
+    <tr>
+        <th>Id</th>
+        <th><a asp-page="./List" asp-route-orderBy="">'Ονομα</a></th>
+        <th>Ποιότητα</th>
+        <th>Μ.Μ.</th>
+        <th><a asp-page="./List" asp-route-orderBy="type">Τύπος</a></th>
+        <th><a asp-page="./List" asp-route-orderBy="supplier">Προμηθευτής</a></th>
+        <th>Επεξεργασία</th>
+    </tr>
+    @foreach (var r in Model.Products)
+    {
+        <tr>
+            <td>@r.Id</td>
+            <td>@r.Name</td>
+            <td>@r.Quality</td>
+            <td>@r.MeasuringUnit</td>
+            <td>@r.ProductType</td>
+            <td>@r.Supplier.Name</td>
+            <td>
+                <a class="btn btn-lg" asp-page="./Edit" asp-route-id="@r.Id">
+                    <i class="fa fa-edit"></i>
+                </a>
+            </td>
+        </tr>
+    }
+</table>
+
+<hr />
+<a asp-page="./Edit" class="btn btn-primary">Προσθήκη νέου</a>
+
+

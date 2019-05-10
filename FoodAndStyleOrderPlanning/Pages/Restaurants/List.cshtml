@@ -1,0 +1,53 @@
+﻿@page
+@model FoodAndStyleOrderPlanning.Pages.Restaurants.ListModel
+@{
+    ViewData["Title"] = "Restaurants";
+}
+
+<h1>Restaurants</h1>
+
+<form method="get">
+    <div class="form-group">
+        <div class="input-group">
+            <input class="form-control" type="search" asp-for="SearchTerm">
+            <span class="input-group-append">
+                <button class="btn btn-outline-secondary" type="submit">
+                    <i class="fa fa-search"></i>
+                </button>
+            </span>
+        </div>
+    </div>
+</form>
+<br />
+
+<table class="table">
+    @foreach (var r in Model.Restaurants)
+    {
+        <tr>
+            <td>@r.Name</td>
+            <td>@r.Location</td>
+            <td>@r.Cuisine</td>
+            <td>
+                <a class="btn btn-lg" asp-page="./Detail" asp-route-id="@r.Id">
+                    <i class="fa fa-search-plus"></i>
+                </a>
+                <a class="btn btn-lg" asp-page="./Edit" asp-route-id="@r.Id">
+                    <i class="fa fa-edit"></i>
+                </a>
+                <a class="btn btn-lg" asp-page="./Delete" asp-route-id="@r.Id">
+                    <i class="fa fa-trash"></i>
+                </a>
+            </td>
+        </tr>
+    }
+</table>
+
+<hr />
+@foreach (var r in Model.Restaurants)
+{
+    <partial name="_Summary" model="r" />
+}
+<hr />
+<a asp-page="./Edit" class="btn btn-primary">Create New</a>
+
+<div>@Model.Message</div>

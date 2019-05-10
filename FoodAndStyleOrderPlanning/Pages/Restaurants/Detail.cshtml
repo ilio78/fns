@@ -1,0 +1,25 @@
+﻿@page "{id:int}"
+
+@model FoodAndStyleOrderPlanning.Pages.DetailModel
+@{
+    ViewData["Title"] = "Detail";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<h2>@Model.Restaurant.Name</h2>
+<div>
+    Id: @Model.Restaurant.Id
+</div>
+<div>
+    Location: @Model.Restaurant.Location
+</div>
+<div>
+    Cuisine: @Model.Restaurant.Cuisine
+</div>
+
+@if (Model.Message != null)
+{
+<div class="alert alert-info">@Model.Message</div>
+}
+<br />
+<a asp-page="./List" class="btn btn-outline-secondary">All Restaurants</a>

@@ -1,0 +1,43 @@
+﻿@page "{id:int?}"
+
+@model FoodAndStyleOrderPlanning.Pages.Products.EditModel
+@{
+    ViewData["Title"] = "Προϊόν";
+}
+    <form method="post">
+
+        <input type="hidden" asp-for="Product.Id" />
+        <div class="form-group">
+            <label asp-for="Product.Name">'Ονομα</label>
+            <input asp-for="Product.Name" class="form-control" />
+            <span class="text-danger" asp-validation-for="Product.Name"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Product.Quality">Ποιότητα</label>
+            <input asp-for="Product.Quality" class="form-control" />
+            <span class="text-danger" asp-validation-for="Product.Quality"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Product.MeasuringUnit">Μονάδα Μέτρησης</label>
+            <select class="form-control" asp-for="Product.MeasuringUnit" asp-items="Model.MeasuringUnit"></select>
+            <span class="text-danger" asp-validation-for="Product.MeasuringUnit"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Product.ProductType">Τύπος</label>
+            <select class="form-control" asp-for="Product.ProductType" asp-items="Model.ProductType"></select>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Product.SupplierId">Προμηθευτής</label>
+            <select class="form-control" asp-for="Product.SupplierId" asp-items="Model.SupplierOptions"></select>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Save</button>
+    </form>
+
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial" />
+}

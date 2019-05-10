@@ -1,0 +1,135 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Food & Style Order Planning</title>
+
+    <environment include="Development">
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+        <link href="~/css/font-awesome.min.css" rel="stylesheet" />
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute"
+              crossorigin="anonymous"
+              integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"/>
+
+        <link href="~/css/font-awesome.min.css" rel="stylesheet" />
+
+    </environment>
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+    <header>
+
+        <nav class="navbar navbar-expand-md bg-primary navbar-dark">
+
+            <div class="container">
+                <!-- Brand -->
+                <!-- Toggler/collapsibe Button -->
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Navbar links -->
+                <div class="collapse navbar-collapse" id="collapsibleNavbar">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link" asp-page="/Suppliers/List"><h3>Προμηθευτές</h3></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-page="/Products/List"><h3>Προϊόντα</h3></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-page="/Recipes/List"><h3>Συνταγές</h3></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-page="/Orders/List"><h3>Παραγγελίες</h3></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-page="/Settings/Index"><h3>Ρυθμίσεις</h3></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+
+
+        @*<nav class="navbar navbar-expand-lg navbar-nav">
+                <div class="container">
+                    <a class="navbar-brand" asp-area="" asp-page="/Index"><img height="75" src="http://foodandstyle.gr/wp-content/uploads/2018/09/fs_logo.png" /></a>
+
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="basicExampleNav">
+                        <ul class="navbar-nav mr-auto">
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-page="/Products/List">Προϊόντα</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-page="/Recipes/List">Συνταγές</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-page="/Settings/Index">Ρυθμίσεις</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>*@
+    </header>
+    <div class="container">
+        <partial name="_CookieConsentPartial" />
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+    <footer class="border-top footer text-muted">
+        @*<vc:restaurant-count></vc:restaurant-count>*@
+        <div class="container">
+            &copy; 2019 - Food and Style
+        </div>
+    </footer>
+
+    <environment include="Development">
+        <script src="~/lib/jquery/dist/jquery.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.js"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"
+                asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+                asp-fallback-test="window.jQuery"
+                crossorigin="anonymous"
+                integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=">
+        </script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"
+                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"
+                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
+                crossorigin="anonymous"
+                integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o">
+        </script>
+    </environment>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script type="text/javascript">
+        $(function () {
+            var current = location.pathname;
+            $('.navbar-nav li a').each(function () {
+                var $this = $(this);
+                if (current.indexOf($this.attr('href').split('/')[1]) !== -1) {
+                    $this.addClass('active');
+                }
+            });
+            //if (window.location.href.indexOf('Products' > 0))
+            //    alert('Products');
+            //else if (window.location.href.indexOf('Recipes' > 0))
+            //    alert('Recipes');
+        });
+    </script>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

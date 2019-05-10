@@ -1,0 +1,48 @@
+﻿@page
+@model FoodAndStyleOrderPlanning.Pages.Suppliers.ListModel
+@{
+    ViewData["Title"] = "List";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+
+<form method="get">
+    <div class="form-group">
+        <div class="input-group">
+            <input class="form-control" type="search" asp-for="SearchTerm">
+            <span class="input-group-append">
+                <button class="btn btn-outline-secondary" type="submit">
+                    <i class="fa fa-search"></i>
+                </button>
+            </span>
+        </div>
+    </div>
+</form>
+<br />
+
+<table class="table table-sm table-striped">
+    <tr>
+        <th>'Ονομα</th>
+        <th>Email</th>
+        <th>Τηλ.</th>
+        <th>Επεξεργασία</th>
+    </tr>
+    @foreach (var s in Model.Suppliers)
+    {
+        <tr>
+            <td>@s.Name</td>
+            <td>@s.Email</td>
+            <td>@s.Telephone</td>
+            <td>
+                <a class="btn btn-lg" asp-page="./Edit" asp-route-id="@s.Id">
+                    <i class="fa fa-edit"></i>
+                </a>
+            </td>
+        </tr>
+    }
+</table>
+
+<hr />
+<a asp-page="./Edit" class="btn btn-primary">Προσθήκη νέου</a>
+
+
