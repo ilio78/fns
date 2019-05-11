@@ -18,7 +18,10 @@ namespace FoodAndStyleOrderPlanning.Pages
 
             Claims = new List<string>();
 
-            Claims.Add(HttpContext.Request.Headers["X-MS-CLIENT-PRINCIPAL-NAME"].ToString());
+            foreach(string k in HttpContext.Request.Headers.Keys)
+            {
+                Claims.Add($"{k}:{HttpContext.Request.Headers[k].ToString()}");
+            }
 
             ClaimsPrincipal currentUser = this.User;
 
