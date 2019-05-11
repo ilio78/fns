@@ -67,11 +67,11 @@ namespace FoodAndStyleOrderPlanning
 
             app.Use(async (context, next) =>
             {
-                if (context.Request.Path.ToString() != "/Error")
+                if (context.Request.Path.ToString() != "/AccessDenied")
                 {
                     string userPrincipalName = context.Request.Headers["X-MS-CLIENT-PRINCIPAL-NAME"];
                     if (!string.IsNullOrEmpty(userPrincipalName) && !ValidUPNs.Contains(userPrincipalName))
-                        context.Response.Redirect("/Error");
+                        context.Response.Redirect("/AccessDenied");
                 }
                     
                 await next.Invoke();
