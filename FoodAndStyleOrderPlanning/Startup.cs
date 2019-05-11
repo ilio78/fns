@@ -7,14 +7,21 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System.Collections.Generic;
 
 namespace FoodAndStyleOrderPlanning
 {
     public class Startup
     {
+        private List<string> ValidUPNs;
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+
+            ValidUPNs = new List<string>();
+            ValidUPNs.Add("giorgos.ilios@gmail.com");
+            ValidUPNs.Add("kkatsimigas@yahoo.gr");
         }
 
         public IConfiguration Configuration { get; }
@@ -57,6 +64,18 @@ namespace FoodAndStyleOrderPlanning
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+            app.Use(async (context, next) =>
+            {
+                if (context.Request.Path.ToString() != "/Error")
+                {
+                    string userPrincipalName = context.Request.Headers["X-MS-CLIENT-PRINCIPAL-NAME"];
+                    if (!string.IsNullOrEmpty(userPrincipalName) && !ValidUPNs.Contains(userPrincipalName))
+                        context.Response.Redirect("/Error");
+                }
+                    
+                await next.Invoke();
+            });
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
