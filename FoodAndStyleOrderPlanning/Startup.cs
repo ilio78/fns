@@ -8,20 +8,17 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace FoodAndStyleOrderPlanning
 {
     public class Startup
     {
-        private List<string> ValidUPNs;
+        private List<string> AllowedUserEmails;
 
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-
-            ValidUPNs = new List<string>();
-            ValidUPNs.Add("giorgos.ilios@gmail.com");
-            ValidUPNs.Add("kkatsimigas@yahoo.gr");
         }
 
         public IConfiguration Configuration { get; }
@@ -39,6 +36,7 @@ namespace FoodAndStyleOrderPlanning
             services.AddScoped<IData<Ingredient>, SqlIngredientData>();
             services.AddScoped<IData<Order>, SqlOrderData>();
             services.AddScoped<IData<OrderRecipeItem>, SqlOrderRecipeItemData>();
+            services.AddScoped<IData<User>, SqlUserData>();
 
 
             services.Configure<CookiePolicyOptions>(options =>
@@ -49,6 +47,7 @@ namespace FoodAndStyleOrderPlanning
             });
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -67,10 +66,23 @@ namespace FoodAndStyleOrderPlanning
 
             app.Use(async (context, next) =>
             {
+
+                if (AllowedUserEmails == null)
+                {
+                    using (var serviceScope = app.ApplicationServices.CreateScope())
+                    {
+                        var services = serviceScope.ServiceProvider;
+                        var data = services.GetService<IData<User>>();
+                        AllowedUserEmails = data.GetByName(null).Select(u => u.Email).ToList();
+                        AllowedUserEmails.Add("giorgos.ilios@gmail.com");
+                        AllowedUserEmails.Add("kkatsimigas@yahoo.gr");
+                    }
+                }
+
                 if (context.Request.Path.ToString() != "/AccessDenied")
                 {
                     string userPrincipalName = context.Request.Headers["X-MS-CLIENT-PRINCIPAL-NAME"];
-                    if (!string.IsNullOrEmpty(userPrincipalName) && !ValidUPNs.Contains(userPrincipalName))
+                    if (!string.IsNullOrEmpty(userPrincipalName) && !AllowedUserEmails.Contains(userPrincipalName.ToLower()))
                         context.Response.Redirect("/AccessDenied");
                 }
                     
@@ -84,4 +96,25 @@ namespace FoodAndStyleOrderPlanning
             app.UseMvc();
         }
     }
+
+    public class DBHelper
+    {
+        private readonly IConfiguration config;
+        private IData<User> data;
+
+        public DBHelper(IConfiguration config, IData<User> data)
+        {
+            this.config = config;
+            this.data = data;
+        }
+
+        public IEnumerable<string> GetUsers()
+        {
+            List<string> users = data.GetByName(null).Select(u => u.Email).ToList();
+            users.Add("giorgos.ilios@gmail.com");
+            users.Add("kkatsimigas@yahoo.gr");
+            return users;
+        }
+    }
+
 }

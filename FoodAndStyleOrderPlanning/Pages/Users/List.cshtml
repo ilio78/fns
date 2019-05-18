@@ -1,0 +1,25 @@
+﻿@page
+@model FoodAndStyleOrderPlanning.Pages.Users.ListModel
+@{
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+
+<table class="table table-sm table-striped">
+    <tr>
+        <th>Email</th>
+        <th>Επεξεργασία</th>
+    </tr>
+    @foreach (var u in Model.Users)
+    {
+        <tr>
+            <td>@u.Email</td>
+            <td>
+                <a class="btn btn-lg" asp-page="./Edit" asp-route-id="@u.Id">
+                    <i class="fa fa-edit"></i>
+                </a>
+            </td>
+        </tr>
+    }
+</table>
+

@@ -25,5 +25,6 @@ namespace FoodAndStyleOrderPlanning.Data
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderRecipeItem> OrderRecipeItems { get; set; }
         public DbSet<Supplier> Suppliers { get; set; }
+        public DbSet<User> Users { get; set; }
     }
 }

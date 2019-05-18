@@ -6,6 +6,16 @@ using System.Text;
 
 namespace FoodAndStyleOrderPlanning.Core
 {
+
+    public class User
+    {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
+
+        [Required]
+        public string Email { get; set; }
+    }
+
     public class Recipe
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

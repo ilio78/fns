@@ -6,32 +6,66 @@ using System.Linq;
 
 namespace FoodAndStyleOrderPlanning.Data
 {
-    //public class SqlDataFull : IDataFull
-    //{
-    //    private readonly FoodAndStyleOrderPlanningDbContext db;
+    
+    public abstract class SqlData<T> : IData<T> where T : class
+    {
+        protected readonly FoodAndStyleOrderPlanningDbContext db;
 
-    //    public SqlDataFull(FoodAndStyleOrderPlanningDbContext db)
-    //    {
-    //        this.db = db;
-    //    }
+        public SqlData(FoodAndStyleOrderPlanningDbContext db)
+        {
+            this.db = db;
+        }
 
+        public T Add(T item)
+        {
+            db.Add(item);
+            return item;   
+        }
 
-    //    public RecipeViewModel GetRecipeViewModel(int recipeId)
-    //    {
-    //        Recipe recipe = db.Recipes.FirstOrDefault(r => r.Id == recipeId);
-    //        if (recipe == null)
-    //            return null;
+        public int Commit()
+        {
+            return db.SaveChanges();
+        }
 
-    //        var recipeViewModel = new RecipeViewModel();
-    //        recipeViewModel.Name = recipe.Name;
-    //        recipeViewModel.ResultingQuntityInKilograms = recipe.ResultingQuntityInKilograms;
+        public T Delete(int id)
+        {
+            T t = GetById(id);
+            if (t!=null)
+                db.Remove(t);
+            return t;
+        }
 
-    //        recipeViewModel.Ingredients = db.Ingredients.Where(i=>i.RecipeId == recipeId).Select(i => new IngredientViewModel() {
-    //                        ProductId = i.ProductId, Quantity = i.Quantity, MeasuringUnit = i.Product.MeasuringUnit }).ToList();
+        public T GetById(int id)
+        {
+            return db.Find<T>(id);
+        }
 
-    //        return recipeViewModel;
-    //    }
-    //}
+        public abstract IEnumerable<T> GetByName(string name);
+        public int GetCount()
+        {
+            throw new NotImplementedException();
+        }
+
+        public T Update(T item)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class SqlUserData : SqlData<User>
+    {
+        public SqlUserData(FoodAndStyleOrderPlanningDbContext db) : base(db) { }
+
+        public override IEnumerable<User> GetByName(string name)
+        {
+            var query = from r in db.Users
+                        where string.IsNullOrEmpty(name) || r.Email.ToLower().Contains(name.ToLower())
+                        orderby r.Email
+                        select r;
+            return query;
+        }
+    }
+
 
     public class SqlRestaurantData : IData<Restaurant>
     {
@@ -135,6 +169,8 @@ namespace FoodAndStyleOrderPlanning.Data
             return item;
         }
     }
+
+
     public class SqlOrderRecipeItemData : IData<OrderRecipeItem>
     {
 
