@@ -27,7 +27,7 @@ namespace FoodAndStyleOrderPlanning.Core
         public string Name { get; set; }
 
         [Required]
-        public float ResultingQuntityInKilograms { get; set; }
+        public int ResultingQuantityInGrams { get; set; }
         public ICollection<Ingredient> Ingredients { get; set; }
     }
 
@@ -45,16 +45,16 @@ namespace FoodAndStyleOrderPlanning.Core
         public float Quantity { get; set; }
     }
 
-    public class RecipeViewModel
-    {
-        public int Id { get; set; }
+    //public class RecipeViewModel
+    //{
+    //    public int Id { get; set; }
 
-        public string Name { get; set; }
+    //    public string Name { get; set; }
 
-        public float ResultingQuntityInKilograms { get; set; }
+    //    public float ResultingQuntityInKilograms { get; set; }
 
-        public List<IngredientViewModel> Ingredients { get; set; }
-    }
+    //    public List<IngredientViewModel> Ingredients { get; set; }
+    //}
 
     public class IngredientViewModel
     {

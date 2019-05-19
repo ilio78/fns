@@ -25,17 +25,12 @@ namespace FoodAndStyleOrderPlanning.Pages.Recipes
 
         [BindProperty]
         [Required]
-        //[RegularExpression(@"^\d+\\d{0,1}$")]
-        //[Range(0, 99)]
-        public float RecipeQuantity { get; set; }
+        [Range(100, 99999)]
+        public int RecipeQuantity { get; set; }
 
         public string PageTitle { get; set; }
 
         public List<RecipeIngredientViewModel> RecipeIngredients { get; set; }
-
-        //public RecipeViewModel RecipeViewModel { get; set; }
-        //public List<SelectListItem> IngredientChoices { get; set; }
-        //public List<float> IngredientChoicesQuantities { get; set; }
 
         public EditModel(IData<Recipe> recipeData)
         {
@@ -48,7 +43,7 @@ namespace FoodAndStyleOrderPlanning.Pages.Recipes
 
             RecipeId = recipe.Id;
             RecipeName = recipe.Name;
-            RecipeQuantity = recipe.ResultingQuntityInKilograms;
+            RecipeQuantity = recipe.ResultingQuantityInGrams;
 
             RecipeIngredients = new List<RecipeIngredientViewModel>();
             foreach (Ingredient i in recipe.Ingredients.OrderBy(i=>i.Product.Name))
@@ -87,7 +82,7 @@ namespace FoodAndStyleOrderPlanning.Pages.Recipes
                 recipe = recipeData.GetById(RecipeId);
 
                 recipe.Name = RecipeName;
-                recipe.ResultingQuntityInKilograms = RecipeQuantity;
+                recipe.ResultingQuantityInGrams = RecipeQuantity;
                 recipeData.Update(recipe);
                 recipeData.Commit();
             }
@@ -96,7 +91,7 @@ namespace FoodAndStyleOrderPlanning.Pages.Recipes
                 recipe = new Recipe();
                 recipe.Name = RecipeName;
                 recipe.CreatedOn = DateTime.Now;
-                recipe.ResultingQuntityInKilograms = RecipeQuantity;
+                recipe.ResultingQuantityInGrams = RecipeQuantity;
                 recipeData.Add(recipe);
                 recipeData.Commit();
             }

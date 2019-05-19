@@ -23,7 +23,7 @@
         <th>Id</th>
         <th>'Ονομα</th>
         <th>Υλικά</th>
-        <th>Ποσότητα (σε Kg)</th>
+        <th>Ποσότητα (σε grams)</th>
         <th>Hμερ. Καταχώρησης</th>
         <th>Ενέργειες</th>
     </tr>
@@ -33,7 +33,7 @@
             <td>@r.Id</td>
             <td>@r.Name</td>
             <td>@r.Ingredients.Count</td>
-            <td>@r.ResultingQuntityInKilograms</td>
+            <td>@r.ResultingQuantityInGrams</td>
             <td>@r.CreatedOn</td>
             <td>
                 @*<a class="btn btn-lg" asp-page="./Detail" asp-route-id="@r.Id">

@@ -57,7 +57,7 @@ namespace FoodAndStyleOrderPlanning.Pages.Orders
             foreach (Recipe r in Recipes)
                 RecipeChoices.Choices.Add(new ChoiceViewModel()
                 {
-                    Id = i++, Name = r.Name, RecipeQuantity = r.ResultingQuntityInKilograms.ToString(),
+                    Id = i++, Name = r.Name, RecipeQuantity = r.ResultingQuantityInGrams.ToString(),
                     RecipeId = r.Id
                 });
 
