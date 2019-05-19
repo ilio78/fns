@@ -1,0 +1,15 @@
+﻿@page "{id:int}"
+
+@model FoodAndStyleOrderPlanning.Pages.Users.DeleteModel
+@{
+    ViewData["Title"] = "Delete";
+}
+
+    <h2>Delete!</h2>
+    <div class="alert alert-danger">
+        Are you sure you want to delete @Model.User.Email?
+    </div>
+    <form method="post">
+        <button type="submit" class="btn btn-danger">Yes!</button>
+        <a asp-page="List" class="btn btn-outline-dark">Cancel</a>
+    </form>

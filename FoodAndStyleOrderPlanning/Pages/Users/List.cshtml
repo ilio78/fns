@@ -9,17 +9,30 @@
     <tr>
         <th>Email</th>
         <th>Επεξεργασία</th>
+        <th>Διαγραφή</th>
     </tr>
     @foreach (var u in Model.Users)
     {
-        <tr>
-            <td>@u.Email</td>
-            <td>
-                <a class="btn btn-lg" asp-page="./Edit" asp-route-id="@u.Id">
-                    <i class="fa fa-edit"></i>
-                </a>
-            </td>
-        </tr>
+<tr>
+    <td>@u.Email</td>
+    <td>
+        <a class="btn btn-lg" asp-page="./Edit" asp-route-id="@u.Id">
+            <i class="fa fa-edit"></i>
+        </a>
+    </td>
+    <td>
+        <a class="btn btn-lg" asp-page="./Delete" asp-route-id="@u.Id">
+            <i class="fa fa-trash"></i>
+        </a>
+    </td>
+</tr>
     }
 </table>
+
+<hr />
+<a asp-page="./Edit" class="btn btn-primary">Προσθήκη νέου</a>
+<hr />
+<div>
+    The following emails are by default in the system: giorgos.ilios@gmail.com, kkatsimigas@yahoo.gr
+</div>
 

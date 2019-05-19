@@ -41,15 +41,13 @@ namespace FoodAndStyleOrderPlanning.Data
         }
 
         public abstract IEnumerable<T> GetByName(string name);
+
         public int GetCount()
         {
             throw new NotImplementedException();
         }
 
-        public T Update(T item)
-        {
-            throw new NotImplementedException();
-        }
+        public abstract T Update(T item);
     }
 
     public class SqlUserData : SqlData<User>
@@ -64,6 +62,14 @@ namespace FoodAndStyleOrderPlanning.Data
                         select r;
             return query;
         }
+
+        public override User Update(User user)
+        {
+            var entity = db.Users.Attach(user);
+            entity.State = EntityState.Modified;
+            return user;
+        }
+
     }
 
 

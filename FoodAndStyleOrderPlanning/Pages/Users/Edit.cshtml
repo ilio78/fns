@@ -5,5 +5,12 @@
     Layout = "~/Pages/Shared/_Layout.cshtml";
 }
 
-<h1>Edit</h1>
-
+<form method="post">
+    <input type="hidden" asp-for="User.Id" />
+    <div class="form-group">
+        <label asp-for="User.Email">Email</label>
+        <input asp-for="User.Email" class="form-control" />
+        <span class="text-danger" asp-validation-for="User.Email"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Save</button>
+</form>

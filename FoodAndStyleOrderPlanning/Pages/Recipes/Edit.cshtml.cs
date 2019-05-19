@@ -22,9 +22,11 @@ namespace FoodAndStyleOrderPlanning.Pages.Recipes
         [Required]
         [StringLength(50, MinimumLength = 5)]
         public string RecipeName { get; set; }
+
         [BindProperty]
         [Required]
-        [Range(0.1, float.MaxValue)]
+        //[RegularExpression(@"^\d+\\d{0,1}$")]
+        //[Range(0, 99)]
         public float RecipeQuantity { get; set; }
 
         public string PageTitle { get; set; }
@@ -67,12 +69,13 @@ namespace FoodAndStyleOrderPlanning.Pages.Recipes
                 PageTitle = "Επεξεργασία Συνταγής";
                 LoadData(id.Value);
             }
-            /**/
+           
             return Page();
         }
 
         public IActionResult OnPost()
         {
+            RecipeIngredients = new List<RecipeIngredientViewModel>();
 
             if (!ModelState.IsValid)
                 return Page();
@@ -85,7 +88,6 @@ namespace FoodAndStyleOrderPlanning.Pages.Recipes
 
                 recipe.Name = RecipeName;
                 recipe.ResultingQuntityInKilograms = RecipeQuantity;
-
                 recipeData.Update(recipe);
                 recipeData.Commit();
             }
@@ -95,7 +97,6 @@ namespace FoodAndStyleOrderPlanning.Pages.Recipes
                 recipe.Name = RecipeName;
                 recipe.CreatedOn = DateTime.Now;
                 recipe.ResultingQuntityInKilograms = RecipeQuantity;
-                List<Ingredient> ingredients = new List<Ingredient>();
                 recipeData.Add(recipe);
                 recipeData.Commit();
             }

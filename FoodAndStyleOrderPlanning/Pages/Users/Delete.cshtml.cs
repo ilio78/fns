@@ -9,42 +9,34 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace FoodAndStyleOrderPlanning.Pages.Users
 {
-    public class EditModel : PageModel
+    public class DeleteModel : PageModel
     {
         private readonly IData<User> data;
 
-        [BindProperty]
         public new User User { get; set; }
 
-        public EditModel(IData<User> data)
+        public DeleteModel(IData<User> data)
         {
             this.data = data;
         }
 
-        public IActionResult OnGet(int? id)
+        public IActionResult OnGet(int id)
         {
-            if (id == null)
-                User = new User();
-            else
-                User = data.GetById(id.Value);
-
+            User = data.GetById(id);
             if (User == null)
-                return RedirectToPage("./NotFound");
-
+                return RedirectToPage("./List");
             return Page();
         }
 
-        public IActionResult OnPost()
+        public IActionResult OnPost(int id)
         {
-            if (!ModelState.IsValid)
-                return Page();
-
-            if (User.Id > 0)
-                data.Update(User);
-            else
-                data.Add(User);
-
+            var entity = data.Delete(id);
             data.Commit();
+            if (entity == null)
+            {
+                return RedirectToPage("./List");
+            }
+            //TempData["Message"] = "Restaurant deleted";
             return RedirectToPage("./List");
         }
     }
