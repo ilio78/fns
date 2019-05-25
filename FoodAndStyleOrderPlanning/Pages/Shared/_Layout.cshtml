@@ -112,11 +112,15 @@
                 $.getJSON("https://foodandstyle.azurewebsites.net/.auth/me", function (data) {
                     facebookAccessToken = data[0]["access_token"];
                     localStorage.setItem("FacebookAccessToken", facebookAccessToken);
+                    $("#fbUserImage").attr("src", "https://graph.facebook.com/me/picture?access_token=" + facebookAccessToken);
                 });
             }
+            else
+            {
+                $("#fbUserImage").attr("src","https://graph.facebook.com/me/picture?access_token=" + facebookAccessToken);
+            }
 
-            $("#fbUserImage").attr("src","https://graph.facebook.com/me/picture?access_token=" + facebookAccessToken);
-
+           
 
             $('[data-toggle="tooltip"]').tooltip();
         });
