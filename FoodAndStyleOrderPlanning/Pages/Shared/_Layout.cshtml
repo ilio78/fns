@@ -106,11 +106,11 @@
                 }
             });
 
-            var facebookAccessToken = localStorage.FacebookAccessToken;
+            var facebookAccessToken = localStorage.getItem("FacebookAccessToken");
 
             if (facebookAccessToken === 'undefined' || facebookAccessToken === null) {
                 $.getJSON("https://foodandstyle.azurewebsites.net/.auth/me", function (data) {
-                    localStorage.FacebookAccessToken = data[0]["access_token"];
+                    localStorage.setItem("FacebookAccessToken") = data[0]["access_token"];
                 });
             }
     
