@@ -4,14 +4,16 @@ using FoodAndStyleOrderPlanning.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace FoodAndStyleOrderPlanning.Data.Migrations
 {
     [DbContext(typeof(FoodAndStyleOrderPlanningDbContext))]
-    partial class FoodAndStyleOrderPlanningDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190525103910_activeField")]
+    partial class activeField
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -152,8 +154,6 @@ namespace FoodAndStyleOrderPlanning.Data.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Email");
-
-                    b.Property<bool>("IsActive");
 
                     b.Property<string>("Name")
                         .IsRequired()

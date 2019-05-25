@@ -16,17 +16,7 @@
         <span class="text-danger" asp-validation-for="@Model.RecipeQuantity"></span>
         <button type="submit" class="btn btn-primary">Save</button>
     </div>
-    @*@foreach (var i in Model.IngredientChoicesQuantities)
-        {
-            <div class="input-group">
-                <label asp-for="@Model.IngredientChoices">Υλικό:</label>
-                <select class="form-control" asp-items="@Model.IngredientChoices"></select>
-
-                <label asp-for="@i">Ποσότητα:</label>
-                <input asp-for="@i" class="form-control" />
-                <span class="text-danger" asp-validation-for="@i"></span>
-            </div>
-        }*@
+  
 </form>
 <hr />
 

@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace FoodAndStyleOrderPlanning.Pages.Products
 {
+   
     public class EditModel : PageModel
     {
         private readonly IData<Product> productData;
@@ -19,10 +20,12 @@ namespace FoodAndStyleOrderPlanning.Pages.Products
 
         public IEnumerable<SelectListItem> MeasuringUnit { get; set; }
         public IEnumerable<SelectListItem> ProductType { get; set; }
-        public IList<SelectListItem> SupplierOptions { get; set; }
+        public IList<SelectListItem> Suppliers { get; set; }
 
         [BindProperty]
-        public Product Product { get; set; }
+        public ProductViewModel ProductViewModel { get; set; }
+
+        public string SupplierNotActiveMessage { get; set; }
 
         public EditModel(IData<Product> productData, IData<Supplier> supplierData, IHtmlHelper htmlHelper)
         {
@@ -35,44 +38,65 @@ namespace FoodAndStyleOrderPlanning.Pages.Products
         {
             MeasuringUnit = htmlHelper.GetEnumSelectList<MeasuringUnit>();
             ProductType = htmlHelper.GetEnumSelectList<ProductType>();
-            var suppliers = supplierData.GetByName(null).OrderBy(s => s.Name).ToList();
-            SupplierOptions = new List<SelectListItem>();
-            foreach (Supplier s in suppliers)
+            var allSuppliers = supplierData.GetByName(null).Where(sup => sup.IsActive).OrderBy(s => s.Name).ToList();
+
+            Suppliers = new List<SelectListItem>();
+            foreach (Supplier s in allSuppliers)
             {
-                SupplierOptions.Add(new SelectListItem(s.Name, s.Id.ToString()));
+                Suppliers.Add(new SelectListItem(s.Name, s.Id.ToString()));
             }
         }
 
         public IActionResult OnGet(int? id)
         {
-            if (id == null)
-                Product = new Product();
+            if (id != null)
+            {
+                var product = productData.GetById(id.Value);
+                ProductViewModel = new ProductViewModel(product);
+                if (product == null)
+                    return RedirectToPage("./List");
+            }
             else
-                Product = productData.GetById(id.Value);
-
-            if (Product == null)
-                return RedirectToPage("./NotFound");
+            {
+                ProductViewModel = new ProductViewModel();
+            }
 
             LoadData();
 
-            return Page();
+            if (ProductViewModel.SupplierId > 0 &&
+                    !Suppliers.Select(s => s.Value).Contains(ProductViewModel.SupplierId.ToString()))
+                SupplierNotActiveMessage = " δεν ειναι πλέον διαθέσιμος. Επιλογή νέου:";
 
+            return Page();
         }
 
         public IActionResult OnPost()
         {
-            //if (!ModelState.IsValid)
-            //    return Page();
-            Product.Supplier = supplierData.GetById(Product.SupplierId);
+            if (!ModelState.IsValid)
+                return Page();
 
-            if (Product.Id > 0)
-                productData.Update(Product);
+            Product product;
+
+            if (ProductViewModel.Id > 0)
+            {
+                product = productData.GetById(ProductViewModel.Id);
+                if (product == null)
+                    return RedirectToPage("./List");
+
+                product.SetFromViewModel(ProductViewModel);
+
+                productData.Update(product);
+            }
             else
-                productData.Add(Product);
-
-
+            {
+                product = new Product();
+                product.SetFromViewModel(ProductViewModel);
+                productData.Add(product);
+            }
+                
             productData.Commit();
             return RedirectToPage("./List");
         }
     }
 }
+

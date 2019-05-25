@@ -25,10 +25,10 @@ namespace FoodAndStyleOrderPlanning.Pages.Suppliers
         public IActionResult OnGet(int? id)
         {
             if (id == null)
-                Supplier = new Supplier();
+                Supplier = new Supplier { IsActive = true };
             else
                 Supplier = data.GetById(id.Value);
-
+                
             if (Supplier == null)
                 return RedirectToPage("./NotFound");
 

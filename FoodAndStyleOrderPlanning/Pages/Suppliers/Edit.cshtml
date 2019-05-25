@@ -22,5 +22,10 @@
             <input asp-for="Supplier.Telephone" class="form-control" />
             <span class="text-danger" asp-validation-for="Supplier.Telephone"></span>
         </div>
+        <div class="custom-control custom-checkbox">
+            <input asp-for="Supplier.IsActive" class="form-control custom-control-input" />
+            <label class="custom-control-label w-25 text-lg-left" asp-for="Supplier.IsActive">Ενεργός</label>
+        </div>
+        <br />
         <button type="submit" class="btn btn-primary">Save</button>
     </form>

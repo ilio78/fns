@@ -6,32 +6,33 @@
 }
     <form method="post">
 
-        <input type="hidden" asp-for="Product.Id" />
+        <input type="hidden" asp-for="ProductViewModel.Id" />
         <div class="form-group">
-            <label asp-for="Product.Name">'Ονομα</label>
-            <input asp-for="Product.Name" class="form-control" />
-            <span class="text-danger" asp-validation-for="Product.Name"></span>
+            <label asp-for="ProductViewModel.Name">'Ονομα</label>
+            <input asp-for="ProductViewModel.Name" class="form-control" />
+            <span class="text-danger" asp-validation-for="ProductViewModel.Name"></span>
         </div>
         <div class="form-group">
-            <label asp-for="Product.Quality">Ποιότητα</label>
-            <input asp-for="Product.Quality" class="form-control" />
-            <span class="text-danger" asp-validation-for="Product.Quality"></span>
-        </div>
-
-        <div class="form-group">
-            <label asp-for="Product.MeasuringUnit">Μονάδα Μέτρησης</label>
-            <select class="form-control" asp-for="Product.MeasuringUnit" asp-items="Model.MeasuringUnit"></select>
-            <span class="text-danger" asp-validation-for="Product.MeasuringUnit"></span>
+            <label asp-for="ProductViewModel.Quality">Ποιότητα</label>
+            <input asp-for="ProductViewModel.Quality" class="form-control" />
+            <span class="text-danger" asp-validation-for="ProductViewModel.Quality"></span>
         </div>
 
         <div class="form-group">
-            <label asp-for="Product.ProductType">Τύπος</label>
-            <select class="form-control" asp-for="Product.ProductType" asp-items="Model.ProductType"></select>
+            <label asp-for="ProductViewModel.MeasuringUnit">Μονάδα Μέτρησης</label>
+            <select class="form-control" asp-for="ProductViewModel.MeasuringUnit" asp-items="Model.MeasuringUnit"></select>
+            <span class="text-danger" asp-validation-for="ProductViewModel.MeasuringUnit"></span>
         </div>
 
         <div class="form-group">
-            <label asp-for="Product.SupplierId">Προμηθευτής</label>
-            <select class="form-control" asp-for="Product.SupplierId" asp-items="Model.SupplierOptions"></select>
+            <label asp-for="ProductViewModel.ProductType">Τύπος</label>
+            <select class="form-control" asp-for="ProductViewModel.ProductType" asp-items="Model.ProductType"></select>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="ProductViewModel.SupplierId">Προμηθευτής</label>
+            <span class="text-danger">@Model.SupplierNotActiveMessage</span>
+            <select class="form-control" asp-for="ProductViewModel.SupplierId" asp-items="Model.Suppliers"></select>
         </div>
 
         <button type="submit" class="btn btn-primary">Save</button>

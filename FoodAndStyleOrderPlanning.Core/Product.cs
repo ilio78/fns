@@ -8,7 +8,6 @@ namespace FoodAndStyleOrderPlanning.Core
 {
     public class Product
     {
-
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
@@ -21,37 +20,68 @@ namespace FoodAndStyleOrderPlanning.Core
         [Required]
         public MeasuringUnit MeasuringUnit { get; set; }
 
-         public ProductType ProductType { get; set; }
+        [Required]
+        public ProductType ProductType { get; set; }
 
         [Required]
         public int SupplierId  { get; set; }
 
-        [Required]
         public Supplier Supplier { get; set; }
 
+        [Required]
+        public bool IsActive { get; set; }
+        // ALTER TABLE [Products] ADD [IsActive] bit NOT NULL DEFAULT 0;
+
         public ICollection<Ingredient> Ingredients { get; set; }
+
+        public void SetFromViewModel(ProductViewModel productViewModel)
+        {
+            Name = productViewModel.Name;
+            Quality = productViewModel.Quality;
+            MeasuringUnit = productViewModel.MeasuringUnit;
+            ProductType = productViewModel.ProductType;
+            SupplierId = productViewModel.SupplierId;
+            IsActive = productViewModel.IsActive;
+        }
     }
 
-
-    public class Supplier
+    public class ProductViewModel
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public ProductViewModel()
+        {
+            IsActive = true;
+        }
+
+        public ProductViewModel(Product product)
+        {
+            Id = product.Id;
+            Name = product.Name;
+            Quality = product.Quality;
+            MeasuringUnit = product.MeasuringUnit;
+            ProductType = product.ProductType;
+            SupplierId = product.SupplierId;
+            IsActive = product.IsActive;
+        }
+
         public int Id { get; set; }
 
         [Required, StringLength(50, MinimumLength = 5)]
         public string Name { get; set; }
-        public string Email { get; set; }
-        public string Telephone { get; set; }
-        public ICollection<Product> Products { get; set; }
+
+        [StringLength(10)]
+        public string Quality { get; set; }
+
+        [Required]
+        public MeasuringUnit MeasuringUnit { get; set; }
+
+        [Required]
+        public ProductType ProductType { get; set; }
+
+        [Required]
+        public int SupplierId { get; set; }
+
+        [Required]
+        public bool IsActive { get; set; }
     }
-
-    //public class ProductType
-    //{
-    //    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    //    public int Id { get; set; }
-
-    //    [Required]
-    //    public string Name { get; set; }
-    //}
 
 }

@@ -57,30 +57,6 @@
         </nav>
 
 
-
-        @*<nav class="navbar navbar-expand-lg navbar-nav">
-                <div class="container">
-                    <a class="navbar-brand" asp-area="" asp-page="/Index"><img height="75" src="http://foodandstyle.gr/wp-content/uploads/2018/09/fs_logo.png" /></a>
-
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                            aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div class="collapse navbar-collapse" id="basicExampleNav">
-                        <ul class="navbar-nav mr-auto">
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-page="/Products/List">Προϊόντα</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-page="/Recipes/List">Συνταγές</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-page="/Settings/Index">Ρυθμίσεις</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </nav>*@
     </header>
     <div class="container">
         <partial name="_CookieConsentPartial" />
@@ -123,10 +99,8 @@
                     $this.addClass('active');
                 }
             });
-            //if (window.location.href.indexOf('Products' > 0))
-            //    alert('Products');
-            //else if (window.location.href.indexOf('Recipes' > 0))
-            //    alert('Recipes');
+
+            $('[data-toggle="tooltip"]').tooltip();
         });
     </script>
 
