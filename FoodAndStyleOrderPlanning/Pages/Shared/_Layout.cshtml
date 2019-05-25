@@ -108,8 +108,9 @@
 
             $.getJSON("https://foodandstyle.azurewebsites.net/.auth/me", function (data) {
                 console.log(data);
+                alert(data[0]["access_token"]);
+                alert(data[0].access_token);
             });
-
 
             $("#fbUserImage").attr("src","https://graph.facebook.com/10217829404394086/picture?access_token=EAAHLH3tRMDoBABFvoZAy0sEZARhoJMzz56TLagfebp5ZBqg4f43nVCFV5ijA4NvoDZCgZC29UZCwQjPie6gC2bQcZAtH2SxQqZC4cbBzNXo3ej55wycTerNkWoZBY9F9grXkyIzV9wiuvb9XsQtnYkeW3974ZCmgJE5NgZD");
 
