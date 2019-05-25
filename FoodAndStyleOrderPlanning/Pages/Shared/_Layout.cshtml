@@ -110,12 +110,11 @@
 
             if (facebookAccessToken === 'undefined' || facebookAccessToken === null) {
                 $.getJSON("https://foodandstyle.azurewebsites.net/.auth/me", function (data) {
-                    localStorage.setItem("FacebookAccessToken", data[0]["access_token"]);
+                    facebookAccessToken = data[0]["access_token"];
+                    localStorage.setItem("FacebookAccessToken", facebookAccessToken);
                 });
             }
 
-            facebookAccessToken = localStorage.getItem("FacebookAccessToken");
-    
             $("#fbUserImage").attr("src","https://graph.facebook.com/me/picture?access_token=" + facebookAccessToken);
 
 
