@@ -97,24 +97,24 @@ namespace FoodAndStyleOrderPlanning
         }
     }
 
-    public class DBHelper
-    {
-        private readonly IConfiguration config;
-        private IData<User> data;
+    //public class DBHelper
+    //{
+    //    private readonly IConfiguration config;
+    //    private IData<User> data;
 
-        public DBHelper(IConfiguration config, IData<User> data)
-        {
-            this.config = config;
-            this.data = data;
-        }
+    //    public DBHelper(IConfiguration config, IData<User> data)
+    //    {
+    //        this.config = config;
+    //        this.data = data;
+    //    }
 
-        public IEnumerable<string> GetUsers()
-        {
-            List<string> users = data.GetByName(null).Select(u => u.Email).ToList();
-            users.Add("giorgos.ilios@gmail.com");
-            users.Add("kkatsimigas@yahoo.gr");
-            return users;
-        }
-    }
+    //    public IEnumerable<string> GetUsers()
+    //    {
+    //        List<string> users = data.GetByName(null).Select(u => u.Email).ToList();
+    //        users.Add("giorgos.ilios@gmail.com");
+    //        users.Add("kkatsimigas@yahoo.gr");
+    //        return users;
+    //    }
+    //}
 
 }
