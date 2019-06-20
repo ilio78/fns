@@ -1,5 +1,12 @@
 ﻿namespace FoodAndStyleOrderPlanning.Core
 {
+
+    public static class Helpers
+    {
+        public const string DateTimeFormater = "d MMM yyyy H:mm";
+    }
+
+
     public enum CuisineType
     {
         None,

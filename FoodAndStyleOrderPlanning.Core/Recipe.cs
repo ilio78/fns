@@ -45,7 +45,8 @@ namespace FoodAndStyleOrderPlanning.Core
         public Recipe Recipe { get; set; }
 
         [Required]
-        public float Quantity { get; set; }
+        [Range(1,9999)]
+        public int Quantity { get; set; }
     }
 
     //public class RecipeViewModel
@@ -59,19 +60,19 @@ namespace FoodAndStyleOrderPlanning.Core
     //    public List<IngredientViewModel> Ingredients { get; set; }
     //}
 
-    public class IngredientViewModel
-    {
-        public int ProductId { get; set; }
-        public float Quantity { get; set; }
+    //public class IngredientViewModel
+    //{
+    //    public int ProductId { get; set; }
+    //    public float Quantity { get; set; }
 
-        public MeasuringUnit MeasuringUnit { get; set; }
-    }
+    //    public MeasuringUnit MeasuringUnit { get; set; }
+    //}
 
     public class RecipeIngredientViewModel
     {
         public int IngredientId { get; set; }
         public string ProductName { get; set; }
-        public float Quantity { get; set; }
+        public int Quantity { get; set; }
         public MeasuringUnit MeasuringUnit { get; set; }
     }
 

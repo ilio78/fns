@@ -57,10 +57,10 @@ namespace FoodAndStyleOrderPlanning.Pages.Orders
             foreach (Recipe r in Recipes)
                 RecipeChoices.Choices.Add(new ChoiceViewModel()
                 {
-                    Id = i++, Name = r.Name, RecipeQuantity = r.ResultingQuantityInGrams.ToString(),
+                    Id = i++, Name = r.Name, RecipeQuantity = String.Format("{0:n0}", r.ResultingQuantityInGrams),
                     RecipeId = r.Id
                 });
-
+            
             var alreadySelected = orderRecipeItemData.GetByName(null).Where(o => o.OrderId == Order.Id).ToList();
 
             foreach (var c in RecipeChoices.Choices)

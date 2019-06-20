@@ -23,8 +23,8 @@ namespace FoodAndStyleOrderPlanning.Core
             ProductTypeTranslations.OrderBy(p => p.Value).ToList();
 
             MeasuringUnitTranslations = new Dictionary<string, string>();
-            MeasuringUnitTranslations.Add(((int)MeasuringUnit.Grams).ToString(), "Γραμμάρια (gr)");
-            MeasuringUnitTranslations.Add(((int)MeasuringUnit.Millilitres).ToString(), "Χιλιοστόλιτρο (ml)");
+            MeasuringUnitTranslations.Add(((int)MeasuringUnit.Grams).ToString(), "Γραμμάρια");
+            MeasuringUnitTranslations.Add(((int)MeasuringUnit.Millilitres).ToString(), "Χιλιοστόλιτρα");
             MeasuringUnitTranslations.Add(((int)MeasuringUnit.Pieces).ToString(), "Τεμάχια");
             MeasuringUnitTranslations.OrderBy(p => p.Value).ToList();
         }

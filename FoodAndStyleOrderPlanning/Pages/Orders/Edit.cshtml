@@ -1,52 +1,61 @@
 ﻿@page "{id:int?}"
 
+@using FoodAndStyleOrderPlanning.Core
 @model FoodAndStyleOrderPlanning.Pages.Orders.EditModel
 @{
     Layout = "~/Pages/Shared/_Layout.cshtml";
 }
 
-    <form method="post">
-        <input type="hidden" asp-for="@Model.Order.Id" />
-        <input type="hidden" asp-for="@Model.Order.CreatedOn" />
-        <br/>
-        <div class="form-inline">
-            <label asp-for="@Model.Order.Name">Ονομασία:&nbsp;</label>
-            <input asp-for="@Model.Order.Name" class="form-control w-50 font-weight-bold" />
-            <span class="text-danger" asp-validation-for="@Model.Order.Name"></span>
-            &nbsp;
-            <button type="submit" class="btn btn-primary">Save</button>
-            &nbsp;
-            <input asp-for="@Model.Order.CreatedOn" disabled="disabled" class="form-control" />
-        </div>
+<form method="post">
+    <input type="hidden" asp-for="@Model.Order.Id" />
+    <input type="hidden" asp-for="@Model.Order.CreatedOn" />
+    <br />
+    <div class="form-inline">
+        <label asp-for="@Model.Order.Name">Ονομασία:&nbsp;</label>
+        <input asp-for="@Model.Order.Name" class="form-control w-50 font-weight-bold" />
+        <span class="text-danger" asp-validation-for="@Model.Order.Name"></span>
+        &nbsp;
+        <button type="submit" class="btn btn-primary">Save</button>
+        &nbsp;
+        <div>@Model.Order.CreatedOn.ToString(Helpers.DateTimeFormater)</div>
+    </div>
 
-        <hr />
-<table class="table table-sm table-striped">
-    <tr>
-        <th></th>
-        <th>Συνταγη</th>
-        <th>Ποσότητα Συνταγής σε Kg</th>
-        <th>Ποσότητα Παραγγελίας</th>
-    </tr>
-    @for (int i=0; i < Model.RecipeChoices.Choices.Count; i++)
-    {
-    <tr>
-        <td>
-            <input type="hidden" asp-for="@Model.RecipeChoices.Choices[i].Id" />
-            <input type="hidden" asp-for="@Model.RecipeChoices.Choices[i].RecipeId" />
-            <input type="hidden" asp-for="@Model.RecipeChoices.Choices[i].Name" />
-            <input type="hidden" asp-for="@Model.RecipeChoices.Choices[i].RecipeQuantity" />
-        </td>
-        <td>@Model.RecipeChoices.Choices[i].Name</td>
-        <td>@Model.RecipeChoices.Choices[i].RecipeQuantity</td>
-        <td>
-            <input asp-for="@Model.RecipeChoices.Choices[i].Quantity" min="0" class="form-control w-25 font-weight-bold" />
-            <span class="text-danger" asp-validation-for="@Model.RecipeChoices.Choices[i].Quantity"></span>
-        </td>
-    </tr>
-    }
-</table>
+    <hr />
+    <table class="table table-sm table-striped">
+        <tr>
+            <th></th>
+            <th>Συνταγη</th>
+            <th>Ποσότητα (Γραμ.)</th>
+            <th>Παραγγελίες</th>
+        </tr>
+        
+        @for (int i = 0; i < Model.RecipeChoices.Choices.Count; i++)
+            {
+                <tr>
+                    <td>
+                        <input type="hidden" asp-for="@Model.RecipeChoices.Choices[i].Id" />
+                        <input type="hidden" asp-for="@Model.RecipeChoices.Choices[i].RecipeId" />
+                        <input type="hidden" asp-for="@Model.RecipeChoices.Choices[i].Name" />
+                        <input type="hidden" asp-for="@Model.RecipeChoices.Choices[i].RecipeQuantity" />
+                    </td>
+                    <td>@Model.RecipeChoices.Choices[i].Name</td>
+                    <td>@Model.RecipeChoices.Choices[i].RecipeQuantity</td>
+                    <td>
+                        <input asp-for="@Model.RecipeChoices.Choices[i].Quantity" min="0" class="form-control w-25 font-weight-bold" />
+                        <span class="text-danger" asp-validation-for="@Model.RecipeChoices.Choices[i].Quantity"></span>
+                    </td>
 
-    </form>
+
+
+                </tr>
+            }
+
+
+
+
+    </table>
+
+</form>
 
 
 <hr />
@@ -65,12 +74,12 @@
     </tr>
     @foreach (var o in Model.OrderProductItems)
     {
-    <tr>
-        <td>@o.Product.Name</td>
-        <td>@o.Product.ProductType</td>
-        <td>@o.Product.SupplierId</td>
-        <td>@o.Quantity</td>
-        <td>@o.Product.MeasuringUnit</td>
-    </tr>
+        <tr>
+            <td>@o.Product.Name</td>
+            <td>@o.Product.ProductType</td>
+            <td>@o.Product.SupplierId</td>
+            <td>@o.Quantity</td>
+            <td>@o.Product.MeasuringUnit</td>
+        </tr>
     }
 </table>

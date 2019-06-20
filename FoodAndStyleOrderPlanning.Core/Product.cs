@@ -29,7 +29,7 @@ namespace FoodAndStyleOrderPlanning.Core
         public Supplier Supplier { get; set; }
 
         [Required]
-        public int Price { get; set; }
+        public float Price { get; set; }
 
         [Required]
         public int OrderWindow { get; set; }
@@ -48,6 +48,13 @@ namespace FoodAndStyleOrderPlanning.Core
             ProductType = productViewModel.ProductType;
             SupplierId = productViewModel.SupplierId;
             IsActive = productViewModel.IsActive;
+
+            if (MeasuringUnit == MeasuringUnit.Pieces)
+                Price = productViewModel.PriceEuroPart*100 + productViewModel.PriceCentsPart;
+            else
+                Price = (float)(productViewModel.PriceEuroPart*100 + productViewModel.PriceCentsPart)/1000;
+
+            OrderWindow = productViewModel.OrderWindow;
         }
     }
 
@@ -67,6 +74,16 @@ namespace FoodAndStyleOrderPlanning.Core
             ProductType = product.ProductType;
             SupplierId = product.SupplierId;
             IsActive = product.IsActive;
+
+            var price = product.Price;
+
+            if (MeasuringUnit != MeasuringUnit.Pieces)
+                price = 1000 * price;
+            
+            PriceEuroPart = (int)price / 100;
+            PriceCentsPart = (int)price % 100;            
+                            
+            OrderWindow = product.OrderWindow;
         }
 
         public int Id { get; set; }
@@ -88,6 +105,18 @@ namespace FoodAndStyleOrderPlanning.Core
 
         [Required]
         public bool IsActive { get; set; }
+        
+        [Required]
+        [Range(0, 999)]
+        public int PriceEuroPart { get; set; }
+
+        [Required]
+        [Range(0, 99)]
+        public int PriceCentsPart { get; set; }
+
+        [Required]
+        [Range(0, 100)]
+        public int OrderWindow { get; set; }
     }
 
 }

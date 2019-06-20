@@ -48,7 +48,8 @@ namespace FoodAndStyleOrderPlanning.Pages.Ingredients
                 Products = productData.GetByName(null).
                     Where(p => !recipe.Ingredients.Select(i => i.ProductId).Contains(p.Id)).
                     OrderBy(i=>i.Name).
-                    Select(p => new SelectListItem() { Text = $"{p.Name} σε {p.MeasuringUnit}", Value = p.Id.ToString() });
+                    //Select(p => new SelectListItem() { Text = $"{p.Name} σε {p.MeasuringUnit}", Value = p.Id.ToString() });
+                    Select(p => new SelectListItem() { Text = $"{p.Name} σε {LanguageResources.MeasuringUnitTranslations.First(t=>t.Key==((int)p.MeasuringUnit).ToString()).Value}", Value = p.Id.ToString() });
             }
             else
             {

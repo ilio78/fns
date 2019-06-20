@@ -25,7 +25,7 @@ namespace FoodAndStyleOrderPlanning.Pages.Recipes
 
         [BindProperty]
         [Required]
-        [Range(100, 99999)]
+        [Range(50, 99999)]
         public int RecipeQuantity { get; set; }
 
         public string PageTitle { get; set; }
@@ -48,7 +48,7 @@ namespace FoodAndStyleOrderPlanning.Pages.Recipes
             RecipeIngredients = new List<RecipeIngredientViewModel>();
             foreach (Ingredient i in recipe.Ingredients.OrderBy(i=>i.Product.Name))
                 RecipeIngredients.Add(new RecipeIngredientViewModel() {
-                    IngredientId = i.Id, Quantity=i.Quantity, MeasuringUnit = i.Product.MeasuringUnit,
+                    IngredientId = i.Id, Quantity=(int)i.Quantity, MeasuringUnit = i.Product.MeasuringUnit,
                         ProductName = i.Product.Name });
         }
 

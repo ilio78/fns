@@ -28,32 +28,37 @@
         <th>Μ.Μ.</th>
         <th><a asp-page="./List" asp-route-orderBy="type">Τύπος</a></th>
         <th><a asp-page="./List" asp-route-orderBy="supplier">Προμηθευτής</a></th>
+        <th>Τιμή</th>
+        <th>Παραγγελλία πριν</th>
         <th>Επεξεργασία</th>
     </tr>
     @foreach (var r in Model.Products)
     {
-    <tr>
-        <td>@r.Id</td>
-        <td>@r.Name</td>
-        <td>@r.Quality</td>
-        <td>@LanguageResources.MeasuringUnitTranslations.First(p => p.Key == ((int)r.MeasuringUnit).ToString()).Value</td>
-        <td>@LanguageResources.ProductTypeTranslations.First(p => p.Key == ((int)r.ProductType).ToString()).Value</td>
+<tr>
+    <td>@r.Id</td>
+    <td>@r.Name</td>
+    <td>@r.Quality</td>
+    <td>@LanguageResources.MeasuringUnitTranslations.First(p => p.Key == ((int)r.MeasuringUnit).ToString()).Value</td>
+    <td>@LanguageResources.ProductTypeTranslations.First(p => p.Key == ((int)r.ProductType).ToString()).Value</td>
 
-        @if (@r.Supplier.IsActive)
-        {
-            <td>@r.Supplier.Name</td>
-        }
-        else
-        {
-            <td class="alert-danger" data-toggle="tooltip" data-placement="top" title="Ο προμηθευτής δεν ειναι ενεργός">@r.Supplier.Name</td>
-        }
+    @if (@r.Supplier.IsActive)
+    {
+        <td>@r.Supplier.Name</td>
+    }
+    else
+    {
+        <td class="alert-danger" data-toggle="tooltip" data-placement="top" title="Ο προμηθευτής δεν ειναι ενεργός">@r.Supplier.Name</td>
+    }
 
-        <td>
-            <a class="btn btn-lg" asp-page="./Edit" asp-route-id="@r.Id">
-                <i class="fa fa-edit"></i>
-            </a>
-        </td>
-    </tr>
+    <td>@r.Price¢</td>
+
+    <td>@r.OrderWindow</td>
+    <td>
+        <a class="btn btn-lg" asp-page="./Edit" asp-route-id="@r.Id">
+            <i class="fa fa-edit"></i>
+        </a>
+    </td>
+</tr>
     }
 </table>
 
