@@ -1,0 +1,16 @@
+﻿
+1) Check if everything is OK:
+FoodAndStyleOrderPlanning.Data>
+dotnet ef dbcontext info -s ..\FoodAndStyleOrderPlanning\FoodAndStyleOrderPlanning.csproj
+
+2) Create migration 
+FoodAndStyleOrderPlanning.Data>
+dotnet ef migrations add AddPriceAndOrderWindow  -s ..\FoodAndStyleOrderPlanning\FoodAndStyleOrderPlanning.csproj
+
+2) Update Database
+FoodAndStyleOrderPlanning.Data>
+dotnet ef database update -s ..\FoodAndStyleOrderPlanning\FoodAndStyleOrderPlanning.csproj
+
+
+
+

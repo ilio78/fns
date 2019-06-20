@@ -11,25 +11,24 @@
     public enum MeasuringUnit
     {
         Grams,
-        Kilograms,
-        Litres,
         Millilitres,
         Pieces
     }
 
     public enum ProductType
     {
-        ProduceFresh,
-        ProduceCut,
-        Bakaliki,
+        FruitAndVegetables_Fresh,
+        FruitAndVegetables_Cut,
+        Groseries,
         Meat,
+        Fish,
         Pastry,
         Other
     }
 
-    public enum ServingType
-    {
-        Kilograms,
-        Servings
-    }
+    //public enum ServingType
+    //{
+    //    Kilograms,
+    //    Servings
+    //}
 }

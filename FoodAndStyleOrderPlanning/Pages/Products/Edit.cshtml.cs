@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -18,8 +19,8 @@ namespace FoodAndStyleOrderPlanning.Pages.Products
 
         private IHtmlHelper htmlHelper;
 
-        public IEnumerable<SelectListItem> MeasuringUnit { get; set; }
-        public IEnumerable<SelectListItem> ProductType { get; set; }
+        public SelectList MeasuringUnit { get; set; }        
+        public SelectList ProductType { get; set; }
         public IList<SelectListItem> Suppliers { get; set; }
 
         [BindProperty]
@@ -36,8 +37,8 @@ namespace FoodAndStyleOrderPlanning.Pages.Products
 
         private void LoadData()
         {
-            MeasuringUnit = htmlHelper.GetEnumSelectList<MeasuringUnit>();
-            ProductType = htmlHelper.GetEnumSelectList<ProductType>();
+            MeasuringUnit = new SelectList((IEnumerable)LanguageResources.MeasuringUnitTranslations, "Key", "Value");
+            ProductType = new SelectList((IEnumerable)LanguageResources.ProductTypeTranslations, "Key", "Value");
             var allSuppliers = supplierData.GetByName(null).Where(sup => sup.IsActive).OrderBy(s => s.Name).ToList();
 
             Suppliers = new List<SelectListItem>();

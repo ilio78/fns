@@ -29,6 +29,12 @@ namespace FoodAndStyleOrderPlanning.Core
         public Supplier Supplier { get; set; }
 
         [Required]
+        public int Price { get; set; }
+
+        [Required]
+        public int OrderWindow { get; set; }
+
+        [Required]
         public bool IsActive { get; set; }
         // ALTER TABLE [Products] ADD [IsActive] bit NOT NULL DEFAULT 0;
 
