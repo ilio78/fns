@@ -117,10 +117,9 @@ namespace FoodAndStyleOrderPlanning.Core
     public class OrderProductItem
     {
         public Product Product { get; set; }
-        public float Quantity { get; set; }
+        public Supplier Supplier { get; set; }        
+        public int Quantity { get; set; }
     }
-
-
 
     public class OrderRecipeItem
     {

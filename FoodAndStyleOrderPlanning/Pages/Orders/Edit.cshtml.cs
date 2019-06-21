@@ -84,15 +84,15 @@ namespace FoodAndStyleOrderPlanning.Pages.Orders
                     OrderProductItem item = OrderProductItems.SingleOrDefault(o => o.Product.Id == ingredient.Product.Id);
                     if (item == null)
                     {
-                        item = new OrderProductItem() { Product = ingredient.Product };
+                        item = new OrderProductItem() { Product = ingredient.Product, Supplier = ingredient.Product.Supplier };
                         OrderProductItems.Add(item);
                     }
 
-                    item.Quantity += RecipeChoices.Choices.Single(r=>r.RecipeId==recipe.Id).Quantity * ingredient.Quantity;
-                }                
+                    item.Quantity += RecipeChoices.Choices.Single(r=>r.RecipeId==recipe.Id).Quantity * ingredient.Quantity;                    
+                }
             }
-
-            OrderProductItems = OrderProductItems.OrderBy(o => o.Product.ProductType).ThenBy(o => o.Product.Name).ToList();
+            
+            OrderProductItems = OrderProductItems.OrderBy(o => o.Product.ProductType).ThenBy(o => o.Product.Name).ToList();                            
 
             return Page();
         }

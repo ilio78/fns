@@ -46,7 +46,7 @@ namespace FoodAndStyleOrderPlanning.Data
 
         public IEnumerable<Recipe> GetByName(string name)
         {
-            var query = from r in db.Recipes.Include(r => r.Ingredients).ThenInclude(p => p.Product)
+            var query = from r in db.Recipes.Include(r => r.Ingredients).ThenInclude(p => p.Product).ThenInclude(s => s.Supplier)
                         where string.IsNullOrEmpty(name) || r.Name.ToLower().Contains(name)
                         orderby r.Name
                         select r;
