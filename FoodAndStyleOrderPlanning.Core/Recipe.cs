@@ -21,7 +21,10 @@ namespace FoodAndStyleOrderPlanning.Core
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
+
         public DateTime CreatedOn { get; set; }
+
+        public DateTime UpdatedOn { get; set; }
 
         [Required, StringLength(50, MinimumLength = 5)]
         public string Name { get; set; }

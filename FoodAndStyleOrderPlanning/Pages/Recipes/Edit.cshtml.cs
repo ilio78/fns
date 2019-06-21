@@ -48,7 +48,7 @@ namespace FoodAndStyleOrderPlanning.Pages.Recipes
             RecipeName = recipe.Name;
             RecipeQuantity = recipe.ResultingQuantityInGrams;
             RecipeCreatedOn = recipe.CreatedOn;
-            RecipeUpdatedOn = recipe.CreatedOn;
+            RecipeUpdatedOn = recipe.UpdatedOn;
 
             RecipeIngredients = new List<RecipeIngredientViewModel>();
             foreach (Ingredient i in recipe.Ingredients.OrderBy(i=>i.Product.Name))
@@ -86,8 +86,9 @@ namespace FoodAndStyleOrderPlanning.Pages.Recipes
             {
                 recipe = recipeData.GetById(RecipeId);
 
-                recipe.Name = RecipeName;
+                recipe.Name = RecipeName.Trim();
                 recipe.ResultingQuantityInGrams = RecipeQuantity;
+                recipe.UpdatedOn = DateTime.Now;
                 recipeData.Update(recipe);
                 recipeData.Commit();
             }
@@ -96,15 +97,14 @@ namespace FoodAndStyleOrderPlanning.Pages.Recipes
                 recipe = new Recipe();
                 recipe.Name = RecipeName;
                 recipe.CreatedOn = DateTime.Now;
+                recipe.UpdatedOn = recipe.CreatedOn;
                 recipe.ResultingQuantityInGrams = RecipeQuantity;
                 recipeData.Add(recipe);
                 recipeData.Commit();
             }
 
             return RedirectToPage("./Edit", new { id = recipe.Id });
-
-            //TempData["Message"] = "Restaurant saved";
-           
+                       
         }
     }
 }

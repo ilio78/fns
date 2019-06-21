@@ -5,11 +5,12 @@
     ViewData["Title"] = "Delete";
 }
 
-<h2>Delete!</h2>
+<br/>
 <div class="alert alert-danger">
     Διαγραφή συνταγής @Model.Recipe.Name?
 </div>
+<br />
 <form method="post">
-    <button type="submit" class="btn btn-danger">Yes!</button>
-    <a asp-page="List" class="btn btn-outline-dark">Cancel</a>
+    <button type="submit" class="btn btn-danger">Διαγραφή</button>&nbsp;&nbsp;&nbsp;
+    <a asp-page="List" class="btn btn-outline-dark">Ακύρωση</a>
 </form>

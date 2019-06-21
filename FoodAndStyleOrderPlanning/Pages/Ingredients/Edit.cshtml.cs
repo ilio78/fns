@@ -23,6 +23,7 @@ namespace FoodAndStyleOrderPlanning.Pages.Ingredients
         private IData<Product> productData;
         private IData<Ingredient> ingredientData;
         private IData<Recipe> recipeData;
+        private Recipe CurrentRecipe;
 
         public EditModel(IData<Ingredient> ingredientData, IData<Product> productData, IData<Recipe> recipeData)
         {
@@ -33,9 +34,9 @@ namespace FoodAndStyleOrderPlanning.Pages.Ingredients
 
         private bool LoadData(int recipeId, int? ingredientId)
         {
-            Recipe recipe = recipeData.GetById(recipeId);
+            CurrentRecipe = recipeData.GetById(recipeId);
 
-            if (recipe == null)
+            if (CurrentRecipe == null)
                 return false;
 
             if (ingredientId == null)
@@ -46,9 +47,8 @@ namespace FoodAndStyleOrderPlanning.Pages.Ingredients
 
                 // Present products not already used in the recipe!
                 Products = productData.GetByName(null).
-                    Where(p => !recipe.Ingredients.Select(i => i.ProductId).Contains(p.Id)).
-                    OrderBy(i=>i.Name).
-                    //Select(p => new SelectListItem() { Text = $"{p.Name} σε {p.MeasuringUnit}", Value = p.Id.ToString() });
+                    Where(p => !CurrentRecipe.Ingredients.Select(i => i.ProductId).Contains(p.Id)).
+                    OrderBy(i=>i.Name).                    
                     Select(p => new SelectListItem() { Text = $"{p.Name} σε {LanguageResources.MeasuringUnitTranslations.First(t=>t.Key==((int)p.MeasuringUnit).ToString()).Value}", Value = p.Id.ToString() });
             }
             else
@@ -76,19 +76,19 @@ namespace FoodAndStyleOrderPlanning.Pages.Ingredients
                 if (!LoadData(recipeId, ingredientId))
                     return RedirectToPage("/Recipes/List");
                 return Page();
-            }
+            }            
 
             if (Ingredient.RecipeId < 1)
             {
                 Ingredient.RecipeId = recipeId;
                 ingredientData.Add(Ingredient);
             }
-            else
-            {
-
-            }
-
+            
             ingredientData.Commit();
+            CurrentRecipe = recipeData.GetById(recipeId);
+            CurrentRecipe.UpdatedOn = DateTime.Now;
+            recipeData.Update(CurrentRecipe);
+            recipeData.Commit();
 
             return RedirectToPage("/Recipes/Edit", new { id = recipeId });
         }

@@ -32,8 +32,11 @@ namespace FoodAndStyleOrderPlanning.Pages.Ingredients
             if (ingredient == null)
                 return RedirectToPage("/Recipes/Edit", recipeId);
 
-            ingredientData.Delete(ingredientId);
+            ingredientData.Delete(ingredientId);           
             ingredientData.Commit();
+            recipe.UpdatedOn = DateTime.Now;
+            recipeData.Update(recipe);
+            recipeData.Commit();
 
             return RedirectToPage("/Recipes/Edit", new { id = recipeId });
         }
