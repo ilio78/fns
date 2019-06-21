@@ -1,36 +1,71 @@
 ﻿@page "{id:int?}"
 
+@using FoodAndStyleOrderPlanning.Core
 @model FoodAndStyleOrderPlanning.Pages.Recipes.EditModel
 @{
 }
-<form method="post">
+    <form method="post">
+        
+        <div class="card">
+            <div class="card-body">
+                @*<h5 class="card-title">Στοιχεία Συνταγής</h5>*@
 
-    <input type="hidden" asp-for="@Model.RecipeId" />
-    <div class="form-inline">
-        <label asp-for="@Model.RecipeName">Ονομασία:&nbsp;</label>
-        <input asp-for="@Model.RecipeName" class="form-control w-50 font-weight-bold" />
-        <span class="text-danger" asp-validation-for="@Model.RecipeName"></span>
-        &nbsp;
-        <label asp-for="@Model.RecipeQuantity">Ποσότητα (γραμ.):&nbsp;</label>
-        <input asp-for="@Model.RecipeQuantity" class="form-control font-weight-bold" />
-        <span class="text-danger" asp-validation-for="@Model.RecipeQuantity"></span>
-        <button type="submit" class="btn btn-primary">Save</button>
-    </div>
-  
-</form>
+                <div class="row">
+                    <div class="col-sm-8">
+                        <div class="form-group">
+                            <input type="hidden" asp-for="@Model.RecipeId" />
+                            <label asp-for="@Model.RecipeName">Ονομασία:&nbsp;</label>
+                            <input asp-for="@Model.RecipeName" class="form-control w-100 font-weight-bold" />
+                            <span class="text-danger" asp-validation-for="@Model.RecipeName"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="@Model.RecipeQuantity">Ποσότητα (γραμ.):&nbsp;</label>
+                            <input asp-for="@Model.RecipeQuantity" class="form-control w-25 font-weight-bold" />
+                            <span class="text-danger" asp-validation-for="@Model.RecipeQuantity"></span>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="card" style="width: 18rem;">
+                            @*<div class="card-header">Featured</div>*@
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">Δημιουργία: @Model.RecipeCreatedOn.ToString(Helpers.DateTimeFormater)</li>
+                                <li class="list-group-item">Ενημέρωση: @Model.RecipeUpdatedOn.ToString(Helpers.DateTimeFormater)</li>
+                                <li class="list-group-item">Αριθμός Υλικών: @Model.RecipeIngredients?.Count()</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
 <hr />
 
 
 @if (@Model != null && @Model.RecipeId > 0)
-{
+{    
 
     <table class="table table-sm table-striped">
+
+        <tr>
+            <th>Υλικό</th>
+            <th>Ποσότητα</th>
+            <th>Προμηθευτής</th>
+            <th>Ενέργειες</th>
+        </tr>
+
         @foreach (var i in Model.RecipeIngredients)
         {
             <tr>
-                <td>@i.ProductName</td>
-                <td>@i.Quantity</td>
-                <td>@i.MeasuringUnit</td>
+                <td>
+                    <a asp-page="/Products/Edit" asp-route-Id="@i.ProductId">
+                        @i.ProductName
+                    </a>
+                </td>
+                <td><b>@String.Format("{0:n0}", i.Quantity)</b> @LanguageResources.GetMeasuringUnitTranslation(i.MeasuringUnit)</td>
+
+                <td>@i.ProductSupplierName</td>
+
                 <td>
                     <a class="btn btn-lg" asp-page="/Ingredients/Delete" asp-route-recipeId="@Model.RecipeId" asp-route-ingredientId="@i.IngredientId">
                         <i class="fa fa-trash"></i>
@@ -41,10 +76,10 @@
     </table>
 
     <a asp-page="/Ingredients/Edit" asp-route-recipeId="@Model.RecipeId" class="btn btn-primary">Προσθήκη Υλικού</a>
-}
+    }
 
 
-@section Scripts
+    @section Scripts
 {
-    <partial name="_ValidationScriptsPartial" />
-}
+        <partial name="_ValidationScriptsPartial" />
+    }

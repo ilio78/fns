@@ -1,7 +1,6 @@
 ﻿@page "{orderBy?}"
 
 @using FoodAndStyleOrderPlanning.Core
-@using System.Linq
 @model FoodAndStyleOrderPlanning.Pages.Products.ListModel
 @{
     ViewData["Title"] = "Προϊόντα";
@@ -38,8 +37,8 @@
     <td>@r.Id</td>
     <td>@r.Name</td>
     <td>@r.Quality</td>
-    <td>@LanguageResources.MeasuringUnitTranslations.First(p => p.Key == ((int)r.MeasuringUnit).ToString()).Value</td>
-    <td>@LanguageResources.ProductTypeTranslations.First(p => p.Key == ((int)r.ProductType).ToString()).Value</td>
+    <td>@LanguageResources.GetMeasuringUnitTranslation(r.MeasuringUnit)</td>
+    <td>@LanguageResources.GetProductTypeTranslation(r.ProductType)</td>
 
     @if (@r.Supplier.IsActive)
     {

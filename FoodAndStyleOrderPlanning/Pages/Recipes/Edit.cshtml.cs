@@ -28,6 +28,9 @@ namespace FoodAndStyleOrderPlanning.Pages.Recipes
         [Range(50, 99999)]
         public int RecipeQuantity { get; set; }
 
+        public DateTime RecipeCreatedOn { get; set; }
+        public DateTime RecipeUpdatedOn { get; set; }
+
         public string PageTitle { get; set; }
 
         public List<RecipeIngredientViewModel> RecipeIngredients { get; set; }
@@ -44,12 +47,14 @@ namespace FoodAndStyleOrderPlanning.Pages.Recipes
             RecipeId = recipe.Id;
             RecipeName = recipe.Name;
             RecipeQuantity = recipe.ResultingQuantityInGrams;
+            RecipeCreatedOn = recipe.CreatedOn;
+            RecipeUpdatedOn = recipe.CreatedOn;
 
             RecipeIngredients = new List<RecipeIngredientViewModel>();
             foreach (Ingredient i in recipe.Ingredients.OrderBy(i=>i.Product.Name))
                 RecipeIngredients.Add(new RecipeIngredientViewModel() {
                     IngredientId = i.Id, Quantity=(int)i.Quantity, MeasuringUnit = i.Product.MeasuringUnit,
-                        ProductName = i.Product.Name });
+                        ProductName = i.Product.Name, ProductId = i.Product.Id, ProductSupplierName = i.Product?.Supplier.Name });
         }
 
         public IActionResult OnGet(int? id)

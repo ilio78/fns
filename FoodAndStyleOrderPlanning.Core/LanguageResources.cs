@@ -10,6 +10,20 @@ namespace FoodAndStyleOrderPlanning.Core
         public static Dictionary<string, string> ProductTypeTranslations;
         public static Dictionary<string, string> MeasuringUnitTranslations;
 
+        //<td>@LanguageResources.MeasuringUnitTranslations.First(p => p.Key == ((int) r.MeasuringUnit).ToString()).Value</td>
+        //<td>@LanguageResources.ProductTypeTranslations.First(p => p.Key == ((int) r.ProductType).ToString()).Value</td>
+
+        public static string GetMeasuringUnitTranslation(MeasuringUnit measuringUnit)
+        {
+            return LanguageResources.MeasuringUnitTranslations.First(p => p.Key == ((int)measuringUnit).ToString()).Value;
+        }
+
+        public static string GetProductTypeTranslation(ProductType productType)
+        {
+            return LanguageResources.ProductTypeTranslations.First(p => p.Key == ((int)productType).ToString()).Value;
+        }
+
+
         static LanguageResources()
         {
             ProductTypeTranslations = new Dictionary<string, string>();

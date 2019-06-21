@@ -36,7 +36,7 @@ namespace FoodAndStyleOrderPlanning.Data
 
         public Recipe GetById(int id)
         {
-            return db.Recipes.Include(r => r.Ingredients).ThenInclude(p => p.Product).FirstOrDefault(i => i.Id == id);
+            return db.Recipes.Include(r => r.Ingredients).ThenInclude(p => p.Product).ThenInclude(s => s.Supplier).FirstOrDefault(i => i.Id == id);
         }
 
         public int GetCount()

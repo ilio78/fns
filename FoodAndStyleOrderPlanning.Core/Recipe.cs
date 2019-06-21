@@ -71,7 +71,9 @@ namespace FoodAndStyleOrderPlanning.Core
     public class RecipeIngredientViewModel
     {
         public int IngredientId { get; set; }
+        public int ProductId { get; set; }
         public string ProductName { get; set; }
+        public string ProductSupplierName { get; set; }        
         public int Quantity { get; set; }
         public MeasuringUnit MeasuringUnit { get; set; }
     }

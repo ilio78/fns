@@ -26,7 +26,7 @@ namespace FoodAndStyleOrderPlanning.Pages.Products
         [BindProperty]
         public ProductViewModel ProductViewModel { get; set; }
 
-        public string SupplierNotActiveMessage { get; set; }
+        public string SupplierNotActiveMessage { get; set; }        
 
         public EditModel(IData<Product> productData, IData<Supplier> supplierData, IHtmlHelper htmlHelper)
         {
