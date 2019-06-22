@@ -16,8 +16,9 @@ namespace FoodAndStyleOrderPlanning.Pages.Orders
         public Order Order { get; set; }
 
         [BindProperty]
-        public RecipeChoicesViewModel RecipeChoices { get; set; }
+        public RecipeChoicesViewModel RecipeChoices{ get; set; }
 
+       
         private readonly IData<Recipe> recipeData;
         private readonly IData<Order> orderData;
         private readonly IData<OrderRecipeItem> orderRecipeItemData;
@@ -52,12 +53,12 @@ namespace FoodAndStyleOrderPlanning.Pages.Orders
             var Recipes = recipeData.GetByName(null).ToList();
 
             RecipeChoices = new RecipeChoicesViewModel();
-
+       
             int i = 1;
             foreach (Recipe r in Recipes)
                 RecipeChoices.Choices.Add(new ChoiceViewModel()
                 {
-                    Id = i++, Name = r.Name, RecipeQuantity = String.Format("{0:n0}", r.ResultingQuantityInGrams),
+                    Id = i++, Name = r.Name, RecipeResultingQuantity = String.Format("{0:n0}", r.ResultingQuantityInGrams),
                     RecipeId = r.Id
                 });
             
@@ -105,6 +106,9 @@ namespace FoodAndStyleOrderPlanning.Pages.Orders
             if (Order.Id == 0)
             {
                 Order.CreatedOn = DateTime.Now;
+                Order.UpdatedOn = Order.CreatedOn;
+                Order.CreatedBy = HttpContext.Request.Headers["X-MS-CLIENT-PRINCIPAL-NAME"];
+                Order.UpdatedBy = HttpContext.Request.Headers["X-MS-CLIENT-PRINCIPAL-NAME"];
                 orderData.Add(Order);
             }
             else
@@ -115,7 +119,6 @@ namespace FoodAndStyleOrderPlanning.Pages.Orders
                     orderRecipeItemData.Delete(item.Id);
 
                 orderRecipeItemData.Commit();
-
 
                 foreach (ChoiceViewModel item in RecipeChoices.Choices)
                 {
@@ -130,6 +133,14 @@ namespace FoodAndStyleOrderPlanning.Pages.Orders
                     orderRecipeItemData.Add(orderRecipeItem);
                     orderRecipeItemData.Commit();
                 }
+
+                Order.UpdatedOn = DateTime.Now;
+
+                if (string.IsNullOrWhiteSpace(HttpContext.Request.Headers["X-MS-CLIENT-PRINCIPAL-NAME"]))
+                    Order.UpdatedBy = "unknown";
+                else
+                    Order.UpdatedBy = HttpContext.Request.Headers["X-MS-CLIENT-PRINCIPAL-NAME"];
+
                 orderData.Update(Order);
             }
 

@@ -15,7 +15,10 @@
                 <div class="col-sm-8">
                     <input type="hidden" asp-for="@Model.Order.Id" />
                     <input type="hidden" asp-for="@Model.Order.CreatedOn" />
-                    <div class="form-group">
+                    <input type="hidden" asp-for="@Model.Order.CreatedBy" />
+                    <input type="hidden" asp-for="@Model.Order.UpdatedOn" />
+                    <input type="hidden" asp-for="@Model.Order.UpdatedBy" />
+                     <div class="form-group">
                         <label asp-for="@Model.Order.Name">Ονομασία</label>
                         <input asp-for="@Model.Order.Name" class="form-control w-100 font-weight-bold" />
                         <span class="text-danger" asp-validation-for="@Model.Order.Name"></span>
@@ -25,11 +28,12 @@
                     </div>
                 </div>
                 <div class="col-sm-4">
-                    <br />
                     <div class="card" style="width: 18rem;">
                         <ul class="list-group list-group-flush">
                             <li class="list-group-item">Δημιουργία: @Model.Order.CreatedOn.ToString(Helpers.DateTimeFormater)</li>
-                            <li class="list-group-item">Τροποποίηση:</li>
+                            <li class="list-group-item">Από: @Model.Order.CreatedBy</li>
+                            <li class="list-group-item">Τροποποίηση: @Model.Order.UpdatedOn.ToString(Helpers.DateTimeFormater)</li>
+                            <li class="list-group-item">Από: @Model.Order.UpdatedBy</li>
                         </ul>
                     </div>
                 </div>
@@ -39,28 +43,34 @@
     <hr />
     <table class="table table-sm table-striped">
         <tr>
-            <th></th>
-            <th>Συνταγη</th>
-            <th>Ποσότητα (Γραμ.)</th>
-            <th>Παραγγελίες</th>
+            <th class="w-25">Συνταγη</th>
+            <th class="w-auto">Ποσότητα (Γραμ.)</th>
+            <th>Δευ.</th>
+            <th>Τρι.</th>
+            <th>Τετ.</th>
+            <th>Πεμ.</th>
+            <th>Παρ.</th>
         </tr>
 
         @for (int i = 0; i < Model.RecipeChoices.Choices.Count; i++)
         {
-            <tr>
-                <td>
-                    <input type="hidden" asp-for="@Model.RecipeChoices.Choices[i].Id" />
-                    <input type="hidden" asp-for="@Model.RecipeChoices.Choices[i].RecipeId" />
-                    <input type="hidden" asp-for="@Model.RecipeChoices.Choices[i].Name" />
-                    <input type="hidden" asp-for="@Model.RecipeChoices.Choices[i].RecipeQuantity" />
-                </td>
-                <td>@Model.RecipeChoices.Choices[i].Name</td>
-                <td>@Model.RecipeChoices.Choices[i].RecipeQuantity</td>
-                <td>
-                    <input asp-for="@Model.RecipeChoices.Choices[i].Quantity" min="0" class="form-control w-25 font-weight-bold" />
-                    <span class="text-danger" asp-validation-for="@Model.RecipeChoices.Choices[i].Quantity"></span>
-                </td>
-            </tr>
+        <tr>
+            <td>
+                <input type="hidden" asp-for="@Model.RecipeChoices.Choices[i].Id" />
+                <input type="hidden" asp-for="@Model.RecipeChoices.Choices[i].RecipeId" />
+                <input type="hidden" asp-for="@Model.RecipeChoices.Choices[i].Name" />
+                <input type="hidden" asp-for="@Model.RecipeChoices.Choices[i].RecipeResultingQuantity" />
+                @Model.RecipeChoices.Choices[i].Name
+            </td>
+            <td>@String.Format("{0:n0}", Model.RecipeChoices.Choices[i].RecipeResultingQuantity)</td>
+
+            <td>
+                <input asp-for="@Model.RecipeChoices.Choices[i].Quantity" min="0" class="form-control w-50 font-weight-bold" />
+                <span class="text-danger" asp-validation-for="@Model.RecipeChoices.Choices[i].Quantity"></span>
+            </td>
+
+       
+        </tr>
         }
     </table>
 
@@ -83,12 +93,12 @@
     </tr>
     @foreach (var o in Model.OrderProductItems)
     {
-<tr>
-    <td>@LanguageResources.GetProductTypeTranslation(@o.Product.ProductType)</td>
-    <td>@o.Product.Name</td>
-    <td><b>@String.Format("{0:n0}", o.Quantity)</b>&nbsp;@LanguageResources.GetMeasuringUnitTranslation(o.Product.MeasuringUnit)</td>
-    <td>@String.Format("{0:n}€", (o.Product.Price * o.Quantity) / 100)</td>
-    <td>@o.Product.Supplier.Name</td>
-</tr>
+    <tr>
+        <td>@LanguageResources.GetProductTypeTranslation(@o.Product.ProductType)</td>
+        <td>@o.Product.Name</td>
+        <td><b>@String.Format("{0:n0}", o.Quantity)</b>&nbsp;@LanguageResources.GetMeasuringUnitTranslation(o.Product.MeasuringUnit)</td>
+        <td>@String.Format("{0:n}€", (o.Product.Price * o.Quantity) / 100)</td>
+        <td>@o.Product.Supplier.Name</td>
+    </tr>
     }
 </table>

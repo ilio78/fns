@@ -52,25 +52,6 @@ namespace FoodAndStyleOrderPlanning.Core
         public int Quantity { get; set; }
     }
 
-    //public class RecipeViewModel
-    //{
-    //    public int Id { get; set; }
-
-    //    public string Name { get; set; }
-
-    //    public float ResultingQuntityInKilograms { get; set; }
-
-    //    public List<IngredientViewModel> Ingredients { get; set; }
-    //}
-
-    //public class IngredientViewModel
-    //{
-    //    public int ProductId { get; set; }
-    //    public float Quantity { get; set; }
-
-    //    public MeasuringUnit MeasuringUnit { get; set; }
-    //}
-
     public class RecipeIngredientViewModel
     {
         public int IngredientId { get; set; }
@@ -85,12 +66,16 @@ namespace FoodAndStyleOrderPlanning.Core
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-
         [Required]
         public string Name { get; set; }
-
         [Required]
         public DateTime CreatedOn { get; set; }
+        [Required]
+        public string CreatedBy { get; set; }
+        [Required]
+        public DateTime UpdatedOn { get; set; }
+        [Required]
+        public string UpdatedBy { get; set; }
 
         public ICollection<OrderRecipeItem> OrderRecipeItems { get; set; }
     }
@@ -110,7 +95,7 @@ namespace FoodAndStyleOrderPlanning.Core
         public int Id { get; set; }
         public int RecipeId { get; set; }
         public string Name { get; set; }
-        public string RecipeQuantity { get; set; }
+        public string RecipeResultingQuantity { get; set; }
         public int Quantity { get; set; }
     }
 
@@ -133,8 +118,11 @@ namespace FoodAndStyleOrderPlanning.Core
         public Recipe Recipe { get; set; }
 
         [Required]
-        [Range(0,9999)]
+        [Range(0,999)]
         public int Quantity { get; set; }
+
+        [Required]
+        public DayOfWeek Day { get; set; }
 
         [Required]
         public int OrderId { get; set; }
