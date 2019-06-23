@@ -65,11 +65,29 @@
             <td>@String.Format("{0:n0}", Model.RecipeChoices.Choices[i].RecipeResultingQuantity)</td>
 
             <td>
-                <input asp-for="@Model.RecipeChoices.Choices[i].Quantity" min="0" class="form-control w-50 font-weight-bold" />
-                <span class="text-danger" asp-validation-for="@Model.RecipeChoices.Choices[i].Quantity"></span>
+                <input asp-for="@Model.RecipeChoices.Choices[i].OrderQuantity_Monday" min="0" class="form-control w-50 font-weight-bold" />
+                <span class="text-danger" asp-validation-for="@Model.RecipeChoices.Choices[i].OrderQuantity_Monday"></span>
             </td>
 
-       
+            <td>
+                <input asp-for="@Model.RecipeChoices.Choices[i].OrderQuantity_Tuesday" min="0" class="form-control w-50 font-weight-bold" />
+                <span class="text-danger" asp-validation-for="@Model.RecipeChoices.Choices[i].OrderQuantity_Tuesday"></span>
+            </td>
+
+            <td>
+                <input asp-for="@Model.RecipeChoices.Choices[i].OrderQuantity_Wednesday" min="0" class="form-control w-50 font-weight-bold" />
+                <span class="text-danger" asp-validation-for="@Model.RecipeChoices.Choices[i].OrderQuantity_Wednesday"></span>
+            </td>
+
+            <td>
+                <input asp-for="@Model.RecipeChoices.Choices[i].OrderQuantity_Thursday" min="0" class="form-control w-50 font-weight-bold" />
+                <span class="text-danger" asp-validation-for="@Model.RecipeChoices.Choices[i].OrderQuantity_Thursday"></span>
+            </td>
+
+            <td>
+                <input asp-for="@Model.RecipeChoices.Choices[i].OrderQuantity_Friday" min="0" class="form-control w-50 font-weight-bold" />
+                <span class="text-danger" asp-validation-for="@Model.RecipeChoices.Choices[i].OrderQuantity_Friday"></span>
+            </td>
         </tr>
         }
     </table>

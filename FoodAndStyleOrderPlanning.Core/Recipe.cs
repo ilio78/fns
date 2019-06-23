@@ -48,7 +48,7 @@ namespace FoodAndStyleOrderPlanning.Core
         public Recipe Recipe { get; set; }
 
         [Required]
-        [Range(1,9999)]
+        [Range(1, 9999)]
         public int Quantity { get; set; }
     }
 
@@ -57,7 +57,7 @@ namespace FoodAndStyleOrderPlanning.Core
         public int IngredientId { get; set; }
         public int ProductId { get; set; }
         public string ProductName { get; set; }
-        public string ProductSupplierName { get; set; }        
+        public string ProductSupplierName { get; set; }
         public int Quantity { get; set; }
         public MeasuringUnit MeasuringUnit { get; set; }
     }
@@ -96,7 +96,12 @@ namespace FoodAndStyleOrderPlanning.Core
         public int RecipeId { get; set; }
         public string Name { get; set; }
         public string RecipeResultingQuantity { get; set; }
-        public int Quantity { get; set; }
+        //public int Quantity { get; set; }
+        public int OrderQuantity_Monday { get; set; }
+        public int OrderQuantity_Tuesday { get; set; }
+        public int OrderQuantity_Wednesday { get; set; }
+        public int OrderQuantity_Thursday { get; set; }
+        public int OrderQuantity_Friday { get; set; }
     }
 
     public class OrderProductItem

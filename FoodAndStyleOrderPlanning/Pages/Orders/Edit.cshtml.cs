@@ -6,6 +6,7 @@ using FoodAndStyleOrderPlanning.Core;
 using FoodAndStyleOrderPlanning.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using FoodAndStyleOrderPlanning.Helpers;
 
 namespace FoodAndStyleOrderPlanning.Pages.Orders
 {
@@ -46,9 +47,7 @@ namespace FoodAndStyleOrderPlanning.Pages.Orders
 
             Order = orderData.GetById(id.Value);
             if (Order == null)
-            {
                 return RedirectToPage("./List");
-            }
 
             var Recipes = recipeData.GetByName(null).ToList();
 
@@ -66,15 +65,30 @@ namespace FoodAndStyleOrderPlanning.Pages.Orders
 
             foreach (var c in RecipeChoices.Choices)
             {
-                var orderRecipeItem = alreadySelected.FirstOrDefault(o => o.RecipeId == c.RecipeId);
-                if (orderRecipeItem == null)
-                    continue;
-
-                c.Quantity = orderRecipeItem.Quantity;
-
+                foreach(var orderRecipeItem in alreadySelected.Where(o => o.RecipeId == c.RecipeId))
+                {
+                    switch (orderRecipeItem.Day)
+                    {
+                        case DayOfWeek.Monday:
+                            c.OrderQuantity_Monday = orderRecipeItem.Quantity;
+                            break;
+                        case DayOfWeek.Tuesday:
+                            c.OrderQuantity_Tuesday = orderRecipeItem.Quantity;
+                            break;
+                        case DayOfWeek.Wednesday:
+                            c.OrderQuantity_Wednesday = orderRecipeItem.Quantity;
+                            break;
+                        case DayOfWeek.Thursday:
+                            c.OrderQuantity_Thursday = orderRecipeItem.Quantity;
+                            break;
+                        case DayOfWeek.Friday:
+                            c.OrderQuantity_Friday = orderRecipeItem.Quantity;
+                            break;
+                    }
+                }
             }
 
-            List<int> recipeIdsWithQuantityOverZero = RecipeChoices.Choices.Where(r => r.Quantity > 0).Select(r => r.RecipeId).ToList();
+            List<int> recipeIdsWithQuantityOverZero = RecipeChoices.Choices.Where(r => r.OrderQuantity_Monday > 0).Select(r => r.RecipeId).ToList();
 
             OrderProductItems = new List<OrderProductItem>();
 
@@ -89,7 +103,7 @@ namespace FoodAndStyleOrderPlanning.Pages.Orders
                         OrderProductItems.Add(item);
                     }
 
-                    item.Quantity += RecipeChoices.Choices.Single(r=>r.RecipeId==recipe.Id).Quantity * ingredient.Quantity;                    
+                    item.Quantity += RecipeChoices.Choices.Single(r=>r.RecipeId==recipe.Id).OrderQuantity_Monday * ingredient.Quantity;                    
                 }
             }
             
@@ -105,42 +119,32 @@ namespace FoodAndStyleOrderPlanning.Pages.Orders
 
             if (Order.Id == 0)
             {
+                // First save only creates order entry in the DB! Does not add any order items yet....
                 Order.CreatedOn = DateTime.Now;
                 Order.UpdatedOn = Order.CreatedOn;
-                Order.CreatedBy = HttpContext.Request.Headers["X-MS-CLIENT-PRINCIPAL-NAME"];
-                Order.UpdatedBy = HttpContext.Request.Headers["X-MS-CLIENT-PRINCIPAL-NAME"];
+                Order.CreatedBy = Helpers.User.GetUPN(HttpContext);
+                Order.UpdatedBy = Helpers.User.GetUPN(HttpContext);
                 orderData.Add(Order);
             }
             else
             {
-                var alreadySelected = orderRecipeItemData.GetByName(null).Where(o => o.OrderId == Order.Id).ToList();
-
-                foreach (var item in alreadySelected.ToList())
-                    orderRecipeItemData.Delete(item.Id);
-
+                // Remove previous entries as new lines will be entered!
+                orderRecipeItemData.GetByName(null).Where(o => o.OrderId == Order.Id).ToList()
+                    .ForEach(o=>  orderRecipeItemData.Delete(o.Id));
                 orderRecipeItemData.Commit();
 
+                // Create order item lines per day
                 foreach (ChoiceViewModel item in RecipeChoices.Choices)
                 {
-                    if (item.Quantity == 0)
-                        continue;
-
-                    OrderRecipeItem orderRecipeItem = new OrderRecipeItem();
-                    orderRecipeItem.OrderId = Order.Id;
-                    orderRecipeItem.Quantity = item.Quantity;
-                    orderRecipeItem.RecipeId = item.RecipeId;
-
-                    orderRecipeItemData.Add(orderRecipeItem);
-                    orderRecipeItemData.Commit();
+                    CreateOrderItemLines(item.RecipeId, item.OrderQuantity_Monday, DayOfWeek.Monday);
+                    CreateOrderItemLines(item.RecipeId, item.OrderQuantity_Tuesday, DayOfWeek.Tuesday);
+                    CreateOrderItemLines(item.RecipeId, item.OrderQuantity_Wednesday, DayOfWeek.Wednesday);
+                    CreateOrderItemLines(item.RecipeId, item.OrderQuantity_Thursday, DayOfWeek.Thursday);
+                    CreateOrderItemLines(item.RecipeId, item.OrderQuantity_Friday, DayOfWeek.Friday);
                 }
 
                 Order.UpdatedOn = DateTime.Now;
-
-                if (string.IsNullOrWhiteSpace(HttpContext.Request.Headers["X-MS-CLIENT-PRINCIPAL-NAME"]))
-                    Order.UpdatedBy = "unknown";
-                else
-                    Order.UpdatedBy = HttpContext.Request.Headers["X-MS-CLIENT-PRINCIPAL-NAME"];
-
+                Order.UpdatedBy = Helpers.User.GetUPN(HttpContext);
                 orderData.Update(Order);
             }
 
@@ -149,5 +153,18 @@ namespace FoodAndStyleOrderPlanning.Pages.Orders
 
         }
 
+        private void CreateOrderItemLines(int recipeId, int quantity, DayOfWeek day)
+        {
+            if (quantity < 1)
+                return;
+
+            OrderRecipeItem orderRecipeItem = new OrderRecipeItem();
+            orderRecipeItem.OrderId = Order.Id;
+            orderRecipeItem.Quantity = quantity;
+            orderRecipeItem.RecipeId = recipeId;
+            orderRecipeItem.Day = day;
+            orderRecipeItemData.Add(orderRecipeItem);
+            orderRecipeItemData.Commit();
+        }
     }
 }
