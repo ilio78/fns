@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using FoodAndStyleOrderPlanning.Core;
+﻿using FoodAndStyleOrderPlanning.Core;
 using FoodAndStyleOrderPlanning.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using FoodAndStyleOrderPlanning.Helpers;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace FoodAndStyleOrderPlanning.Pages.Orders
 {
@@ -40,6 +38,8 @@ namespace FoodAndStyleOrderPlanning.Pages.Orders
             if (id == null)
             {
                 Order = new Order();
+                Order.CreatedBy = "temp";
+                Order.UpdatedBy = "temp";
                 RecipeChoices = new RecipeChoicesViewModel();
                 OrderProductItems = new List<OrderProductItem>();
                 return Page();
