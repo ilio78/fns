@@ -18,7 +18,7 @@
                     <input type="hidden" asp-for="@Model.Order.CreatedBy" />
                     <input type="hidden" asp-for="@Model.Order.UpdatedOn" />
                     <input type="hidden" asp-for="@Model.Order.UpdatedBy" />
-                     <div class="form-group">
+                    <div class="form-group">
                         <label asp-for="@Model.Order.Name">Ονομασία</label>
                         <input asp-for="@Model.Order.Name" class="form-control w-100 font-weight-bold" />
                         <span class="text-danger" asp-validation-for="@Model.Order.Name"></span>
@@ -54,69 +54,139 @@
 
         @for (int i = 0; i < Model.RecipeChoices.Choices.Count; i++)
         {
-        <tr>
-            <td>
-                <input type="hidden" asp-for="@Model.RecipeChoices.Choices[i].Id" />
-                <input type="hidden" asp-for="@Model.RecipeChoices.Choices[i].RecipeId" />
-                <input type="hidden" asp-for="@Model.RecipeChoices.Choices[i].Name" />
-                <input type="hidden" asp-for="@Model.RecipeChoices.Choices[i].RecipeResultingQuantity" />
-                @Model.RecipeChoices.Choices[i].Name
-            </td>
-            <td>@String.Format("{0:n0}", Model.RecipeChoices.Choices[i].RecipeResultingQuantity)</td>
+            <tr>
+                <td>
+                    <input type="hidden" asp-for="@Model.RecipeChoices.Choices[i].Id" />
+                    <input type="hidden" asp-for="@Model.RecipeChoices.Choices[i].RecipeId" />
+                    <input type="hidden" asp-for="@Model.RecipeChoices.Choices[i].Name" />
+                    <input type="hidden" asp-for="@Model.RecipeChoices.Choices[i].RecipeResultingQuantity" />
+                    @Model.RecipeChoices.Choices[i].Name
+                </td>
+                <td>@String.Format("{0:n0}", Model.RecipeChoices.Choices[i].RecipeResultingQuantity)</td>
 
-            <td>
-                <input asp-for="@Model.RecipeChoices.Choices[i].OrderQuantity_Monday" min="0" class="form-control w-50 font-weight-bold" />
-                <span class="text-danger" asp-validation-for="@Model.RecipeChoices.Choices[i].OrderQuantity_Monday"></span>
-            </td>
+                <td>
+                    <input asp-for="@Model.RecipeChoices.Choices[i].OrderQuantity_Monday" min="0" class="form-control w-50 font-weight-bold" />
+                    <span class="text-danger" asp-validation-for="@Model.RecipeChoices.Choices[i].OrderQuantity_Monday"></span>
+                </td>
 
-            <td>
-                <input asp-for="@Model.RecipeChoices.Choices[i].OrderQuantity_Tuesday" min="0" class="form-control w-50 font-weight-bold" />
-                <span class="text-danger" asp-validation-for="@Model.RecipeChoices.Choices[i].OrderQuantity_Tuesday"></span>
-            </td>
+                <td>
+                    <input asp-for="@Model.RecipeChoices.Choices[i].OrderQuantity_Tuesday" min="0" class="form-control w-50 font-weight-bold" />
+                    <span class="text-danger" asp-validation-for="@Model.RecipeChoices.Choices[i].OrderQuantity_Tuesday"></span>
+                </td>
 
-            <td>
-                <input asp-for="@Model.RecipeChoices.Choices[i].OrderQuantity_Wednesday" min="0" class="form-control w-50 font-weight-bold" />
-                <span class="text-danger" asp-validation-for="@Model.RecipeChoices.Choices[i].OrderQuantity_Wednesday"></span>
-            </td>
+                <td>
+                    <input asp-for="@Model.RecipeChoices.Choices[i].OrderQuantity_Wednesday" min="0" class="form-control w-50 font-weight-bold" />
+                    <span class="text-danger" asp-validation-for="@Model.RecipeChoices.Choices[i].OrderQuantity_Wednesday"></span>
+                </td>
 
-            <td>
-                <input asp-for="@Model.RecipeChoices.Choices[i].OrderQuantity_Thursday" min="0" class="form-control w-50 font-weight-bold" />
-                <span class="text-danger" asp-validation-for="@Model.RecipeChoices.Choices[i].OrderQuantity_Thursday"></span>
-            </td>
+                <td>
+                    <input asp-for="@Model.RecipeChoices.Choices[i].OrderQuantity_Thursday" min="0" class="form-control w-50 font-weight-bold" />
+                    <span class="text-danger" asp-validation-for="@Model.RecipeChoices.Choices[i].OrderQuantity_Thursday"></span>
+                </td>
 
-            <td>
-                <input asp-for="@Model.RecipeChoices.Choices[i].OrderQuantity_Friday" min="0" class="form-control w-50 font-weight-bold" />
-                <span class="text-danger" asp-validation-for="@Model.RecipeChoices.Choices[i].OrderQuantity_Friday"></span>
-            </td>
-        </tr>
+                <td>
+                    <input asp-for="@Model.RecipeChoices.Choices[i].OrderQuantity_Friday" min="0" class="form-control w-50 font-weight-bold" />
+                    <span class="text-danger" asp-validation-for="@Model.RecipeChoices.Choices[i].OrderQuantity_Friday"></span>
+                </td>
+            </tr>
         }
     </table>
 
 </form>
 
-
-<hr />
-<div class="text-lg-center font-weight-bold bg-light">
-    Δελτίο Παραγγελίας
+<div class="card">
+    <div class="card-body">        
+        <div class="font-weight-bold bg-primary card-title">
+            Προϊόντα Εβδομάδας / Συνολικό Kόστος: @String.Format("{0:n}€", Model.OrderProductItems.Sum(o => (o.Product.Price * o.Quantity) / 100))
+        </div>
+        <table class="table table-sm table-striped">
+            <tr>
+                <th>Τύπος</th>
+                <th>Προϊόν</th>
+                <th>Ποσότητα</th>
+                <th>Κόστος</th>
+                <th>Προμηθευτής</th>
+            </tr>
+            @foreach (var o in Model.OrderProductItems)
+            {
+                <tr>
+                    <td>@LanguageResources.GetProductTypeTranslation(@o.Product.ProductType)</td>
+                    <td>@o.Product.Name</td>
+                    <td><b>@String.Format("{0:n0}", o.Quantity)</b>&nbsp;@LanguageResources.GetMeasuringUnitTranslation(o.Product.MeasuringUnit)</td>
+                    <td>@String.Format("{0:n}€", (o.Product.Price * o.Quantity) / 100)</td>
+                    <td>@o.Product.Supplier.Name</td>
+                </tr>
+            }
+        </table>
+    </div>
 </div>
-<hr />
+<br />
+<div class="card">
+    <div class="card-body">
+        <div class="font-weight-bold card-title">
+            Παραγγελία Σαββάτου / Συνολικό Kόστος:
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <div class="bg-light card-title">
+                    Προμηθευτής ... / Συνολικό Kόστος:
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <div class="bg-light card-title">
+                    Προμηθευτής ... / Συνολικό Kόστος:
+                </div>
+            </div>
+        </div>
 
-<table class="table table-sm table-striped">
-    <tr>
-        <th>Τύπος</th>
-        <th>Προϊόν</th>
-        <th>Ποσότητα</th>
-        <th>Κόστος</th>
-        <th>Προμηθευτής</th>
-    </tr>
-    @foreach (var o in Model.OrderProductItems)
-    {
-    <tr>
-        <td>@LanguageResources.GetProductTypeTranslation(@o.Product.ProductType)</td>
-        <td>@o.Product.Name</td>
-        <td><b>@String.Format("{0:n0}", o.Quantity)</b>&nbsp;@LanguageResources.GetMeasuringUnitTranslation(o.Product.MeasuringUnit)</td>
-        <td>@String.Format("{0:n}€", (o.Product.Price * o.Quantity) / 100)</td>
-        <td>@o.Product.Supplier.Name</td>
-    </tr>
-    }
-</table>
+    </div>
+</div>
+<br />
+<div class="card">
+    <div class="card-body">
+        <div class="font-weight-bold card-title">
+            Παραγγελία Δεύτερας / Συνολικό Kόστος:
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <div class="bg-light card-title">
+                    Προμηθευτής ... / Συνολικό Kόστος:
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <div class="bg-light card-title">
+                    Προμηθευτής ... / Συνολικό Kόστος:
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br />
+<div class="card">
+    <div class="card-body">
+        <div class="font-weight-bold card-title">
+            Παραγγελία Τρίτης / Συνολικό Kόστος:
+        </div>
+    </div>
+</div>
+<br />
+<div class="card">
+    <div class="card-body">
+        <div class="font-weight-bold card-title">
+            Παραγγελία Τετάρτης / Συνολικό Kόστος:
+        </div>
+    </div>
+</div>
+<br/>
+<div class="card">
+    <div class="card-body">
+        <div class="font-weight-bold card-title">
+            Παραγγελία Πέμπτης / Συνολικό Kόστος:
+        </div>
+    </div>
+</div>
+
