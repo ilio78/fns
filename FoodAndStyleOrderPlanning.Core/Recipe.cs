@@ -101,6 +101,8 @@ namespace FoodAndStyleOrderPlanning.Core
         public int OrderQuantity_Wednesday { get; set; }
         public int OrderQuantity_Thursday { get; set; }
         public int OrderQuantity_Friday { get; set; }
+        public int OrderQuantity_Saturday { get; set; }
+        public int OrderQuantity_Sunday { get; set; }
     }
 
     public class OrderProductItem

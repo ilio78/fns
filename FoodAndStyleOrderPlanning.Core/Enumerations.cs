@@ -25,8 +25,8 @@
     public enum ProductType
     {
         FruitAndVegetables_Fresh,
-        FruitAndVegetables_Cut,
-        Groseries,
+        Vegetables_Cut,
+        Bakaliki,
         Meat,
         Fish,
         Pastry,

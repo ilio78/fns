@@ -28,8 +28,8 @@ namespace FoodAndStyleOrderPlanning.Core
         {
             ProductTypeTranslations = new Dictionary<string, string>();
             ProductTypeTranslations.Add(((int)ProductType.FruitAndVegetables_Fresh).ToString(), "Φρούτα & Λαχανικά - Φρέσκα");
-            ProductTypeTranslations.Add(((int)ProductType.FruitAndVegetables_Cut).ToString(), "Φρούτα & Λαχανικά - Κομμένα");
-            ProductTypeTranslations.Add(((int)ProductType.Groseries).ToString(), "Μαναβική");
+            ProductTypeTranslations.Add(((int)ProductType.Vegetables_Cut).ToString(), "Λαχανικά - Κομμένα");
+            ProductTypeTranslations.Add(((int)ProductType.Bakaliki).ToString(), "Μπακαλική");
             ProductTypeTranslations.Add(((int)ProductType.Meat).ToString(), "Κρέατα");
             ProductTypeTranslations.Add(((int)ProductType.Fish).ToString(), "Ψάρι/Θαλασσινά");
             ProductTypeTranslations.Add(((int)ProductType.Pastry).ToString(), "Ζαχαροπλαστική");
@@ -43,4 +43,20 @@ namespace FoodAndStyleOrderPlanning.Core
             MeasuringUnitTranslations.OrderBy(p => p.Value).ToList();
         }
 }
+
+    public static class OrderingConfiguration
+    {
+        public static Dictionary<ProductType, List<DayOfWeek>> ProductTypeNonDeliveryDays;
+
+        static OrderingConfiguration()
+        {
+            ProductTypeNonDeliveryDays[ProductType.FruitAndVegetables_Fresh] = new List<DayOfWeek>();
+            ProductTypeNonDeliveryDays[ProductType.Vegetables_Cut] = new List<DayOfWeek>() { DayOfWeek.Sunday };
+            ProductTypeNonDeliveryDays[ProductType.Bakaliki] = new List<DayOfWeek>() { DayOfWeek.Sunday };
+            ProductTypeNonDeliveryDays[ProductType.Meat] = new List<DayOfWeek>() { DayOfWeek.Sunday };
+            ProductTypeNonDeliveryDays[ProductType.Fish] = new List<DayOfWeek>() { DayOfWeek.Sunday };
+            ProductTypeNonDeliveryDays[ProductType.Pastry] = new List<DayOfWeek>() { DayOfWeek.Sunday };
+            ProductTypeNonDeliveryDays[ProductType.Other] = new List<DayOfWeek>() { DayOfWeek.Sunday };
+        }
+    }
 }
