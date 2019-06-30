@@ -1,6 +1,7 @@
 ﻿@page "{id:int?}"
 
 @using FoodAndStyleOrderPlanning.Core
+@using System.Linq
 @model FoodAndStyleOrderPlanning.Pages.Orders.EditModel
 @{
     Layout = "~/Pages/Shared/_Layout.cshtml";
@@ -61,10 +62,9 @@
                     <input type="hidden" asp-for="@Model.RecipeChoices.Choices[i].RecipeId" />
                     <input type="hidden" asp-for="@Model.RecipeChoices.Choices[i].Name" />
                     <input type="hidden" asp-for="@Model.RecipeChoices.Choices[i].RecipeResultingQuantity" />
-                    @Model.RecipeChoices.Choices[i].Name
                     <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="@String.Format("{0:n0}", Model.RecipeChoices.Choices[i].RecipeResultingQuantity) γραμ."></i>
+                    &nbsp;@Model.RecipeChoices.Choices[i].Name
                 </td>
-                @*<td>@String.Format("{0:n0}", Model.RecipeChoices.Choices[i].RecipeResultingQuantity)</td>*@
 
                 <td>
                     <input asp-for="@Model.RecipeChoices.Choices[i].OrderQuantity_Monday" min="0" class="form-control font-weight-bold" />
@@ -133,73 +133,51 @@
         </table>
     </div>
 </div>
-<br />
-<div class="card">
-    <div class="card-body">
-        <div class="font-weight-bold card-title">
-            Παράδοση Σαββάτου / Συνολικό Kόστος:
-        </div>
-        <div class="card">
-            <div class="card-body">
-                <div class="bg-light card-title">
-                    Προμηθευτής ... / Συνολικό Kόστος:
-                </div>
-            </div>
-        </div>
-        <div class="card">
-            <div class="card-body">
-                <div class="bg-light card-title">
-                    Προμηθευτής ... / Συνολικό Kόστος:
-                </div>
-            </div>
-        </div>
 
-    </div>
-</div>
 <br />
-<div class="card">
-    <div class="card-body">
-        <div class="font-weight-bold card-title">
-            Παράδοση Δεύτερας / Συνολικό Kόστος:
-        </div>
-        <div class="card">
-            <div class="card-body">
-                <div class="bg-light card-title">
-                    Προμηθευτής ... / Συνολικό Kόστος:
-                </div>
-            </div>
-        </div>
-        <div class="card">
-            <div class="card-body">
-                <div class="bg-light card-title">
-                    Προμηθευτής ... / Συνολικό Kόστος:
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<br />
-<div class="card">
-    <div class="card-body">
-        <div class="font-weight-bold card-title">
-            Παράδοση Τρίτης / Συνολικό Kόστος:
-        </div>
-    </div>
-</div>
-<br />
-<div class="card">
-    <div class="card-body">
-        <div class="font-weight-bold card-title">
-            Παράδοση Τετάρτης / Συνολικό Kόστος:
-        </div>
-    </div>
-</div>
-<br />
-<div class="card">
-    <div class="card-body">
-        <div class="font-weight-bold card-title">
-            Παράδοση Πέμπτης / Συνολικό Kόστος:
-        </div>
-    </div>
-</div>
 
+@*@foreach (ProductDeliveryDay day in ((ProductDeliveryDay[])Enum.GetValues(typeof(ProductDeliveryDay))).OrderBy(e=>(int)e))*@
+
+@foreach (ProductDeliveryDay day in Model.ProductDeliveryPerDay.Keys.OrderBy(k => (int)k))
+{
+    <div class="card">
+        <div class="font-weight-bold card-title">
+            Παράδοση @day.ToString() / Συνολικό Kόστος: @(String.Format("{0:n}€", Model.ProductDeliveryPerDay[day].Keys.ToList().Sum(i => (i.Price * Model.ProductDeliveryPerDay[day][i]) / 100)))
+        </div>
+        <div class="card-body">
+            @foreach (var supplierProductKey in Model.ProductDeliveryPerDay[day].Keys.ToList().GroupBy(p => p.Supplier))
+            {
+                <div class="card">
+                    <div class="bg-light card-title font-weight-bold text-secondary">
+                        <a class="btn btn-lg" asp-page="./SendMail">
+                            <i class="fa fa-envelope" data-toggle="tooltip" data-placement="top" title="Αποστολή με email" ></i>
+                        </a>
+                        Προμηθευτής @supplierProductKey.Key.Name / Συνολικό Kόστος: @(String.Format("{0:n}€", Model.ProductDeliveryPerDay[day].Keys.Where(p => p.Supplier == supplierProductKey.Key).ToList().Sum(i => (i.Price * Model.ProductDeliveryPerDay[day][i]) / 100)))
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-sm table-striped">
+                            <tr>
+                                <th>Τύπος</th>
+                                <th>Προϊόν</th>
+                                <th>Ποσότητα</th>
+                                <th>Κόστος</th>
+                            </tr>
+                            @foreach (var product in Model.ProductDeliveryPerDay[day].Keys.Where(p => p.Supplier == supplierProductKey.Key))
+                            {
+                                <tr>
+                                    <td>@LanguageResources.GetProductTypeTranslation(@product.ProductType)</td>
+                                    <td>@product.Name</td>
+                                    <td><b>@String.Format("{0:n0}", Model.ProductDeliveryPerDay[day][product])</b>&nbsp;@LanguageResources.GetMeasuringUnitTranslation(product.MeasuringUnit)</td>
+                                    <td>@String.Format("{0:n}€", (product.Price * Model.ProductDeliveryPerDay[day][product]) / 100)</td>
+                                </tr>
+                            }
+                        </table>
+                    </div>
+                </div>
+                <br/>
+            }
+        </div>
+    </div>
+    <hr />
+
+}

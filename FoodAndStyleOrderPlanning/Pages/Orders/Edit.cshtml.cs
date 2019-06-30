@@ -15,15 +15,17 @@ namespace FoodAndStyleOrderPlanning.Pages.Orders
         public Order Order { get; set; }
 
         [BindProperty]
-        public RecipeChoicesViewModel RecipeChoices{ get; set; }
+        public RecipeChoicesViewModel RecipeChoices { get; set; }
 
-       
+        public Dictionary<ProductDeliveryDay, Dictionary<Product, int>> ProductDeliveryPerDay { get; set; }
+
+        public IList<OrderProductItem> OrderProductItems { get; set; }
+
         private readonly IData<Recipe> recipeData;
         private readonly IData<Order> orderData;
         private readonly IData<OrderRecipeItem> orderRecipeItemData;
         private readonly IData<Product> productData;
 
-        public IList<OrderProductItem> OrderProductItems { get; set; }
 
         public EditModel(IData<Recipe> recipeData, IData<Order> orderData, IData<OrderRecipeItem> orderRecipeItemData, IData<Product> productData)
         {
@@ -69,38 +71,41 @@ namespace FoodAndStyleOrderPlanning.Pages.Orders
                 {
                     switch (orderRecipeItem.Day)
                     {
-                        case DayOfWeek.Monday:
+                        case OrderDay.Monday:
                             c.OrderQuantity_Monday = orderRecipeItem.Quantity;
                             break;
-                        case DayOfWeek.Tuesday:
+                        case OrderDay.Tuesday:
                             c.OrderQuantity_Tuesday = orderRecipeItem.Quantity;
                             break;
-                        case DayOfWeek.Wednesday:
+                        case OrderDay.Wednesday:
                             c.OrderQuantity_Wednesday = orderRecipeItem.Quantity;
                             break;
-                        case DayOfWeek.Thursday:
+                        case OrderDay.Thursday:
                             c.OrderQuantity_Thursday = orderRecipeItem.Quantity;
                             break;
-                        case DayOfWeek.Friday:
+                        case OrderDay.Friday:
                             c.OrderQuantity_Friday = orderRecipeItem.Quantity;
                             break;
-                        case DayOfWeek.Saturday:
+                        case OrderDay.Saturday:
                             c.OrderQuantity_Saturday = orderRecipeItem.Quantity;
                             break;
-                        case DayOfWeek.Sunday:
+                        case OrderDay.Sunday:
                             c.OrderQuantity_Sunday = orderRecipeItem.Quantity;
                             break;
                     }
                 }
             }
-
-            List<int> recipeIdsWithQuantityOverZero = RecipeChoices.Choices.Where(r => r.OrderQuantity_Monday > 0).Select(r => r.RecipeId).ToList();
-
             OrderProductItems = new List<OrderProductItem>();
 
-            foreach (Recipe recipe in Recipes.Where(r=> recipeIdsWithQuantityOverZero.Contains(r.Id)))
+            foreach (Recipe recipe in Recipes)
             {
-                foreach(Ingredient ingredient in recipe.Ingredients)
+                var choice = RecipeChoices.Choices.Single(r => r.RecipeId == recipe.Id);
+
+                if (choice.OrderQuantity_Monday + choice.OrderQuantity_Tuesday + choice.OrderQuantity_Wednesday +
+                    choice.OrderQuantity_Thursday + choice.OrderQuantity_Friday + choice.OrderQuantity_Saturday + choice.OrderQuantity_Sunday == 0)
+                    continue;
+
+                foreach (Ingredient ingredient in recipe.Ingredients)
                 {
                     OrderProductItem item = OrderProductItems.SingleOrDefault(o => o.Product.Id == ingredient.Product.Id);
                     if (item == null)
@@ -109,7 +114,13 @@ namespace FoodAndStyleOrderPlanning.Pages.Orders
                         OrderProductItems.Add(item);
                     }
 
-                    item.Quantity += RecipeChoices.Choices.Single(r=>r.RecipeId==recipe.Id).OrderQuantity_Monday * ingredient.Quantity;                    
+                    item.Quantity += choice.OrderQuantity_Monday * ingredient.Quantity;
+                    item.Quantity += choice.OrderQuantity_Tuesday * ingredient.Quantity;
+                    item.Quantity += choice.OrderQuantity_Wednesday * ingredient.Quantity;
+                    item.Quantity += choice.OrderQuantity_Thursday * ingredient.Quantity;
+                    item.Quantity += choice.OrderQuantity_Friday * ingredient.Quantity;
+                    item.Quantity += choice.OrderQuantity_Saturday * ingredient.Quantity;
+                    item.Quantity += choice.OrderQuantity_Sunday * ingredient.Quantity;
                 }
             }
             
@@ -118,9 +129,9 @@ namespace FoodAndStyleOrderPlanning.Pages.Orders
 
 
 
-            Dictionary<DayOfWeek, Dictionary<int, int>> productQuantityOrderedPerDay = new Dictionary<DayOfWeek, Dictionary<int, int>>();
+            Dictionary<OrderDay, Dictionary<int, int>> productQuantityOrderedPerDay = new Dictionary<OrderDay, Dictionary<int, int>>();
 
-            foreach(DayOfWeek day in (DayOfWeek[])Enum.GetValues(typeof(DayOfWeek)))
+            foreach(OrderDay day in (OrderDay[])Enum.GetValues(typeof(OrderDay)))
             {
                 productQuantityOrderedPerDay[day] = new Dictionary<int, int>();
 
@@ -131,25 +142,34 @@ namespace FoodAndStyleOrderPlanning.Pages.Orders
                     {
                         int currentIngredientQuantity = 0;
                         productQuantityOrderedPerDay[day].TryGetValue(recipeIngredient.Id, out currentIngredientQuantity);
-                        productQuantityOrderedPerDay[day][recipeIngredient.Id] = currentIngredientQuantity + recipeIngredient.Quantity * dayOrder.Quantity;
+                        productQuantityOrderedPerDay[day][recipeIngredient.ProductId] = currentIngredientQuantity + recipeIngredient.Quantity * dayOrder.Quantity;
                     }
                 }
             }
 
-            //Dictionary<DayOfWeek, Dictionary<Supplier, Dictionary<Product, int>>> ProductDeliveryPerDayPerSupplier_PreparationWeek =
-            //    new Dictionary<DayOfWeek, Dictionary<Supplier, Dictionary<Product, int>>>();
+            ProductDeliveryPerDay = new Dictionary<ProductDeliveryDay, Dictionary<Product, int>>();
 
+            var products = productData.GetByName(null).ToList();
 
-            //productQuantityOrderedPerDay.Where(p=>p.Value.)
+            foreach (OrderDay day in (OrderDay[])Enum.GetValues(typeof(OrderDay)))
+            {
+                foreach(int productId in productQuantityOrderedPerDay[day].Keys)
+                {
+                    var product = products.Single(p => p.Id == productId);
 
+                    ProductDeliveryDay deliveryDay = ProductDeliveryDay.PreviousFriday;
 
+                    if (product.OrderWindow > 0)
+                        deliveryDay = (ProductDeliveryDay)Math.Max((int)day - product.OrderWindow, (int)ProductDeliveryDay.PreviousFriday);
+                   
+                    if (!ProductDeliveryPerDay.ContainsKey(deliveryDay))
+                        ProductDeliveryPerDay[deliveryDay] = new Dictionary<Product, int>();
 
-
-            Dictionary<DayOfWeek, Dictionary<Supplier, List<Product>>> ProductDeliveryPerDayPerSupplier_ExecutionWeek = 
-                new Dictionary<DayOfWeek, Dictionary<Supplier, List<Product>>>();
-
-
-
+                    ProductDeliveryPerDay[deliveryDay].TryGetValue(product, out int currentProductOrder);
+                    ProductDeliveryPerDay[deliveryDay][product] =
+                        currentProductOrder + productQuantityOrderedPerDay[day][productId];
+                }
+            }
 
             return Page();
         }
@@ -178,13 +198,13 @@ namespace FoodAndStyleOrderPlanning.Pages.Orders
                 // Create order item lines per day
                 foreach (ChoiceViewModel item in RecipeChoices.Choices)
                 {
-                    CreateOrderItemLines(item.RecipeId, item.OrderQuantity_Monday, DayOfWeek.Monday);
-                    CreateOrderItemLines(item.RecipeId, item.OrderQuantity_Tuesday, DayOfWeek.Tuesday);
-                    CreateOrderItemLines(item.RecipeId, item.OrderQuantity_Wednesday, DayOfWeek.Wednesday);
-                    CreateOrderItemLines(item.RecipeId, item.OrderQuantity_Thursday, DayOfWeek.Thursday);
-                    CreateOrderItemLines(item.RecipeId, item.OrderQuantity_Friday, DayOfWeek.Friday);
-                    CreateOrderItemLines(item.RecipeId, item.OrderQuantity_Saturday, DayOfWeek.Saturday);
-                    CreateOrderItemLines(item.RecipeId, item.OrderQuantity_Sunday, DayOfWeek.Sunday);
+                    CreateOrderItemLines(item.RecipeId, item.OrderQuantity_Monday, OrderDay.Monday);
+                    CreateOrderItemLines(item.RecipeId, item.OrderQuantity_Tuesday, OrderDay.Tuesday);
+                    CreateOrderItemLines(item.RecipeId, item.OrderQuantity_Wednesday, OrderDay.Wednesday);
+                    CreateOrderItemLines(item.RecipeId, item.OrderQuantity_Thursday, OrderDay.Thursday);
+                    CreateOrderItemLines(item.RecipeId, item.OrderQuantity_Friday, OrderDay.Friday);
+                    CreateOrderItemLines(item.RecipeId, item.OrderQuantity_Saturday, OrderDay.Saturday);
+                    CreateOrderItemLines(item.RecipeId, item.OrderQuantity_Sunday, OrderDay.Sunday);
                 }
 
                 Order.UpdatedOn = DateTime.Now;
@@ -197,7 +217,7 @@ namespace FoodAndStyleOrderPlanning.Pages.Orders
 
         }
 
-        private void CreateOrderItemLines(int recipeId, int quantity, DayOfWeek day)
+        private void CreateOrderItemLines(int recipeId, int quantity, OrderDay day)
         {
             if (quantity < 1)
                 return;

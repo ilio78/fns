@@ -33,9 +33,29 @@
         Other
     }
 
-    //public enum ServingType
-    //{
-    //    Kilograms,
-    //    Servings
-    //}
+    public enum ProductDeliveryDay
+    {
+        PreviousFriday = -3,
+        PreviousSaturday = -2,
+        PreviousSunday = -1,
+        Monday = 0,
+        Tuesday = 1,
+        Wednesday = 2,
+        Thursday = 3,
+        Friday = 4,
+        Saturday = 5,
+        Sunday = 6
+    }
+
+    public enum OrderDay
+    {
+        Monday = 0,
+        Tuesday = 1,
+        Wednesday = 2,
+        Thursday = 3,
+        Friday = 4,
+        Saturday = 5,
+        Sunday = 6
+    }
+
 }

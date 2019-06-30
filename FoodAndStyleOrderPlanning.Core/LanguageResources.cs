@@ -46,17 +46,17 @@ namespace FoodAndStyleOrderPlanning.Core
 
     public static class OrderingConfiguration
     {
-        public static Dictionary<ProductType, List<DayOfWeek>> ProductTypeNonDeliveryDays;
+        public static Dictionary<ProductType, List<OrderDay>> ProductTypeNonDeliveryDays;
 
         static OrderingConfiguration()
         {
-            ProductTypeNonDeliveryDays[ProductType.FruitAndVegetables_Fresh] = new List<DayOfWeek>();
-            ProductTypeNonDeliveryDays[ProductType.Vegetables_Cut] = new List<DayOfWeek>() { DayOfWeek.Sunday };
-            ProductTypeNonDeliveryDays[ProductType.Bakaliki] = new List<DayOfWeek>() { DayOfWeek.Sunday };
-            ProductTypeNonDeliveryDays[ProductType.Meat] = new List<DayOfWeek>() { DayOfWeek.Sunday };
-            ProductTypeNonDeliveryDays[ProductType.Fish] = new List<DayOfWeek>() { DayOfWeek.Sunday };
-            ProductTypeNonDeliveryDays[ProductType.Pastry] = new List<DayOfWeek>() { DayOfWeek.Sunday };
-            ProductTypeNonDeliveryDays[ProductType.Other] = new List<DayOfWeek>() { DayOfWeek.Sunday };
+            ProductTypeNonDeliveryDays[ProductType.FruitAndVegetables_Fresh] = new List<OrderDay>();
+            ProductTypeNonDeliveryDays[ProductType.Vegetables_Cut] = new List<OrderDay>() { OrderDay.Sunday };
+            ProductTypeNonDeliveryDays[ProductType.Bakaliki] = new List<OrderDay>() { OrderDay.Sunday };
+            ProductTypeNonDeliveryDays[ProductType.Meat] = new List<OrderDay>() { OrderDay.Sunday };
+            ProductTypeNonDeliveryDays[ProductType.Fish] = new List<OrderDay>() { OrderDay.Sunday };
+            ProductTypeNonDeliveryDays[ProductType.Pastry] = new List<OrderDay>() { OrderDay.Sunday };
+            ProductTypeNonDeliveryDays[ProductType.Other] = new List<OrderDay>() { OrderDay.Sunday };
         }
     }
 }

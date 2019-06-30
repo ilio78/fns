@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -103,6 +104,18 @@ namespace FoodAndStyleOrderPlanning.Core
         public int OrderQuantity_Friday { get; set; }
         public int OrderQuantity_Saturday { get; set; }
         public int OrderQuantity_Sunday { get; set; }
+
+        public Dictionary<OrderDay, int> DayOrderQuantity { get; set; }
+
+        public ChoiceViewModel()
+        {
+            DayOrderQuantity = new Dictionary<OrderDay, int>();
+        }
+
+        public bool HasOrders()
+        {
+            return DayOrderQuantity.Values.Sum() > 0;
+        }
     }
 
     public class OrderProductItem
@@ -128,7 +141,7 @@ namespace FoodAndStyleOrderPlanning.Core
         public int Quantity { get; set; }
 
         [Required]
-        public DayOfWeek Day { get; set; }
+        public OrderDay Day { get; set; }
 
         [Required]
         public int OrderId { get; set; }
