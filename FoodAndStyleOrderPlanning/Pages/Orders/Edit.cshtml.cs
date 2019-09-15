@@ -44,6 +44,7 @@ namespace FoodAndStyleOrderPlanning.Pages.Orders
                 Order.UpdatedBy = "temp";
                 RecipeChoices = new RecipeChoicesViewModel();
                 OrderProductItems = new List<OrderProductItem>();
+                ProductDeliveryPerDay = new Dictionary<ProductDeliveryDay, Dictionary<Product, int>>();
                 return Page();
             }
 
@@ -125,9 +126,6 @@ namespace FoodAndStyleOrderPlanning.Pages.Orders
             }
             
             OrderProductItems = OrderProductItems.OrderBy(o => o.Product.ProductType).ThenBy(o => o.Product.Name).ToList();
-
-
-
 
             Dictionary<OrderDay, Dictionary<int, int>> productQuantityOrderedPerDay = new Dictionary<OrderDay, Dictionary<int, int>>();
 

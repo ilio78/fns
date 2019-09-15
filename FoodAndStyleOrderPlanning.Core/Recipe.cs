@@ -97,12 +97,27 @@ namespace FoodAndStyleOrderPlanning.Core
         public string Name { get; set; }
         public string RecipeResultingQuantity { get; set; }
         //public int Quantity { get; set; }
+
+        [Required]
+        [Range(0, 999)]        
         public int OrderQuantity_Monday { get; set; }
+        [Required]
+        [Range(0, 999)]
         public int OrderQuantity_Tuesday { get; set; }
+        [Required]
+        [Range(0, 999)]
         public int OrderQuantity_Wednesday { get; set; }
+        [Required]
+        [Range(0, 999)]
         public int OrderQuantity_Thursday { get; set; }
+        [Required]
+        [Range(0, 999)]
         public int OrderQuantity_Friday { get; set; }
+        [Required]
+        [Range(0, 999)]
         public int OrderQuantity_Saturday { get; set; }
+        [Required]
+        [Range(0, 999)]
         public int OrderQuantity_Sunday { get; set; }
 
         public Dictionary<OrderDay, int> DayOrderQuantity { get; set; }
