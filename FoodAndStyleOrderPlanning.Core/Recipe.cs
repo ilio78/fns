@@ -87,7 +87,7 @@ namespace FoodAndStyleOrderPlanning.Core
             Choices = new List<ChoiceViewModel>();
         }
 
-        public IList<ChoiceViewModel> Choices { get; set; }
+        public List<ChoiceViewModel> Choices { get; set; }
     }
 
     public class ChoiceViewModel
