@@ -34,13 +34,11 @@ namespace FoodAndStyleOrderPlanning.Core
             ProductTypeTranslations.Add(((int)ProductType.Fish).ToString(), "Ψάρι/Θαλασσινά");
             ProductTypeTranslations.Add(((int)ProductType.Pastry).ToString(), "Ζαχαροπλαστική");
             ProductTypeTranslations.Add(((int)ProductType.Other).ToString(), "Διάφορα");
-            ProductTypeTranslations.OrderBy(p => p.Value).ToList();
-
+            
             MeasuringUnitTranslations = new Dictionary<string, string>();
             MeasuringUnitTranslations.Add(((int)MeasuringUnit.Grams).ToString(), "Γραμμάρια");
             MeasuringUnitTranslations.Add(((int)MeasuringUnit.Millilitres).ToString(), "Χιλιοστόλιτρα");
             MeasuringUnitTranslations.Add(((int)MeasuringUnit.Pieces).ToString(), "Τεμάχια");
-            MeasuringUnitTranslations.OrderBy(p => p.Value).ToList();
         }
 }
 

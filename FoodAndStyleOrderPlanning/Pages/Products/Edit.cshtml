@@ -4,59 +4,83 @@
 @{
     ViewData["Title"] = "Προϊόν";
 }
-    <form method="post">
+<form method="post">
 
-        <input type="hidden" asp-for="ProductViewModel.Id" />
-        <div class="form-group">
-            <label asp-for="ProductViewModel.Name">'Ονομα</label>
-            <input asp-for="ProductViewModel.Name" class="form-control" />
-            <span class="text-danger" asp-validation-for="ProductViewModel.Name"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="ProductViewModel.Quality">Ποιότητα</label>
-            <input asp-for="ProductViewModel.Quality" class="form-control" />
-            <span class="text-danger" asp-validation-for="ProductViewModel.Quality"></span>
-        </div>
+    <input type="hidden" asp-for="ProductViewModel.Id" />
+    <div class="form-group">
+        <label asp-for="ProductViewModel.Name">'Ονομα</label>
+        <input asp-for="ProductViewModel.Name" class="form-control" />
+        <span class="text-danger" asp-validation-for="ProductViewModel.Name"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="ProductViewModel.Quality">Ποιότητα</label>
+        <input asp-for="ProductViewModel.Quality" class="form-control" />
+        <span class="text-danger" asp-validation-for="ProductViewModel.Quality"></span>
+    </div>
 
-        <div class="form-group">
-            <label asp-for="ProductViewModel.MeasuringUnit">Μονάδα Μέτρησης</label>
-            <select class="form-control" asp-for="ProductViewModel.MeasuringUnit" asp-items="Model.MeasuringUnit"></select>
-            <span class="text-danger" asp-validation-for="ProductViewModel.MeasuringUnit"></span>
-        </div>
+    <div class="form-group">
+        <label asp-for="ProductViewModel.MeasuringUnit">Μονάδα Μέτρησης</label>
+        <select class="form-control" asp-for="ProductViewModel.MeasuringUnit" asp-items="Model.MeasuringUnit">
+            <option disabled value="-1">--- Επιλογή ---</option>
+        </select>
+    </div>
 
-        <div class="form-group">
-            <label asp-for="ProductViewModel.ProductType">Τύπος</label>
-            <select class="form-control" asp-for="ProductViewModel.ProductType" asp-items="Model.ProductType"></select>
-        </div>
+    <div class="form-group">
+        <label asp-for="ProductViewModel.ProductType">Τύπος</label>
+        <select class="form-control" asp-for="ProductViewModel.ProductType" asp-items="Model.ProductType">
+            <option disabled value="-1">--- Επιλογή ---</option>
+        </select>
+    </div>
 
-        <div class="form-group">
-            <label asp-for="ProductViewModel.SupplierId">Προμηθευτής</label>
-            <span class="text-danger">@Model.SupplierNotActiveMessage</span>
-            <select class="form-control" asp-for="ProductViewModel.SupplierId" asp-items="Model.Suppliers"></select>
-        </div>
-        
-        <div class="text-info" >Τιμή ανα κιλό, λίτρο ή τεμάχιο:</div>
-        <div class="form-inline">
-            <label asp-for="ProductViewModel.PriceEuroPart">Eυρώ&nbsp;&nbsp;</label>
-            <input asp-for="ProductViewModel.PriceEuroPart" class="form-control" />
-            <span class="text-danger" asp-validation-for="ProductViewModel.PriceEuroPart"></span>
-        </div>
-        <div class="form-inline">
-            <label asp-for="ProductViewModel.PriceCentsPart">Λεπτά&nbsp;</label>
-            <input asp-for="ProductViewModel.PriceCentsPart" class="form-control" />
-            <span class="text-danger" asp-validation-for="ProductViewModel.PriceCentsPart"></span>
-        </div>
-        <br />
-        <div class="form-group">
-            <label asp-for="ProductViewModel.OrderWindow">Παραγγελία Πριν (Ημέρες)</label>
-            <input asp-for="ProductViewModel.OrderWindow" class="form-control" />
-            <span class="text-danger" asp-validation-for="ProductViewModel.OrderWindow"></span>
-        </div>
+    <div class="form-group">
+        <label asp-for="ProductViewModel.SupplierId">Προμηθευτής</label>
+        <span class="text-danger">@Model.SupplierNotActiveMessage</span>
+        <select class="form-control" asp-for="ProductViewModel.SupplierId" asp-items="Model.Suppliers"></select>
+    </div>
 
-        <button type="submit" class="btn btn-primary">Save</button>
-    </form>
+    <div class="text-info">Τιμή ανα κιλό, λίτρο ή τεμάχιο:</div>
+    <div class="form-inline">
+        <label asp-for="ProductViewModel.PriceEuroPart">Eυρώ&nbsp;&nbsp;</label>
+        <input asp-for="ProductViewModel.PriceEuroPart" class="form-control" />
+        <span class="text-danger" asp-validation-for="ProductViewModel.PriceEuroPart"></span>
+    </div>
+    <div class="form-inline">
+        <label asp-for="ProductViewModel.PriceCentsPart">Λεπτά&nbsp;</label>
+        <input asp-for="ProductViewModel.PriceCentsPart" class="form-control" />
+        <span class="text-danger" asp-validation-for="ProductViewModel.PriceCentsPart"></span>
+    </div>
+    <br />
+    <div class="form-group">
+        <label asp-for="ProductViewModel.OrderWindow">Παραγγελία Πριν (Ημέρες)</label>
+        <input asp-for="ProductViewModel.OrderWindow" class="form-control" />
+        <span class="text-danger" asp-validation-for="ProductViewModel.OrderWindow"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+</form>
 
 @section Scripts
 {
     <partial name="_ValidationScriptsPartial" />
 }
+
+
+
+
+<script type="text/javascript">
+    $(function () {
+
+        var hiddernInputId = '#'.concat('@Html.IdFor(o => o.ProductViewModel.Id)');
+        var productId = $(hiddernInputId).val();
+
+        if (productId > 0)
+            return;
+
+        var measuringUnitId = '#'.concat('@Html.IdFor(o => o.ProductViewModel.MeasuringUnit)');
+        $(measuringUnitId).val('-1');
+
+        var productTypeId = '#'.concat('@Html.IdFor(o => o.ProductViewModel.ProductType)');
+        $(productTypeId).val('-1');
+
+    });
+</script>

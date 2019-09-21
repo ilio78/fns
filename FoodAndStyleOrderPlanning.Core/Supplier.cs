@@ -12,8 +12,12 @@ namespace FoodAndStyleOrderPlanning.Core
         [Required, StringLength(50, MinimumLength = 5)]
         public string Name { get; set; }
 
+        [Required]
+        [EmailAddress]
         public string Email { get; set; }
 
+        [Required]
+        [Phone]
         public string Telephone { get; set; }
 
         public ICollection<Product> Products { get; set; }
