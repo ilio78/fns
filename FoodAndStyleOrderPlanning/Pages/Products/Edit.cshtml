@@ -46,7 +46,7 @@
         <input asp-for="ProductViewModel.PriceEuroPart" class="form-control" />
         <span class="text-danger" asp-validation-for="ProductViewModel.PriceEuroPart"></span>
     </div>
-    <div class="form-inline">
+    <div class="form-inline mt-1">
         <label asp-for="ProductViewModel.PriceCentsPart">Λεπτά&nbsp;</label>
         <input asp-for="ProductViewModel.PriceCentsPart" class="form-control" />
         <span class="text-danger" asp-validation-for="ProductViewModel.PriceCentsPart"></span>
@@ -54,7 +54,6 @@
     <br />
     <div class="form-group">
         <label asp-for="ProductViewModel.ProductFreshness">Παραγγελία Πριν</label>
-        @*<input asp-for="ProductViewModel.OrderWindow" class="form-control" />*@
         <select class="form-control" onchange="removeChoiceOption(this);" asp-for="ProductViewModel.ProductFreshness" asp-items="Model.ProductFreshness">
             <option disabled value="-1">--- Επιλογή ---</option>
         </select>
@@ -82,6 +81,7 @@
         var measuringUnitId = '#'.concat('@Html.IdFor(o => o.ProductViewModel.MeasuringUnit)');
         var productTypeId = '#'.concat('@Html.IdFor(o => o.ProductViewModel.ProductType)');
         var supplierId = '#'.concat('@Html.IdFor(o => o.ProductViewModel.SupplierId)');
+        var productFreshnessId = '#'.concat('@Html.IdFor(o => o.ProductViewModel.ProductFreshness)');
 
         var hiddernInputId = '#'.concat('@Html.IdFor(o => o.ProductViewModel.Id)');
         var productId = $(hiddernInputId).val();
@@ -89,12 +89,14 @@
             $(measuringUnitId.concat(" option[value='-1']")).remove();
             $(productTypeId.concat(" option[value='-1']")).remove();
             $(supplierId.concat(" option[value='-1']")).remove();
+            $(productFreshnessId.concat(" option[value='-1']")).remove();
             return;
         }
 
         $(measuringUnitId).val('-1');
         $(productTypeId).val('-1');
         $(supplierId).val('-1');
+        $(productFreshnessId).val('-1');
     });
 
     function removeChoiceOption(selectObj) {

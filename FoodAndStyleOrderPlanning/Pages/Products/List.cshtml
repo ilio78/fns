@@ -6,7 +6,7 @@
     ViewData["Title"] = "Προϊόντα";
 }
 <form method="get">
-    <div class="form-group">
+    <div class="form-group mt-1">
         <div class="input-group">
             <input class="form-control" type="search" asp-for="SearchTerm">
             <span class="input-group-append">
@@ -17,7 +17,8 @@
         </div>
     </div>
 </form>
-<br />
+
+<a asp-page="./Edit" class="btn btn-primary mb-2">Προσθήκη νέου</a>
 
 <table class="table table-sm table-striped table-hover">
     <tr>
@@ -61,38 +62,53 @@
     }
 </table>
 
-<hr />
 <a asp-page="./Edit" class="btn btn-primary">Προσθήκη νέου</a>
-
 
 
 <script type="text/javascript">
 
+     $.urlParam = function (name) {
+        var results = new RegExp('[\?&]' + name + '=([^&#]*)')
+                          .exec(window.location.search);
+
+        return (results !== null) ? results[1] || 0 : false;
+    }
+
     $(function () {
 
+        var searchTermInputId = '#'.concat('@Html.IdFor(o => o.SearchTerm)');
+        $(searchTermInputId).focus();
+
+        var searchTerm = $.urlParam('SearchTerm');
+        if (searchTerm != null && searchTerm.length > 0) {
+            var searchTermInputId = '#'.concat('@Html.IdFor(o => o.SearchTerm)');
+            $(searchTermInputId).val('').val(decodeURIComponent(searchTerm));
+            return;
+        }
+
         var modifiedProductId = localStorage.getItem('modifiedProductId');
+        var maxProductId = @Model.Products?.Select(p=>p.Id).DefaultIfEmpty(0).Max();
+
         if (modifiedProductId == null)
             return;
 
-        if (modifiedProductId > 0) {
+        if (modifiedProductId == 0)
+            modifiedProductId = maxProductId;
 
-            var blinkRow = $("td").filter(function() {
-                return $(this).text() == modifiedProductId;
-            }).closest("tr");
+        var blinkRow = $("td").filter(function() {
+            return $(this).text() == modifiedProductId;
+        }).closest("tr");
 
-             $('html, body').animate({
-                    scrollTop: blinkRow.offset().top
-             }, 500);
+            $('html, body').animate({
+                scrollTop: blinkRow.offset().top - 100
+            }, 500);
 
-            blinkRow.addClass('updateSuccess');
+        blinkRow.addClass('updateSuccess');
 
-            setTimeout(function(){
-              blinkRow.fadeOut('slow',function(){ $(this).removeClass('updateSuccess').show();});
-            }, 1000);
-        }
-        
-        //localStorage.removeItem('modifiedProductId');
+        setTimeout(function(){
+            blinkRow.fadeOut('slow',function(){ $(this).removeClass('updateSuccess').show();});
+        }, 1000);
+
+        localStorage.removeItem('modifiedProductId');
     });
-
-
 </script>
