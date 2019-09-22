@@ -20,14 +20,14 @@
 
     <div class="form-group">
         <label asp-for="ProductViewModel.MeasuringUnit">Μονάδα Μέτρησης</label>
-        <select class="form-control" asp-for="ProductViewModel.MeasuringUnit" asp-items="Model.MeasuringUnit">
+        <select class="form-control" onchange="removeChoiceOption(this);" asp-for="ProductViewModel.MeasuringUnit" asp-items="Model.MeasuringUnit">
             <option disabled value="-1">--- Επιλογή ---</option>
         </select>
     </div>
 
     <div class="form-group">
         <label asp-for="ProductViewModel.ProductType">Τύπος</label>
-        <select class="form-control" asp-for="ProductViewModel.ProductType" asp-items="Model.ProductType">
+        <select class="form-control" onchange="removeChoiceOption(this);" asp-for="ProductViewModel.ProductType" asp-items="Model.ProductType">
             <option disabled value="-1">--- Επιλογή ---</option>
         </select>
     </div>
@@ -35,7 +35,9 @@
     <div class="form-group">
         <label asp-for="ProductViewModel.SupplierId">Προμηθευτής</label>
         <span class="text-danger">@Model.SupplierNotActiveMessage</span>
-        <select class="form-control" asp-for="ProductViewModel.SupplierId" asp-items="Model.Suppliers"></select>
+        <select class="form-control" onchange="removeChoiceOption(this);" asp-for="ProductViewModel.SupplierId" asp-items="Model.Suppliers">
+            <option disabled value="-1">--- Επιλογή ---</option>
+        </select>
     </div>
 
     <div class="text-info">Τιμή ανα κιλό, λίτρο ή τεμάχιο:</div>
@@ -69,18 +71,26 @@
 
 <script type="text/javascript">
     $(function () {
+        var measuringUnitId = '#'.concat('@Html.IdFor(o => o.ProductViewModel.MeasuringUnit)');
+        var productTypeId = '#'.concat('@Html.IdFor(o => o.ProductViewModel.ProductType)');
+        var supplierId = '#'.concat('@Html.IdFor(o => o.ProductViewModel.SupplierId)');
 
         var hiddernInputId = '#'.concat('@Html.IdFor(o => o.ProductViewModel.Id)');
         var productId = $(hiddernInputId).val();
-
-        if (productId > 0)
+        if (productId > 0) {
+            $(measuringUnitId.concat(" option[value='-1']")).remove();
+            $(productTypeId.concat(" option[value='-1']")).remove();
+            $(supplierId.concat(" option[value='-1']")).remove();
             return;
+        }
 
-        var measuringUnitId = '#'.concat('@Html.IdFor(o => o.ProductViewModel.MeasuringUnit)');
         $(measuringUnitId).val('-1');
-
-        var productTypeId = '#'.concat('@Html.IdFor(o => o.ProductViewModel.ProductType)');
         $(productTypeId).val('-1');
-
+        $(supplierId).val('-1');
     });
+
+    function removeChoiceOption(selectObj) {
+        $('#'.concat(selectObj.id.concat(" option[value='-1']"))).remove();
+    }
+
 </script>
