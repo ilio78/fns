@@ -76,7 +76,7 @@ namespace FoodAndStyleOrderPlanning.Pages.Ingredients
                 if (!LoadData(recipeId, ingredientId))
                     return RedirectToPage("/Recipes/List");
                 return Page();
-            }            
+            }
 
             if (Ingredient.RecipeId < 1)
             {
