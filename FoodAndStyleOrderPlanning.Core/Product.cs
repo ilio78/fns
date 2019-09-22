@@ -54,8 +54,18 @@ namespace FoodAndStyleOrderPlanning.Core
             else
                 Price = (float)(productViewModel.PriceEuroPart*100 + productViewModel.PriceCentsPart)/1000;
 
-            OrderWindow = productViewModel.OrderWindow;
+            OrderWindow = (int)productViewModel.ProductFreshness;
         }
+
+        public ProductFreshness GetProductFreshness()
+        {
+            if (OrderWindow < 1)
+                return ProductFreshness.OneDayBeforeOrder;
+            if (OrderWindow > 5)
+                return  ProductFreshness.Indifferent;
+            return (ProductFreshness) OrderWindow;
+        }
+
     }
 
     public class ProductViewModel
@@ -81,9 +91,9 @@ namespace FoodAndStyleOrderPlanning.Core
                 price = 1000 * price;
             
             PriceEuroPart = (int)price / 100;
-            PriceCentsPart = (int)price % 100;            
-                            
-            OrderWindow = product.OrderWindow;
+            PriceCentsPart = (int)price % 100;
+
+            ProductFreshness = product.GetProductFreshness();
         }
 
         public int Id { get; set; }
@@ -115,8 +125,7 @@ namespace FoodAndStyleOrderPlanning.Core
         public int PriceCentsPart { get; set; }
 
         [Required]
-        [Range(0, 100)]
-        public int OrderWindow { get; set; }
+        public ProductFreshness ProductFreshness { get; set; }
     }
 
 }

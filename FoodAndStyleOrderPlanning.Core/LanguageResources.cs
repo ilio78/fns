@@ -9,9 +9,7 @@ namespace FoodAndStyleOrderPlanning.Core
     {
         public static Dictionary<string, string> ProductTypeTranslations;
         public static Dictionary<string, string> MeasuringUnitTranslations;
-
-        //<td>@LanguageResources.MeasuringUnitTranslations.First(p => p.Key == ((int) r.MeasuringUnit).ToString()).Value</td>
-        //<td>@LanguageResources.ProductTypeTranslations.First(p => p.Key == ((int) r.ProductType).ToString()).Value</td>
+        public static Dictionary<string, string> ProductFreshnessTranslations;
 
         public static string GetMeasuringUnitTranslation(MeasuringUnit measuringUnit)
         {
@@ -21,6 +19,10 @@ namespace FoodAndStyleOrderPlanning.Core
         public static string GetProductTypeTranslation(ProductType productType)
         {
             return LanguageResources.ProductTypeTranslations.First(p => p.Key == ((int)productType).ToString()).Value;
+        }
+        public static string GetProductFreshnessTranslation(ProductFreshness productFreshnessOption)
+        {
+            return LanguageResources.ProductFreshnessTranslations.First(p => p.Key == ((int)productFreshnessOption).ToString()).Value;
         }
 
 
@@ -34,11 +36,20 @@ namespace FoodAndStyleOrderPlanning.Core
             ProductTypeTranslations.Add(((int)ProductType.Fish).ToString(), "Ψάρι/Θαλασσινά");
             ProductTypeTranslations.Add(((int)ProductType.Pastry).ToString(), "Ζαχαροπλαστική");
             ProductTypeTranslations.Add(((int)ProductType.Other).ToString(), "Διάφορα");
-            
+            ProductTypeTranslations.Add(((int)ProductType.SpecialGroup1).ToString(), "Ειδική Κατηγορία 1");
+
             MeasuringUnitTranslations = new Dictionary<string, string>();
             MeasuringUnitTranslations.Add(((int)MeasuringUnit.Grams).ToString(), "Γραμμάρια");
             MeasuringUnitTranslations.Add(((int)MeasuringUnit.Millilitres).ToString(), "Χιλιοστόλιτρα");
             MeasuringUnitTranslations.Add(((int)MeasuringUnit.Pieces).ToString(), "Τεμάχια");
+
+            ProductFreshnessTranslations = new Dictionary<string, string>();
+            ProductFreshnessTranslations.Add(((int)ProductFreshness.OneDayBeforeOrder).ToString(), "1 ημέρα");
+            ProductFreshnessTranslations.Add(((int)ProductFreshness.TwoDaysBeforeOrder).ToString(), "2 μέρες");
+            ProductFreshnessTranslations.Add(((int)ProductFreshness.ThreeDaysBeforeOrder).ToString(), "3 μέρες");
+            ProductFreshnessTranslations.Add(((int)ProductFreshness.FourDaysBeforeOrder).ToString(), "4 μέρες");
+            ProductFreshnessTranslations.Add(((int)ProductFreshness.FiveDaysBeforeOrder).ToString(), "5 μέρες");
+            ProductFreshnessTranslations.Add(((int)ProductFreshness.Indifferent).ToString(), "Αδιάφορο");
         }
 }
 

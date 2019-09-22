@@ -53,12 +53,16 @@
     </div>
     <br />
     <div class="form-group">
-        <label asp-for="ProductViewModel.OrderWindow">Παραγγελία Πριν (Ημέρες)</label>
-        <input asp-for="ProductViewModel.OrderWindow" class="form-control" />
-        <span class="text-danger" asp-validation-for="ProductViewModel.OrderWindow"></span>
+        <label asp-for="ProductViewModel.ProductFreshness">Παραγγελία Πριν</label>
+        @*<input asp-for="ProductViewModel.OrderWindow" class="form-control" />*@
+        <select class="form-control" onchange="removeChoiceOption(this);" asp-for="ProductViewModel.ProductFreshness" asp-items="Model.ProductFreshness">
+            <option disabled value="-1">--- Επιλογή ---</option>
+        </select>
+        <span class="text-danger" asp-validation-for="ProductViewModel.ProductFreshness"></span>
+
     </div>
 
-    <button type="submit" class="btn btn-primary">Save</button>
+    <button type="submit" onclick="setStorage();" class="btn btn-primary">Save</button>
 </form>
 
 @section Scripts
@@ -70,7 +74,11 @@
 
 
 <script type="text/javascript">
+
     $(function () {
+
+        localStorage.removeItem('modifiedProductId');
+
         var measuringUnitId = '#'.concat('@Html.IdFor(o => o.ProductViewModel.MeasuringUnit)');
         var productTypeId = '#'.concat('@Html.IdFor(o => o.ProductViewModel.ProductType)');
         var supplierId = '#'.concat('@Html.IdFor(o => o.ProductViewModel.SupplierId)');
@@ -91,6 +99,15 @@
 
     function removeChoiceOption(selectObj) {
         $('#'.concat(selectObj.id.concat(" option[value='-1']"))).remove();
+    }
+
+    function setStorage() {
+        var hiddernInputId = '#'.concat('@Html.IdFor(o => o.ProductViewModel.Id)');
+        var productId = $(hiddernInputId).val();
+        if (productId < 1)
+            productId = 0;
+    
+        localStorage.setItem('modifiedProductId', productId);
     }
 
 </script>

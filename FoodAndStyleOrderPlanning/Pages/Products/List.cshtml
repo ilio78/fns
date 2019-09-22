@@ -33,31 +33,31 @@
     </tr>
     @foreach (var r in Model.Products)
     {
-<tr>
-    <td>@r.Id</td>
-    <td>@r.Name</td>
-    <td>@r.Quality</td>
-    <td>@LanguageResources.GetMeasuringUnitTranslation(r.MeasuringUnit)</td>
-    <td>@LanguageResources.GetProductTypeTranslation(r.ProductType)</td>
+        <tr>
+            <td>@r.Id</td>
+            <td>@r.Name</td>
+            <td>@r.Quality</td>
+            <td>@LanguageResources.GetMeasuringUnitTranslation(r.MeasuringUnit)</td>
+            <td>@LanguageResources.GetProductTypeTranslation(r.ProductType)</td>
 
-    @if (@r.Supplier.IsActive)
-    {
-        <td>@r.Supplier.Name</td>
-    }
-    else
-    {
-        <td class="alert-danger" data-toggle="tooltip" data-placement="top" title="Ο προμηθευτής δεν ειναι ενεργός">@r.Supplier.Name</td>
-    }
+            @if (@r.Supplier.IsActive)
+            {
+                <td>@r.Supplier.Name</td>
+            }
+            else
+            {
+                <td class="alert-danger" data-toggle="tooltip" data-placement="top" title="Ο προμηθευτής δεν ειναι ενεργός">@r.Supplier.Name</td>
+            }
 
-    <td>@r.Price¢</td>
+            <td>@r.Price¢</td>
 
-    <td>@r.OrderWindow</td>
-    <td>
-        <a class="btn btn-lg" asp-page="./Edit" asp-route-id="@r.Id">
-            <i class="fa fa-edit"></i>
-        </a>
-    </td>
-</tr>
+            <td>@LanguageResources.GetProductFreshnessTranslation(r.GetProductFreshness())</td>
+            <td>
+                <a class="btn btn-lg" asp-page="./Edit" asp-route-id="@r.Id">
+                    <i class="fa fa-edit"></i>
+                </a>
+            </td>
+        </tr>
     }
 </table>
 
@@ -65,3 +65,34 @@
 <a asp-page="./Edit" class="btn btn-primary">Προσθήκη νέου</a>
 
 
+
+<script type="text/javascript">
+
+    $(function () {
+
+        var modifiedProductId = localStorage.getItem('modifiedProductId');
+        if (modifiedProductId == null)
+            return;
+
+        if (modifiedProductId > 0) {
+
+            var blinkRow = $("td").filter(function() {
+                return $(this).text() == modifiedProductId;
+            }).closest("tr");
+
+             $('html, body').animate({
+                    scrollTop: blinkRow.offset().top
+             }, 500);
+
+            blinkRow.addClass('updateSuccess');
+
+            setTimeout(function(){
+              blinkRow.fadeOut('slow',function(){ $(this).removeClass('updateSuccess').show();});
+            }, 1000);
+        }
+        
+        //localStorage.removeItem('modifiedProductId');
+    });
+
+
+</script>

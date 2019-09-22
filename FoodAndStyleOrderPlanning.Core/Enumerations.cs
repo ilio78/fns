@@ -22,6 +22,16 @@
         Pieces
     }
 
+    public enum ProductFreshness
+    {
+        OneDayBeforeOrder = 1,
+        TwoDaysBeforeOrder = 2,
+        ThreeDaysBeforeOrder = 3,
+        FourDaysBeforeOrder = 4,
+        FiveDaysBeforeOrder = 5,
+        Indifferent = 50
+    }
+
     public enum ProductType
     {
         FruitAndVegetables_Fresh,
@@ -30,7 +40,8 @@
         Meat,
         Fish,
         Pastry,
-        Other
+        Other,
+        SpecialGroup1
     }
 
     public enum ProductDeliveryDay

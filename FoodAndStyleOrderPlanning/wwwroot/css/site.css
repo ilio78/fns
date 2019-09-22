@@ -61,3 +61,7 @@ body {
 .table-hover tbody tr:hover th {
     background-color:cornflowerblue;
 }
+
+.updateSuccess {
+    background-color: lightgreen !important;
+}

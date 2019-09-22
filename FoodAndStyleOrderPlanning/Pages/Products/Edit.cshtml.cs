@@ -21,7 +21,8 @@ namespace FoodAndStyleOrderPlanning.Pages.Products
 
         public SelectList MeasuringUnit { get; set; }        
         public SelectList ProductType { get; set; }
-        public IList<SelectListItem> Suppliers { get; set; }
+        public SelectList Suppliers { get; set; }
+        public SelectList ProductFreshness { get; set; }
 
         [BindProperty]
         public ProductViewModel ProductViewModel { get; set; }
@@ -37,15 +38,11 @@ namespace FoodAndStyleOrderPlanning.Pages.Products
 
         private void LoadData()
         {
-            MeasuringUnit = new SelectList((IEnumerable)LanguageResources.MeasuringUnitTranslations, "Key", "Value");
-            ProductType = new SelectList((IEnumerable)LanguageResources.ProductTypeTranslations, "Key", "Value");
-            var allSuppliers = supplierData.GetByName(null).Where(sup => sup.IsActive).OrderBy(s => s.Name).ToList();
+            MeasuringUnit = new SelectList((IEnumerable)LanguageResources.MeasuringUnitTranslations.OrderBy(s => s.Value), "Key", "Value");
+            ProductType = new SelectList((IEnumerable)LanguageResources.ProductTypeTranslations.OrderBy(s => s.Value), "Key", "Value");
+            Suppliers = new SelectList(supplierData.GetByName(null).Where(sup => sup.IsActive).OrderBy(s => s.Name),"Id", "Name");
+            ProductFreshness = new SelectList((IEnumerable)LanguageResources.ProductFreshnessTranslations.OrderBy(s => s.Value), "Key", "Value");
 
-            Suppliers = new List<SelectListItem>();
-            foreach (Supplier s in allSuppliers)
-            {
-                Suppliers.Add(new SelectListItem(s.Name, s.Id.ToString()));
-            }
         }
 
         public IActionResult OnGet(int? id)
