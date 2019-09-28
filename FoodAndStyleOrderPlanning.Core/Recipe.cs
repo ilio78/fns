@@ -97,6 +97,7 @@ namespace FoodAndStyleOrderPlanning.Core
     {
         public int Id { get; set; }
         public int RecipeId { get; set; }
+        public bool IsActive { get; set; }
         public string Name { get; set; }
         public string RecipeResultingQuantity { get; set; }
         //public int Quantity { get; set; }
@@ -122,6 +123,16 @@ namespace FoodAndStyleOrderPlanning.Core
         [Required]
         [Range(0, 999)]
         public int OrderQuantity_Sunday { get; set; }
+
+        public int TotalWeekOrderQuantity {
+            get { return OrderQuantity_Monday +
+                OrderQuantity_Tuesday +
+                OrderQuantity_Wednesday +
+                OrderQuantity_Thursday +
+                OrderQuantity_Friday +
+                OrderQuantity_Saturday +
+                OrderQuantity_Sunday; }
+        }
 
         public Dictionary<OrderDay, int> DayOrderQuantity { get; set; }
 

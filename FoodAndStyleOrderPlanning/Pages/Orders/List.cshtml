@@ -16,20 +16,19 @@
     </tr>
     @foreach (var i in Model.Orders)
     {
-<tr>
-    <td>@i.Name</td>
-    <td>@i.CreatedOn.ToString(Helpers.DateTimeFormater)</td>
-    <td>@i.CreatedBy</td>
-    <td>@i.UpdatedOn.ToString(Helpers.DateTimeFormater)</td>
-    <td>@i.UpdatedBy</td>
-    <td>
-        <a class="btn btn-lg" asp-page="./Edit" asp-route-id="@i.Id">
-            <i class="fa fa-edit"></i>
-        </a>
-    </td>
-</tr>
+        <tr>
+            <td>@i.Name</td>
+            <td>@i.CreatedOn.ToString(Helpers.DateTimeFormater)</td>
+            <td>@i.CreatedBy</td>
+            <td>@i.UpdatedOn.ToString(Helpers.DateTimeFormater)</td>
+            <td>@i.UpdatedBy</td>
+            <td>
+                <a class="btn btn-lg" asp-page="./Edit" asp-route-id="@i.Id">
+                    <i class="fa fa-edit"></i>
+                </a>
+            </td>
+        </tr>
     }
 </table>
-
 
 <a asp-page="./Edit" class="btn btn-primary">Δημιουργία Νέας Παραγγελίας</a>

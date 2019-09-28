@@ -40,8 +40,8 @@ namespace FoodAndStyleOrderPlanning.Pages.Orders
             if (id == null)
             {
                 Order = new Order();
-                Order.CreatedBy = "temp";
-                Order.UpdatedBy = "temp";
+                Order.CreatedBy = "";
+                Order.UpdatedBy = "";
                 RecipeChoices = new RecipeChoicesViewModel();
                 OrderProductItems = new List<OrderProductItem>();
                 ProductDeliveryPerDay = new Dictionary<ProductDeliveryDay, Dictionary<Product, int>>();
@@ -58,12 +58,14 @@ namespace FoodAndStyleOrderPlanning.Pages.Orders
        
             int i = 1;
             foreach (Recipe r in Recipes)
+            {
                 RecipeChoices.Choices.Add(new ChoiceViewModel()
                 {
                     Id = i++, Name = r.Name, RecipeResultingQuantity = String.Format("{0:n0}", r.ResultingQuantityInGrams),
-                    RecipeId = r.Id
+                    RecipeId = r.Id, IsActive = r.IsActive
                 });
-            
+            }
+
             var alreadySelected = orderRecipeItemData.GetByName(null).Where(o => o.OrderId == Order.Id).ToList();
 
             foreach (var c in RecipeChoices.Choices)
@@ -96,11 +98,17 @@ namespace FoodAndStyleOrderPlanning.Pages.Orders
                     }
                 }
             }
+
+            RecipeChoices.Choices.RemoveAll(c => !c.IsActive && c.TotalWeekOrderQuantity == 0);
+
             OrderProductItems = new List<OrderProductItem>();
 
             foreach (Recipe recipe in Recipes)
             {
-                var choice = RecipeChoices.Choices.Single(r => r.RecipeId == recipe.Id);
+                var choice = RecipeChoices.Choices.SingleOrDefault(r => r.RecipeId == recipe.Id);
+
+                if (choice == null)
+                    continue;
 
                 if (choice.OrderQuantity_Monday + choice.OrderQuantity_Tuesday + choice.OrderQuantity_Wednesday +
                     choice.OrderQuantity_Thursday + choice.OrderQuantity_Friday + choice.OrderQuantity_Saturday + choice.OrderQuantity_Sunday == 0)

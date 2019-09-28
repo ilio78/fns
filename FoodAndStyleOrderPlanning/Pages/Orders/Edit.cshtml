@@ -57,50 +57,49 @@
         @for (int i = 0; i < Model.RecipeChoices.Choices.Count; i++)
         {
             <tr>
-                <td>
+                <td title="Kωδικός:@Model.RecipeChoices.Choices[i].Id - @String.Format("{0:n0}", Model.RecipeChoices.Choices[i].RecipeResultingQuantity) γραμ.">
                     <input type="hidden" asp-for="@Model.RecipeChoices.Choices[i].Id" />
                     <input type="hidden" asp-for="@Model.RecipeChoices.Choices[i].RecipeId" />
                     <input type="hidden" asp-for="@Model.RecipeChoices.Choices[i].Name" />
                     <input type="hidden" asp-for="@Model.RecipeChoices.Choices[i].RecipeResultingQuantity" />
-                    <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="@String.Format("{0:n0}", Model.RecipeChoices.Choices[i].RecipeResultingQuantity) γραμ."></i>
-                    &nbsp;@Model.RecipeChoices.Choices[i].Name
+                    @if (@Model.RecipeChoices.Choices[i].IsActive)
+                    {
+                        @Model.RecipeChoices.Choices[i].Name
+                    }
+                    else
+                    {
+                        <i class="fa fa-warning" style="color:orange" data-toggle="tooltip" data-placement="top" title="Η συνταγή ειναι ανενεργή!"></i>
+                        @Model.RecipeChoices.Choices[i].Name
+                    }
                 </td>
-
                 <td>
                     <input asp-for="@Model.RecipeChoices.Choices[i].OrderQuantity_Monday" onblur="if (this.value=='') this.value='0';" class="form-control font-weight-bold" />
                     <span class="text-danger" asp-validation-for="@Model.RecipeChoices.Choices[i].OrderQuantity_Monday"></span>                    
                 </td>
-
                 <td>
                     <input asp-for="@Model.RecipeChoices.Choices[i].OrderQuantity_Tuesday" onblur="if (this.value=='') this.value='0';" class="form-control font-weight-bold" />
                     <span class="text-danger" asp-validation-for="@Model.RecipeChoices.Choices[i].OrderQuantity_Tuesday"></span>
                 </td>
-
                 <td>
                     <input asp-for="@Model.RecipeChoices.Choices[i].OrderQuantity_Wednesday" onblur="if (this.value=='') this.value='0';" class="form-control font-weight-bold" />
                     <span class="text-danger" asp-validation-for="@Model.RecipeChoices.Choices[i].OrderQuantity_Wednesday"></span>
                 </td>
-
                 <td>
                     <input asp-for="@Model.RecipeChoices.Choices[i].OrderQuantity_Thursday" onblur="if (this.value=='') this.value='0';" class="form-control font-weight-bold" />
                     <span class="text-danger" asp-validation-for="@Model.RecipeChoices.Choices[i].OrderQuantity_Thursday"></span>
                 </td>
-
                 <td>
                     <input asp-for="@Model.RecipeChoices.Choices[i].OrderQuantity_Friday" onblur="if (this.value=='') this.value='0';" class="form-control font-weight-bold" />
                     <span class="text-danger" asp-validation-for="@Model.RecipeChoices.Choices[i].OrderQuantity_Friday"></span>
                 </td>
-
                 <td>
                     <input asp-for="@Model.RecipeChoices.Choices[i].OrderQuantity_Saturday" class="form-control font-weight-bold" />
                     <span class="text-danger" asp-validation-for="@Model.RecipeChoices.Choices[i].OrderQuantity_Saturday"></span>
                 </td>
-
                 <td>
                     <input asp-for="@Model.RecipeChoices.Choices[i].OrderQuantity_Sunday" class="form-control font-weight-bold" />
                     <span class="text-danger" asp-validation-for="@Model.RecipeChoices.Choices[i].OrderQuantity_Sunday"></span>
                 </td>
-
             </tr>
         }
     </table>
