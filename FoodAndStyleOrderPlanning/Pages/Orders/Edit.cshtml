@@ -42,9 +42,15 @@
         </div>
     </div>
     <hr />
-    <table cellpadding="0" cellspacing="0" class="table table-sm table-striped table-hover">
+    <table cellpadding="0" cellspacing="0" id="recipeQuantityTable" class="table table-sm table-striped table-hover">
         <tr>
-            <th class="w-25">Συνταγη</th>
+            <th class="w-25">
+                @*Συνταγη <i class="fa fa-eye" data-toggle="tooltip" data-placement="top" title="Απόκρυψη συνταγών με μηδενική ποσότητα"></i>*@ 
+                <select class="custom-select font-weight-bold" id="recipeDisplaySelect" onchange="recipeDisplaySelectionChanged(this.value);">
+                    <option value="0">'Ολες οι συνταγές</option>
+                    <option value="1">Συνταγές με ποσότητα</option>
+                </select>
+            </th>
             <th>Δευ.</th>
             <th>Τρι.</th>
             <th>Τετ.</th>
@@ -73,31 +79,31 @@
                     }
                 </td>
                 <td>
-                    <input asp-for="@Model.RecipeChoices.Choices[i].OrderQuantity_Monday" onblur="if (this.value=='') this.value='0';" class="form-control font-weight-bold" />
-                    <span class="text-danger" asp-validation-for="@Model.RecipeChoices.Choices[i].OrderQuantity_Monday"></span>                    
+                    <input asp-for="@Model.RecipeChoices.Choices[i].OrderQuantity_Monday" onblur="validateQuantity(this);" class="form-control font-weight-bold" />
+                    <span class="text-danger" asp-validation-for="@Model.RecipeChoices.Choices[i].OrderQuantity_Monday"></span>
                 </td>
                 <td>
-                    <input asp-for="@Model.RecipeChoices.Choices[i].OrderQuantity_Tuesday" onblur="if (this.value=='') this.value='0';" class="form-control font-weight-bold" />
+                    <input asp-for="@Model.RecipeChoices.Choices[i].OrderQuantity_Tuesday" onblur="validateQuantity(this);" class="form-control font-weight-bold" />
                     <span class="text-danger" asp-validation-for="@Model.RecipeChoices.Choices[i].OrderQuantity_Tuesday"></span>
                 </td>
                 <td>
-                    <input asp-for="@Model.RecipeChoices.Choices[i].OrderQuantity_Wednesday" onblur="if (this.value=='') this.value='0';" class="form-control font-weight-bold" />
+                    <input asp-for="@Model.RecipeChoices.Choices[i].OrderQuantity_Wednesday" onblur="validateQuantity(this);" class="form-control font-weight-bold" />
                     <span class="text-danger" asp-validation-for="@Model.RecipeChoices.Choices[i].OrderQuantity_Wednesday"></span>
                 </td>
                 <td>
-                    <input asp-for="@Model.RecipeChoices.Choices[i].OrderQuantity_Thursday" onblur="if (this.value=='') this.value='0';" class="form-control font-weight-bold" />
+                    <input asp-for="@Model.RecipeChoices.Choices[i].OrderQuantity_Thursday" onblur="validateQuantity(this);" class="form-control font-weight-bold" />
                     <span class="text-danger" asp-validation-for="@Model.RecipeChoices.Choices[i].OrderQuantity_Thursday"></span>
                 </td>
                 <td>
-                    <input asp-for="@Model.RecipeChoices.Choices[i].OrderQuantity_Friday" onblur="if (this.value=='') this.value='0';" class="form-control font-weight-bold" />
+                    <input asp-for="@Model.RecipeChoices.Choices[i].OrderQuantity_Friday" onblur="validateQuantity(this);" class="form-control font-weight-bold" />
                     <span class="text-danger" asp-validation-for="@Model.RecipeChoices.Choices[i].OrderQuantity_Friday"></span>
                 </td>
                 <td>
-                    <input asp-for="@Model.RecipeChoices.Choices[i].OrderQuantity_Saturday" class="form-control font-weight-bold" />
+                    <input asp-for="@Model.RecipeChoices.Choices[i].OrderQuantity_Saturday" onblur="validateQuantity(this);" class="form-control font-weight-bold" />
                     <span class="text-danger" asp-validation-for="@Model.RecipeChoices.Choices[i].OrderQuantity_Saturday"></span>
                 </td>
                 <td>
-                    <input asp-for="@Model.RecipeChoices.Choices[i].OrderQuantity_Sunday" class="form-control font-weight-bold" />
+                    <input asp-for="@Model.RecipeChoices.Choices[i].OrderQuantity_Sunday" onblur="validateQuantity(this);" class="form-control font-weight-bold" />
                     <span class="text-danger" asp-validation-for="@Model.RecipeChoices.Choices[i].OrderQuantity_Sunday"></span>
                 </td>
             </tr>
@@ -149,7 +155,7 @@
                 <div class="card">
                     <div class="bg-light card-title font-weight-bold text-secondary">
                         <a class="btn btn-lg" asp-page="./SendMail">
-                            <i class="fa fa-envelope" data-toggle="tooltip" data-placement="top" title="Αποστολή με email" ></i>
+                            <i class="fa fa-envelope" data-toggle="tooltip" data-placement="top" title="Αποστολή με email"></i>
                         </a>
                         Προμηθευτής @supplierProductKey.Key.Name / Συνολικό Kόστος: @(String.Format("{0:n}€", Model.ProductDeliveryPerDay[day].Keys.Where(p => p.Supplier == supplierProductKey.Key).ToList().Sum(i => (i.Price * Model.ProductDeliveryPerDay[day][i]) / 100)))
                     </div>
@@ -173,10 +179,51 @@
                         </table>
                     </div>
                 </div>
-                <br/>
+                <br />
             }
         </div>
     </div>
     <hr />
 
 }
+
+
+
+<script type="text/javascript">
+
+    function validateQuantity(inputField) {
+        if (inputField.value == '')
+            inputField.value = '0';
+        else if (isNaN(inputField.value))
+            inputField.value = '0';
+        else if (inputField.value < 0)
+            inputField.value = '0';
+        else if (inputField.value > 999)
+            inputField.value = '999';
+
+        return;
+    }
+
+    function recipeDisplaySelectionChanged(value) {
+      
+        if (value == '0') {
+            $('#recipeQuantityTable tr').each(function () {
+                $(this).show();
+            });
+        }
+        else {
+            $('#recipeQuantityTable tr:not(:first)').each(function () {
+                var row = $(this);
+                var totalQuantity = 0;
+                $(this).find("input.form-control").each(function () {
+                    totalQuantity += parseInt($(this).val()); 
+                });
+                if (totalQuantity < 1)
+                    row.hide();
+            });
+        }
+}
+
+
+
+</script>
