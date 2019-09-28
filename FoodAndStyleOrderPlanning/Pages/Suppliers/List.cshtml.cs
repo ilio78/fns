@@ -17,6 +17,7 @@ namespace FoodAndStyleOrderPlanning.Pages.Suppliers
 
         [BindProperty(SupportsGet = true)]
         public string SearchTerm { get; set; }
+        public string SortOrderDirection { get; set; }
 
         public IEnumerable<Supplier> Suppliers { get; set; }
 
@@ -26,10 +27,23 @@ namespace FoodAndStyleOrderPlanning.Pages.Suppliers
             this.data = data;
         }
 
-        public void OnGet()
+        public void OnGet(string orderBy, string orderDir)
         {
-            Suppliers = data.GetByName(SearchTerm).OrderBy(s => s.Name);
+            if (orderBy == "email")
+                if (orderDir == "desc")
+                    Suppliers = data.GetByName(SearchTerm).OrderByDescending(r => r.Email);
+                else
+                    Suppliers = data.GetByName(SearchTerm).OrderBy(r => r.Email);
+            else
+               if (orderDir == "desc")
+                Suppliers = data.GetByName(SearchTerm).OrderByDescending(r => r.Name);
+            else
+                Suppliers = data.GetByName(SearchTerm).OrderBy(r => r.Name);
 
+            if (orderDir == "asc")
+                SortOrderDirection = "desc";
+            else
+                SortOrderDirection = "asc";
         }
     }
 }

@@ -23,42 +23,42 @@
 <table class="table table-sm table-striped table-hover">
     <tr>
         <th>Id</th>
-        <th><a asp-page="./List" asp-route-orderBy="">'Ονομα</a></th>
+        <th><a asp-page="./List" asp-route-orderBy="name" asp-route-orderDir="@Model.SortOrderDirection">'Ονομα</a></th>
         <th>Ποιότητα</th>
         <th>Μ.Μ.</th>
-        <th><a asp-page="./List" asp-route-orderBy="type">Τύπος</a></th>
-        <th><a asp-page="./List" asp-route-orderBy="supplier">Προμηθευτής</a></th>
+        <th><a asp-page="./List" asp-route-orderBy="type" asp-route-orderDir="@Model.SortOrderDirection">Τύπος</a></th>
+        <th><a asp-page="./List" asp-route-orderBy="supplier" asp-route-orderDir="@Model.SortOrderDirection">Προμηθευτής</a></th>
         <th>Τιμή</th>
         <th>Παραγγελλία πριν</th>
         <th>Επεξεργασία</th>
     </tr>
     @foreach (var r in Model.Products)
     {
-        <tr>
-            <td>@r.Id</td>
-            <td>@r.Name</td>
-            <td>@r.Quality</td>
-            <td>@LanguageResources.GetMeasuringUnitTranslation(r.MeasuringUnit)</td>
-            <td>@LanguageResources.GetProductTypeTranslation(r.ProductType)</td>
+<tr>
+    <td>@r.Id</td>
+    <td>@r.Name</td>
+    <td>@r.Quality</td>
+    <td>@LanguageResources.GetMeasuringUnitTranslation(r.MeasuringUnit)</td>
+    <td>@LanguageResources.GetProductTypeTranslation(r.ProductType)</td>
 
-            @if (@r.Supplier.IsActive)
-            {
-                <td>@r.Supplier.Name</td>
-            }
-            else
-            {
-                <td class="alert-danger" data-toggle="tooltip" data-placement="top" title="Ο προμηθευτής δεν ειναι ενεργός">@r.Supplier.Name</td>
-            }
+    @if (@r.Supplier.IsActive)
+    {
+        <td>@r.Supplier.Name</td>
+    }
+    else
+    {
+        <td><i class="fa fa-warning" style="color:orange" data-toggle="tooltip" data-placement="top" title="Ο προμηθευτής δεν ειναι ενεργός!"></i> @r.Supplier.Name</td>
+    }
 
-            <td>@r.Price¢</td>
+    <td>@r.Price¢</td>
 
-            <td>@LanguageResources.GetProductFreshnessTranslation(r.GetProductFreshness())</td>
-            <td>
-                <a class="btn btn-lg" asp-page="./Edit" asp-route-id="@r.Id">
-                    <i class="fa fa-edit"></i>
-                </a>
-            </td>
-        </tr>
+    <td>@LanguageResources.GetProductFreshnessTranslation(r.GetProductFreshness())</td>
+    <td>
+        <a class="btn btn-lg" asp-page="./Edit" asp-route-id="@r.Id">
+            <i class="fa fa-edit"></i>
+        </a>
+    </td>
+</tr>
     }
 </table>
 

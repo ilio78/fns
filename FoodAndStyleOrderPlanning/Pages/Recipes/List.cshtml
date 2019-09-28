@@ -22,52 +22,54 @@
 <table class="table table-sm table-striped table-hover">
     <tr>
         <th>Id</th>
-        <th>'Ονομα</th>
+        <th><a asp-page="./List" asp-route-orderBy="name" asp-route-orderDir="@Model.SortOrderDirection">'Ονομα</a></th>        
         <th>Ποσότητα (Γραμ.)</th>
         <th>Υλικά</th>
-        <th>Δημιουργία</th>
+        <th>
+            <a asp-page="./List" asp-route-orderBy="createdDate" asp-route-orderDir="@Model.SortOrderDirection">Δημιουργία</a>
+        </th>
         <th>Τροποποίηση</th>
         <th>Ενέργειες</th>
     </tr>
     @foreach (var r in Model.Recipes)
     {
-<tr class='@(r.IsActive ? "" : "text-secondary")'>
-    <td>@r.Id</td>
-    <td>
-        @if (r.IsActive)
-            {@r.Name}
-        else
-            {<del>@r.Name</del>}
-    </td>
-    <td>@String.Format("{0:n0}", r.ResultingQuantityInGrams)</td>
-    <td>@r.Ingredients.Count</td>
-    <td>@r.CreatedOn.ToString(Helpers.DateTimeFormater)</td>
-    <td>@r.UpdatedOn.ToString(Helpers.DateTimeFormater)</td>
-    <td>
-        <a title="Επεξεργασία" class="btn btn-lg" asp-page="./Edit" asp-route-id="@r.Id">
-            <i class="fa fa-edit"></i>
-        </a>
-        <a title="Αντιγραφή" class="btn btn-lg" asp-page="./Copy" asp-route-id="@r.Id">
-            <i class="fa fa-copy"></i>
-        </a>
-        <a title='@(r.IsActive ? "Απενεργοποίηση" : "Ένεργοποιηση")' class="btn btn-lg" asp-page="./ToggleActive" asp-route-id="@r.Id">
-            <i class='@(r.IsActive ? "fa fa-toggle-off" : "fa fa-toggle-on")'></i>
-        </a>
+        <tr class='@(r.IsActive ? "" : "text-secondary")'>
+            <td>@r.Id</td>
+            <td>
+                @if (r.IsActive)
+                    {@r.Name}
+                else
+                    {<del>@r.Name</del>}
+            </td>
+            <td>@String.Format("{0:n0}", r.ResultingQuantityInGrams)</td>
+            <td>@r.Ingredients.Count</td>
+            <td>@r.CreatedOn.ToString(Helpers.DateTimeFormater)</td>
+            <td>@r.UpdatedOn.ToString(Helpers.DateTimeFormater)</td>
+            <td>
+                <a title="Επεξεργασία" class="btn btn-lg" asp-page="./Edit" asp-route-id="@r.Id">
+                    <i class="fa fa-edit"></i>
+                </a>
+                <a title="Αντιγραφή" class="btn btn-lg" asp-page="./Copy" asp-route-id="@r.Id">
+                    <i class="fa fa-copy"></i>
+                </a>
+                <a title='@(r.IsActive ? "Απενεργοποίηση" : "Ένεργοποιηση")' class="btn btn-lg" asp-page="./ToggleActive" asp-route-id="@r.Id">
+                    <i class='@(r.IsActive ? "fa fa-toggle-off" : "fa fa-toggle-on")'></i>
+                </a>
 
-        @if (Model.RecipeIdsInOrders.Contains(r.Id))
-        {
-            <a title="Διαγραφή δεν επιτρέπεται" style="color:gray" class="btn btn-lg">
-                <i class="fa fa-trash"></i>
-            </a>
-        }
-        else
-        {
-            <a title="Διαγραφή" style="color:red" class="btn btn-lg" asp-page="./Delete" asp-route-id="@r.Id">
-                <i class="fa fa-trash"></i>
-            </a>
-        }
-    </td>
-</tr>
+                @if (Model.RecipeIdsInOrders.Contains(r.Id))
+                {
+                    <a title="Διαγραφή δεν επιτρέπεται" style="color:gray" class="btn btn-lg">
+                        <i class="fa fa-trash"></i>
+                    </a>
+                }
+                else
+                {
+                    <a title="Διαγραφή" style="color:red" class="btn btn-lg" asp-page="./Delete" asp-route-id="@r.Id">
+                        <i class="fa fa-trash"></i>
+                    </a>
+                }
+            </td>
+        </tr>
     }
 </table>
 

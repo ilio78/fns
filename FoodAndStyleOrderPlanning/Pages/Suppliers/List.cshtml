@@ -21,42 +21,40 @@
 
 <table class="table table-sm table-striped table-hover">
     <tr>
-        <th>'Ονομα</th>
-        <th>Email</th>
+        <th><a asp-page="./List" asp-route-orderBy="name" asp-route-orderDir="@Model.SortOrderDirection">'Ονομα</a></th>
+        <th><a asp-page="./List" asp-route-orderBy="email" asp-route-orderDir="@Model.SortOrderDirection">Email</a></th>
         <th>Τηλ.</th>
-        <th>Ενεργός <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="Ανενεργος δεν εμφανιζεται στις επιλογες"></i></th>
-        <th>Επεξεργασία</th>
-        <th>
-            Διαγραφή <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="Μονο για προμηθευτες χωρις προϊόν"></i>
-        </th>
+        <th>Ενέργειες</th>
     </tr>
     @foreach (var s in Model.Suppliers)
     {
-<tr>
-    <td>@s.Name</td>
-    <td>@s.Email</td>
-    <td>@s.Telephone</td>
-    <td>
-        @if (@s.IsActive)
-        {
-            <i class="fa fa-check"></i>
-        }
-        else
-        {
-            <i class="fa fa-times"></i>
-        }
-    </td>
-    <td>
-        <a class="btn btn-lg" asp-page="./Edit" asp-route-id="@s.Id"><i class="fa fa-edit"></i></a>
-    </td>
-    <td>
-        @if (s.Products == null || s.Products.Count == 0)
-        {
-            <a class="btn btn-lg" asp-page="./Delete" asp-route-id="@s.Id">
-                <i class="fa fa-trash"></i>
+    <tr class='@(s.IsActive ? "" : "text-secondary")'>
+        <td>
+            @if (s.IsActive)
+                {@s.Name}
+            else
+                {<del>@s.Name</del>}
+        </td>
+        <td>@s.Email</td>
+        <td>@s.Telephone</td>
+        <td>
+            <a class="btn btn-lg" asp-page="./Edit" asp-route-id="@s.Id"><i class="fa fa-edit"></i></a>
+            <a title='@(s.IsActive ? "Απενεργοποίηση" : "Ένεργοποιηση")' class="btn btn-lg" asp-page="./ToggleActive" asp-route-id="@s.Id">
+                <i class='@(s.IsActive ? "fa fa-toggle-off" : "fa fa-toggle-on")'></i>
             </a>
-        }
-    </td>
+
+            @if (s.Products != null && s.Products.Count > 0)
+            {
+                <a title="Διαγραφή δεν επιτρέπεται" style="color:gray" class="btn btn-lg">
+                    <i class="fa fa-trash"></i>
+                </a>
+            }
+            else
+            {
+                <a title="Διαγραφή" style="color:red" class="btn btn-lg" asp-page="./Delete" asp-route-id="@s.Id">
+                    <i class="fa fa-trash"></i>
+                </a>
+            }
 </tr>
     }
 </table>
