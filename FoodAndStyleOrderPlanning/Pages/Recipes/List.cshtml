@@ -31,9 +31,14 @@
     </tr>
     @foreach (var r in Model.Recipes)
     {
-<tr>
+<tr class='@(r.IsActive ? "" : "text-secondary")'>
     <td>@r.Id</td>
-    <td>@r.Name</td>
+    <td>
+        @if (r.IsActive)
+            {@r.Name}
+        else
+            {<del>@r.Name</del>}
+    </td>
     <td>@String.Format("{0:n0}", r.ResultingQuantityInGrams)</td>
     <td>@r.Ingredients.Count</td>
     <td>@r.CreatedOn.ToString(Helpers.DateTimeFormater)</td>
@@ -48,6 +53,12 @@
         <a title="Διαγραφή" class="btn btn-lg" asp-page="./Delete" asp-route-id="@r.Id">
             <i class="fa fa-trash"></i>
         </a>
+
+        <a title='@(r.IsActive ? "Απενεργοποίηση" : "Ένεργοποιηση")' class="btn btn-lg" asp-page="./ToggleActive" asp-route-id="@r.Id">
+            <i class='@(r.IsActive ? "fa fa-toggle-off" : "fa fa-toggle-on")'></i>
+            
+        </a>
+
     </td>
 </tr>
     }

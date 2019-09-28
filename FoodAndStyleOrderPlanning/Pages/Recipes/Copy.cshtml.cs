@@ -33,6 +33,7 @@ namespace FoodAndStyleOrderPlanning.Pages.Recipes
             recipeCopy.Name = recipe.Name + " - Copy";
             recipeCopy.CreatedOn = DateTime.Now;
             recipeCopy.UpdatedOn = DateTime.Now;
+            recipeCopy.IsActive = recipe.IsActive;
             recipeCopy.ResultingQuantityInGrams = recipe.ResultingQuantityInGrams;
             recipeData.Add(recipeCopy);
             recipeData.Commit();

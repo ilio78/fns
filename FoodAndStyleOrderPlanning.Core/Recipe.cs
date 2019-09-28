@@ -32,6 +32,9 @@ namespace FoodAndStyleOrderPlanning.Core
         [Required]
         public int ResultingQuantityInGrams { get; set; }
         public ICollection<Ingredient> Ingredients { get; set; }
+
+        [Required]
+        public bool IsActive { get; set; }
     }
 
     public class Ingredient

@@ -99,6 +99,7 @@ namespace FoodAndStyleOrderPlanning.Pages.Recipes
                 recipe.CreatedOn = DateTime.Now;
                 recipe.UpdatedOn = recipe.CreatedOn;
                 recipe.ResultingQuantityInGrams = RecipeQuantity;
+                recipe.IsActive = true;
                 recipeData.Add(recipe);
                 recipeData.Commit();
             }
