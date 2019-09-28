@@ -12,12 +12,16 @@ namespace FoodAndStyleOrderPlanning.Pages.Recipes
     public class DeleteModel : PageModel
     {
         private readonly IData<Recipe> recipeData;
+        private readonly IData<OrderRecipeItem> orderRecipeItemData;
+        public IEnumerable<int> RecipeIdsInOrders { get; set; }
+
 
         public Recipe Recipe { get; set; }
 
-        public DeleteModel(IData<Recipe> recipeData)
+        public DeleteModel(IData<Recipe> recipeData, IData<OrderRecipeItem> orderRecipeItemData)
         {
             this.recipeData = recipeData;
+            this.orderRecipeItemData = orderRecipeItemData;
         }
 
         public IActionResult OnGet(int id)
@@ -30,16 +34,16 @@ namespace FoodAndStyleOrderPlanning.Pages.Recipes
 
         public IActionResult OnPost(int id)
         {
-            var restaurant = recipeData.Delete(id);
+            var recipe = recipeData.Delete(id);
+            if (recipe == null)
+                return RedirectToPage("./List");
+            
+            if (orderRecipeItemData.GetByName("").Where(o => o.RecipeId == recipe.Id && o.Quantity > 0).Count() > 0)
+                return RedirectToPage("./List");
+
             recipeData.Commit();
-            if (restaurant == null)
-            {
-                return RedirectToPage("./NotFound");
-            }
 
-            TempData["Message"] = "Restaurant deleted";
             return RedirectToPage("./List");
-
         }
     }
 }

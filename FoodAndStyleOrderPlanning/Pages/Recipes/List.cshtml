@@ -50,15 +50,22 @@
         <a title="Αντιγραφή" class="btn btn-lg" asp-page="./Copy" asp-route-id="@r.Id">
             <i class="fa fa-copy"></i>
         </a>
-        <a title="Διαγραφή" class="btn btn-lg" asp-page="./Delete" asp-route-id="@r.Id">
-            <i class="fa fa-trash"></i>
-        </a>
-
         <a title='@(r.IsActive ? "Απενεργοποίηση" : "Ένεργοποιηση")' class="btn btn-lg" asp-page="./ToggleActive" asp-route-id="@r.Id">
             <i class='@(r.IsActive ? "fa fa-toggle-off" : "fa fa-toggle-on")'></i>
-            
         </a>
 
+        @if (Model.RecipeIdsInOrders.Contains(r.Id))
+        {
+            <a title="Διαγραφή δεν επιτρέπεται" style="color:gray" class="btn btn-lg">
+                <i class="fa fa-trash"></i>
+            </a>
+        }
+        else
+        {
+            <a title="Διαγραφή" style="color:red" class="btn btn-lg" asp-page="./Delete" asp-route-id="@r.Id">
+                <i class="fa fa-trash"></i>
+            </a>
+        }
     </td>
 </tr>
     }
