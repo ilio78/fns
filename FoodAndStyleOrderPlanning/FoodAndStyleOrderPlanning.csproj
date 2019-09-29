@@ -18,4 +18,9 @@
     <ProjectReference Include="..\FoodAndStyleOrderPlanning.Data\FoodAndStyleOrderPlanning.Data.csproj" />
   </ItemGroup>
 
+
+  <ItemGroup>
+    <Folder Include="Pages\Shared\NewFolder\" />
+  </ItemGroup>
+
 </Project>

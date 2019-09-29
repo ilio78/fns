@@ -10,7 +10,8 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 namespace FoodAndStyleOrderPlanning.Pages.Recipes
 {
     public class ToggleActiveModel : PageModel
-    {   private IData<Recipe> recipeData;
+    {
+        private IData<Recipe> recipeData;
 
 
         public ToggleActiveModel(IData<Recipe> recipeData)

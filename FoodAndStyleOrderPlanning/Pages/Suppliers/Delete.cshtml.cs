@@ -28,6 +28,7 @@ namespace FoodAndStyleOrderPlanning.Pages.Suppliers
         public IActionResult OnGet(int id)
         {
             Entity = data.GetById(id);
+
             if (!CanDelete())
                 return RedirectToPage("./List");
 
@@ -37,9 +38,11 @@ namespace FoodAndStyleOrderPlanning.Pages.Suppliers
         public IActionResult OnPost(int id)
         {
             Entity = data.Delete(id);
-            data.Commit();
-            if (!CanDelete())
+            
+            if (CanDelete())
                 return RedirectToPage("./List");
+
+            data.Commit();
 
             TempData["Message"] = "Deleted";
             return RedirectToPage("./List");
