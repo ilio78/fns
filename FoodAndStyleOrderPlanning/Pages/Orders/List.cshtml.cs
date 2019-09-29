@@ -23,7 +23,7 @@ namespace FoodAndStyleOrderPlanning.Pages.Orders
 
         public void OnGet()
         {
-            Orders = orderData.GetByName(null).OrderByDescending(o => o.CreatedOn);
+            Orders = orderData.GetByName(null).OrderByDescending(o => o.CreatedOn).ThenBy(o=>o.Name);
         }
     }
 }

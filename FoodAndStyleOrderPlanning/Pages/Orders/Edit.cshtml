@@ -47,8 +47,8 @@
             <th class="w-25">
                 @*Συνταγη <i class="fa fa-eye" data-toggle="tooltip" data-placement="top" title="Απόκρυψη συνταγών με μηδενική ποσότητα"></i>*@ 
                 <select class="custom-select font-weight-bold" id="recipeDisplaySelect" onchange="recipeDisplaySelectionChanged(this.value);">
-                    <option value="0">'Ολες οι συνταγές</option>
-                    <option value="1">Συνταγές με ποσότητα</option>
+                    <option value="0">Συνταγές με ποσότητα</option>
+                    <option value="1">'Ολες οι συνταγές</option>
                 </select>
             </th>
             <th>Δευ.</th>
@@ -63,20 +63,18 @@
         @for (int i = 0; i < Model.RecipeChoices.Choices.Count; i++)
         {
             <tr>
-                <td title="Kωδικός:@Model.RecipeChoices.Choices[i].Id - @String.Format("{0:n0}", Model.RecipeChoices.Choices[i].RecipeResultingQuantity) γραμ.">
+                <td title="Kωδικός:@Model.RecipeChoices.Choices[i].RecipeId - @String.Format("{0:n0}", Model.RecipeChoices.Choices[i].RecipeResultingQuantity) γραμ.">
                     <input type="hidden" asp-for="@Model.RecipeChoices.Choices[i].Id" />
                     <input type="hidden" asp-for="@Model.RecipeChoices.Choices[i].RecipeId" />
                     <input type="hidden" asp-for="@Model.RecipeChoices.Choices[i].Name" />
                     <input type="hidden" asp-for="@Model.RecipeChoices.Choices[i].RecipeResultingQuantity" />
-                    @if (@Model.RecipeChoices.Choices[i].IsActive)
-                    {
-                        @Model.RecipeChoices.Choices[i].Name
-                    }
-                    else
+                    @if (!@Model.RecipeChoices.Choices[i].IsActive)
                     {
                         <i class="fa fa-warning" style="color:orange" data-toggle="tooltip" data-placement="top" title="Η συνταγή ειναι ανενεργή!"></i>
-                        @Model.RecipeChoices.Choices[i].Name
                     }
+                    <a target="_blank" asp-page="/Recipes/Edit" asp-route-id="@Model.RecipeChoices.Choices[i].RecipeId">
+                        @Model.RecipeChoices.Choices[i].Name
+                    </a>
                 </td>
                 <td>
                     <input asp-for="@Model.RecipeChoices.Choices[i].OrderQuantity_Monday" onblur="validateQuantity(this);" class="form-control font-weight-bold" />
@@ -206,7 +204,7 @@
 
     function recipeDisplaySelectionChanged(value) {
       
-        if (value == '0') {
+        if (value == '1') {
             $('#recipeQuantityTable tr').each(function () {
                 $(this).show();
             });
@@ -222,8 +220,11 @@
                     row.hide();
             });
         }
-}
+    }
 
+    $(function () {
+        recipeDisplaySelectionChanged('');
+    });
 
 
 </script>

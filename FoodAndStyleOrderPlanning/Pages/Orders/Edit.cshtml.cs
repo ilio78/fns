@@ -66,6 +66,7 @@ namespace FoodAndStyleOrderPlanning.Pages.Orders
                 });
             }
 
+            // Get only recipe quantity data related to this order only!
             var alreadySelected = orderRecipeItemData.GetByName(null).Where(o => o.OrderId == Order.Id).ToList();
 
             foreach (var c in RecipeChoices.Choices)

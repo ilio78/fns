@@ -80,6 +80,12 @@ namespace FoodAndStyleOrderPlanning.Core
         [Required]
         public string UpdatedBy { get; set; }
 
+        [Required]
+        public bool IsArchived { get; set; }
+
+        [Required]
+        public bool IsActive { get; set; }
+
         public ICollection<OrderRecipeItem> OrderRecipeItems { get; set; }
     }
 
