@@ -26,7 +26,6 @@ namespace FoodAndStyleOrderPlanning.Pages.Orders
         private readonly IData<OrderRecipeItem> orderRecipeItemData;
         private readonly IData<Product> productData;
 
-
         public EditModel(IData<Recipe> recipeData, IData<Order> orderData, IData<OrderRecipeItem> orderRecipeItemData, IData<Product> productData)
         {
             this.recipeData = recipeData;
@@ -55,7 +54,8 @@ namespace FoodAndStyleOrderPlanning.Pages.Orders
             var Recipes = recipeData.GetByName(null).ToList();
 
             RecipeChoices = new RecipeChoicesViewModel();
-       
+
+            // RecipeChoicesViewModel only contains a list of ChoiceViewModel items. They are the rows of the recipe quantity table.
             int i = 1;
             foreach (Recipe r in Recipes)
             {
@@ -66,55 +66,62 @@ namespace FoodAndStyleOrderPlanning.Pages.Orders
                 });
             }
 
-            // Get only recipe quantity data related to this order only!
-            var alreadySelected = orderRecipeItemData.GetByName(null).Where(o => o.OrderId == Order.Id).ToList();
+            // Get only recipe quantity data related to this order only - Even new orders must have been saved first so an OrderId will exist.
+            var orderRecipes = orderRecipeItemData.GetByName(null).Where(o => o.OrderId == Order.Id).ToList();
 
             foreach (var c in RecipeChoices.Choices)
             {
-                foreach(var orderRecipeItem in alreadySelected.Where(o => o.RecipeId == c.RecipeId))
+                // Scan each recipe to see if a quantity for a particular days is set. For a new order this will not find anything!
+                foreach(var orderRecipe in orderRecipes.Where(o => o.RecipeId == c.RecipeId))
                 {
-                    switch (orderRecipeItem.Day)
+                    switch (orderRecipe.Day)
                     {
                         case OrderDay.Monday:
-                            c.OrderQuantity_Monday = orderRecipeItem.Quantity;
+                            c.OrderQuantity_Monday = orderRecipe.Quantity;
                             break;
                         case OrderDay.Tuesday:
-                            c.OrderQuantity_Tuesday = orderRecipeItem.Quantity;
+                            c.OrderQuantity_Tuesday = orderRecipe.Quantity;
                             break;
                         case OrderDay.Wednesday:
-                            c.OrderQuantity_Wednesday = orderRecipeItem.Quantity;
+                            c.OrderQuantity_Wednesday = orderRecipe.Quantity;
                             break;
                         case OrderDay.Thursday:
-                            c.OrderQuantity_Thursday = orderRecipeItem.Quantity;
+                            c.OrderQuantity_Thursday = orderRecipe.Quantity;
                             break;
                         case OrderDay.Friday:
-                            c.OrderQuantity_Friday = orderRecipeItem.Quantity;
+                            c.OrderQuantity_Friday = orderRecipe.Quantity;
                             break;
                         case OrderDay.Saturday:
-                            c.OrderQuantity_Saturday = orderRecipeItem.Quantity;
+                            c.OrderQuantity_Saturday = orderRecipe.Quantity;
                             break;
                         case OrderDay.Sunday:
-                            c.OrderQuantity_Sunday = orderRecipeItem.Quantity;
+                            c.OrderQuantity_Sunday = orderRecipe.Quantity;
                             break;
                     }
                 }
             }
 
+            // Now that we know the quantities for each recipe we can remove those that are inactive and have 0 total quantity.
+            // If they have more than 0 quantity we still need to show them as they were previously chosen!
             RecipeChoices.Choices.RemoveAll(c => !c.IsActive && c.TotalWeekOrderQuantity == 0);
+
 
             OrderProductItems = new List<OrderProductItem>();
 
             foreach (Recipe recipe in Recipes)
             {
+                // SingleOrDefault is used because some inactive recipes have been excluded!
                 var choice = RecipeChoices.Choices.SingleOrDefault(r => r.RecipeId == recipe.Id);
 
                 if (choice == null)
                     continue;
 
-                if (choice.OrderQuantity_Monday + choice.OrderQuantity_Tuesday + choice.OrderQuantity_Wednesday +
-                    choice.OrderQuantity_Thursday + choice.OrderQuantity_Friday + choice.OrderQuantity_Saturday + choice.OrderQuantity_Sunday == 0)
+                // If the recipe does not have any quantities selected for any day continue...
+                if (choice.TotalWeekOrderQuantity == 0)
                     continue;
 
+                // For this recipe that we know that at least 1 quantity order for some day exists add its incredients * quantity 
+                // to the total ingredient quantity list "OrderProductItems"
                 foreach (Ingredient ingredient in recipe.Ingredients)
                 {
                     OrderProductItem item = OrderProductItems.SingleOrDefault(o => o.Product.Id == ingredient.Product.Id);
@@ -123,42 +130,45 @@ namespace FoodAndStyleOrderPlanning.Pages.Orders
                         item = new OrderProductItem() { Product = ingredient.Product, Supplier = ingredient.Product.Supplier };
                         OrderProductItems.Add(item);
                     }
-
-                    item.Quantity += choice.OrderQuantity_Monday * ingredient.Quantity;
-                    item.Quantity += choice.OrderQuantity_Tuesday * ingredient.Quantity;
-                    item.Quantity += choice.OrderQuantity_Wednesday * ingredient.Quantity;
-                    item.Quantity += choice.OrderQuantity_Thursday * ingredient.Quantity;
-                    item.Quantity += choice.OrderQuantity_Friday * ingredient.Quantity;
-                    item.Quantity += choice.OrderQuantity_Saturday * ingredient.Quantity;
-                    item.Quantity += choice.OrderQuantity_Sunday * ingredient.Quantity;
+                    // At this point it does not matter which day the order for this recipe is place. We only care about the weekly total!
+                    item.Quantity += choice.TotalWeekOrderQuantity * ingredient.Quantity;
                 }
             }
             
             OrderProductItems = OrderProductItems.OrderBy(o => o.Product.ProductType).ThenBy(o => o.Product.Name).ToList();
 
+            // *** At this point the first sub table for the total item order is completed *** OrderProductItems is not used anymore!
+
+            // *** The more complex part of computing the order per day and supplier starts here ***
+            
+            // This is the end result: A map that for each day (key) has another map as value which has productId as key and quantity as value!
             Dictionary<OrderDay, Dictionary<int, int>> productQuantityOrderedPerDay = new Dictionary<OrderDay, Dictionary<int, int>>();
 
-            foreach(OrderDay day in (OrderDay[])Enum.GetValues(typeof(OrderDay)))
+            foreach(OrderDay day in Enum.GetValues(typeof(OrderDay)))
             {
                 productQuantityOrderedPerDay[day] = new Dictionary<int, int>();
 
-                List<OrderRecipeItem> items = orderRecipeItemData.GetByName(null).Where(o => o.OrderId == Order.Id && o.Day == day).ToList();
-                foreach(var dayOrder in items)
+                List<OrderRecipeItem> dayOrderRecipeItems = orderRecipes.Where(o => o.Day == day).ToList();
+
+                foreach(var orderRecipeItem in dayOrderRecipeItems)
                 {
-                    foreach(var recipeIngredient in dayOrder.Recipe.Ingredients)
+                    foreach(var recipeIngredient in orderRecipeItem.Recipe.Ingredients)
                     {
-                        int currentIngredientQuantity = 0;
-                        productQuantityOrderedPerDay[day].TryGetValue(recipeIngredient.Id, out currentIngredientQuantity);
-                        productQuantityOrderedPerDay[day][recipeIngredient.ProductId] = currentIngredientQuantity + recipeIngredient.Quantity * dayOrder.Quantity;
+                        productQuantityOrderedPerDay[day].TryGetValue(recipeIngredient.ProductId, out int currentIngredientQuantity);
+                        productQuantityOrderedPerDay[day][recipeIngredient.ProductId] = currentIngredientQuantity + recipeIngredient.Quantity * orderRecipeItem.Quantity;
                     }
                 }
             }
+
+            //*** We now have an object that contains per day per product the quantities needed for this order ***
+            
+            // However we need a product delivery schedule per day depending on when the product is needed!
 
             ProductDeliveryPerDay = new Dictionary<ProductDeliveryDay, Dictionary<Product, int>>();
 
             var products = productData.GetByName(null).ToList();
 
-            foreach (OrderDay day in (OrderDay[])Enum.GetValues(typeof(OrderDay)))
+            foreach (OrderDay day in Enum.GetValues(typeof(OrderDay)))
             {
                 foreach(int productId in productQuantityOrderedPerDay[day].Keys)
                 {
@@ -166,6 +176,7 @@ namespace FoodAndStyleOrderPlanning.Pages.Orders
 
                     ProductDeliveryDay deliveryDay = ProductDeliveryDay.PreviousFriday;
 
+                    // THIS IS REALLY CRUCIAL HERE!!! - MUST REVIEW THIS AGAIN!!!!
                     if (product.OrderWindow > 0)
                         deliveryDay = (ProductDeliveryDay)Math.Max((int)day - product.OrderWindow, (int)ProductDeliveryDay.PreviousFriday);
                    
