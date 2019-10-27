@@ -7,115 +7,117 @@
     Layout = "~/Pages/Shared/_Layout.cshtml";
 }
 
-<form method="post">
+    <form method="post">
 
-    <div class="card">
-        <div class="card-body">
-            @*<h5 class="card-title">Στοιχεία Συνταγής</h5>*@
-            <div class="row">
-                <div class="col-sm-8">
-                    <input type="hidden" asp-for="@Model.Order.Id" />
-                    <input type="hidden" asp-for="@Model.Order.CreatedOn" />
-                    <input type="hidden" asp-for="@Model.Order.CreatedBy" />
-                    <input type="hidden" asp-for="@Model.Order.UpdatedOn" />
-                    <input type="hidden" asp-for="@Model.Order.UpdatedBy" />
-                    <div class="form-group">
-                        <label asp-for="@Model.Order.Name">Ονομασία</label>
-                        <input asp-for="@Model.Order.Name" class="form-control w-100 font-weight-bold" />
-                        <span class="text-danger" asp-validation-for="@Model.Order.Name"></span>
+        <div class="card">
+            <div class="card-body">
+                @*<h5 class="card-title">Στοιχεία Συνταγής</h5>*@
+                <div class="row">
+                    <div class="col-sm-8">
+                        <input type="hidden" asp-for="@Model.Order.Id" />
+                        <input type="hidden" asp-for="@Model.Order.CreatedOn" />
+                        <input type="hidden" asp-for="@Model.Order.CreatedBy" />
+                        <input type="hidden" asp-for="@Model.Order.UpdatedOn" />
+                        <input type="hidden" asp-for="@Model.Order.UpdatedBy" />
+                        <div class="form-group">
+                            <label asp-for="@Model.Order.Name">Ονομασία</label>
+                            <input asp-for="@Model.Order.Name" class="form-control w-100 font-weight-bold" />
+                            <span class="text-danger" asp-validation-for="@Model.Order.Name"></span>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary">Αποθήκευση</button>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <button type="submit" class="btn btn-primary">Αποθήκευση</button>
-                    </div>
-                </div>
-                <div class="col-sm-4">
-                    <div class="card" style="width: 18rem;">
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item">Δημιουργία: @Model.Order.CreatedOn.ToString(Helpers.DateTimeFormater)</li>
-                            <li class="list-group-item">Από: @Model.Order.CreatedBy</li>
-                            <li class="list-group-item">Τροποποίηση: @Model.Order.UpdatedOn.ToString(Helpers.DateTimeFormater)</li>
-                            <li class="list-group-item">Από: @Model.Order.UpdatedBy</li>
-                        </ul>
+                    <div class="col-sm-4">
+                        <div class="card" style="width: 18rem;">
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">Δημιουργία: @Model.Order.CreatedOn.ToString(Helpers.DateTimeFormater)</li>
+                                <li class="list-group-item">Από: @Model.Order.CreatedBy</li>
+                                <li class="list-group-item">Τροποποίηση: @Model.Order.UpdatedOn.ToString(Helpers.DateTimeFormater)</li>
+                                <li class="list-group-item">Από: @Model.Order.UpdatedBy</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <hr />
-    <table cellpadding="0" cellspacing="0" id="recipeQuantityTable" class="table table-sm table-striped table-hover">
-        <tr>
-            <th class="w-25">
-                @*Συνταγη <i class="fa fa-eye" data-toggle="tooltip" data-placement="top" title="Απόκρυψη συνταγών με μηδενική ποσότητα"></i>*@ 
-                <select class="custom-select font-weight-bold" id="recipeDisplaySelect" onchange="recipeDisplaySelectionChanged(this.value);">
-                    <option value="0">Συνταγές με ποσότητα</option>
-                    <option value="1">'Ολες οι συνταγές</option>
-                </select>
-            </th>
-            <th>Δευ.</th>
-            <th>Τρι.</th>
-            <th>Τετ.</th>
-            <th>Πεμ.</th>
-            <th>Παρ.</th>
-            <th>Σαβ.</th>
-            <th>Κυρ.</th>
-        </tr>
-
-        @for (int i = 0; i < Model.RecipeChoices.Choices.Count; i++)
-        {
+        <hr />
+        <table cellpadding="0" cellspacing="0" id="recipeQuantityTable" class="table table-sm table-striped table-hover">
             <tr>
-                <td title="Kωδικός:@Model.RecipeChoices.Choices[i].RecipeId - @String.Format("{0:n0}", Model.RecipeChoices.Choices[i].RecipeResultingQuantity) γραμ.">
-                    <input type="hidden" asp-for="@Model.RecipeChoices.Choices[i].Id" />
-                    <input type="hidden" asp-for="@Model.RecipeChoices.Choices[i].RecipeId" />
-                    <input type="hidden" asp-for="@Model.RecipeChoices.Choices[i].Name" />
-                    <input type="hidden" asp-for="@Model.RecipeChoices.Choices[i].RecipeResultingQuantity" />
-                    @if (!@Model.RecipeChoices.Choices[i].IsActive)
-                    {
-                        <i class="fa fa-warning" style="color:orange" data-toggle="tooltip" data-placement="top" title="Η συνταγή ειναι ανενεργή!"></i>
-                    }
-                    <a target="_blank" asp-page="/Recipes/Edit" asp-route-id="@Model.RecipeChoices.Choices[i].RecipeId">
-                        @Model.RecipeChoices.Choices[i].Name
-                    </a>
-                </td>
-                <td>
-                    <input asp-for="@Model.RecipeChoices.Choices[i].OrderQuantity_Monday" onblur="validateQuantity(this);" class="form-control font-weight-bold" />
-                    <span class="text-danger" asp-validation-for="@Model.RecipeChoices.Choices[i].OrderQuantity_Monday"></span>
-                </td>
-                <td>
-                    <input asp-for="@Model.RecipeChoices.Choices[i].OrderQuantity_Tuesday" onblur="validateQuantity(this);" class="form-control font-weight-bold" />
-                    <span class="text-danger" asp-validation-for="@Model.RecipeChoices.Choices[i].OrderQuantity_Tuesday"></span>
-                </td>
-                <td>
-                    <input asp-for="@Model.RecipeChoices.Choices[i].OrderQuantity_Wednesday" onblur="validateQuantity(this);" class="form-control font-weight-bold" />
-                    <span class="text-danger" asp-validation-for="@Model.RecipeChoices.Choices[i].OrderQuantity_Wednesday"></span>
-                </td>
-                <td>
-                    <input asp-for="@Model.RecipeChoices.Choices[i].OrderQuantity_Thursday" onblur="validateQuantity(this);" class="form-control font-weight-bold" />
-                    <span class="text-danger" asp-validation-for="@Model.RecipeChoices.Choices[i].OrderQuantity_Thursday"></span>
-                </td>
-                <td>
-                    <input asp-for="@Model.RecipeChoices.Choices[i].OrderQuantity_Friday" onblur="validateQuantity(this);" class="form-control font-weight-bold" />
-                    <span class="text-danger" asp-validation-for="@Model.RecipeChoices.Choices[i].OrderQuantity_Friday"></span>
-                </td>
-                <td>
-                    <input asp-for="@Model.RecipeChoices.Choices[i].OrderQuantity_Saturday" onblur="validateQuantity(this);" class="form-control font-weight-bold" />
-                    <span class="text-danger" asp-validation-for="@Model.RecipeChoices.Choices[i].OrderQuantity_Saturday"></span>
-                </td>
-                <td>
-                    <input asp-for="@Model.RecipeChoices.Choices[i].OrderQuantity_Sunday" onblur="validateQuantity(this);" class="form-control font-weight-bold" />
-                    <span class="text-danger" asp-validation-for="@Model.RecipeChoices.Choices[i].OrderQuantity_Sunday"></span>
-                </td>
+                <th class="w-25">
+                    <select class="custom-select font-weight-bold" id="recipeDisplaySelect" onchange="recipeDisplaySelectionChanged(this.value);">
+                        <option value="0">Συνταγές με ποσότητα</option>
+                        <option value="1">'Ολες οι συνταγές</option>
+                    </select>
+                </th>
+                <th>Δευ.</th>
+                <th>Τρι.</th>
+                <th>Τετ.</th>
+                <th>Πεμ.</th>
+                <th>Παρ.</th>
+                <th>Σαβ.</th>
+                <th>Κυρ.</th>
             </tr>
-        }
-    </table>
 
-</form>
+            @for (int i = 0; i < Model.RecipeChoices.Choices.Count; i++)
+            {
+                <tr>
+                    <td title="Kωδικός:@Model.RecipeChoices.Choices[i].RecipeId - @String.Format("{0:n0}", Model.RecipeChoices.Choices[i].RecipeResultingQuantity) γραμ.">
+                        <input type="hidden" asp-for="@Model.RecipeChoices.Choices[i].Id" />
+                        <input type="hidden" asp-for="@Model.RecipeChoices.Choices[i].RecipeId" />
+                        <input type="hidden" asp-for="@Model.RecipeChoices.Choices[i].Name" />
+                        <input type="hidden" asp-for="@Model.RecipeChoices.Choices[i].RecipeResultingQuantity" />
+                        @if (!@Model.RecipeChoices.Choices[i].IsActive)
+                        {
+                            <i class="fa fa-warning" style="color:orange" data-toggle="tooltip" data-placement="top" title="Η συνταγή ειναι ανενεργή!"></i>
+                        }
+                        <a target="_blank" asp-page="/Recipes/Edit" asp-route-id="@Model.RecipeChoices.Choices[i].RecipeId">
+                            @Model.RecipeChoices.Choices[i].Name
+                        </a>
+                    </td>
+                    <td>
+                        <input asp-for="@Model.RecipeChoices.Choices[i].OrderQuantity_Monday" onblur="validateQuantity(this);" class="form-control font-weight-bold" />
+                        <span class="text-danger" asp-validation-for="@Model.RecipeChoices.Choices[i].OrderQuantity_Monday"></span>
+                    </td>
+                    <td>
+                        <input asp-for="@Model.RecipeChoices.Choices[i].OrderQuantity_Tuesday" onblur="validateQuantity(this);" class="form-control font-weight-bold" />
+                        <span class="text-danger" asp-validation-for="@Model.RecipeChoices.Choices[i].OrderQuantity_Tuesday"></span>
+                    </td>
+                    <td>
+                        <input asp-for="@Model.RecipeChoices.Choices[i].OrderQuantity_Wednesday" onblur="validateQuantity(this);" class="form-control font-weight-bold" />
+                        <span class="text-danger" asp-validation-for="@Model.RecipeChoices.Choices[i].OrderQuantity_Wednesday"></span>
+                    </td>
+                    <td>
+                        <input asp-for="@Model.RecipeChoices.Choices[i].OrderQuantity_Thursday" onblur="validateQuantity(this);" class="form-control font-weight-bold" />
+                        <span class="text-danger" asp-validation-for="@Model.RecipeChoices.Choices[i].OrderQuantity_Thursday"></span>
+                    </td>
+                    <td>
+                        <input asp-for="@Model.RecipeChoices.Choices[i].OrderQuantity_Friday" onblur="validateQuantity(this);" class="form-control font-weight-bold" />
+                        <span class="text-danger" asp-validation-for="@Model.RecipeChoices.Choices[i].OrderQuantity_Friday"></span>
+                    </td>
+                    <td>
+                        <input asp-for="@Model.RecipeChoices.Choices[i].OrderQuantity_Saturday" onblur="validateQuantity(this);" class="form-control font-weight-bold" />
+                        <span class="text-danger" asp-validation-for="@Model.RecipeChoices.Choices[i].OrderQuantity_Saturday"></span>
+                    </td>
+                    <td>
+                        <input asp-for="@Model.RecipeChoices.Choices[i].OrderQuantity_Sunday" onblur="validateQuantity(this);" class="form-control font-weight-bold" />
+                        <span class="text-danger" asp-validation-for="@Model.RecipeChoices.Choices[i].OrderQuantity_Sunday"></span>
+                    </td>
+                </tr>
+            }
+        </table>
+
+    </form>
 
 <div class="card">
     <div class="card-body">
         <div class="font-weight-bold bg-primary card-title">
-            Προϊόντα Εβδομάδας / Συνολικό Kόστος: @String.Format("{0:n}€", Model.OrderProductItems.Sum(o => (o.Product.Price * o.Quantity) / 100))
+            <a class="btn btn-large btn-primary" onclick="toggleTable('wholeWeekTable', 'toggleButtonIcon');" style="cursor:pointer;">
+                <i class="fa fa-compress m-1" style="color:white" id="toggleButtonIcon" aria-hidden="true"></i>
+            </a>
+            Προϊόντα Εβδομάδας:@(Model?.OrderProductItems.Count ?? 0) - Συνολικό Kόστος:@String.Format("{0:n}€", Model.OrderProductItems.Sum(o => (o.Product.Price * o.Quantity) / 100))
         </div>
-        <table class="table table-sm table-striped">
+        <table id="wholeWeekTable" class="table table-sm table-striped">
             <tr>
                 <th>Τύπος</th>
                 <th>Προϊόν</th>
@@ -138,8 +140,6 @@
 </div>
 
 <br />
-
-@*@foreach (ProductDeliveryDay day in ((ProductDeliveryDay[])Enum.GetValues(typeof(ProductDeliveryDay))).OrderBy(e=>(int)e))*@
 
 @foreach (ProductDeliveryDay day in Model.ProductDeliveryPerDay.Keys.OrderBy(k => (int)k))
 {
@@ -225,6 +225,26 @@
     $(function () {
         recipeDisplaySelectionChanged('');
     });
+
+    function toggleTable(id, toggleButtonIconId) {
+
+        var buttonObj = $('#'.concat(toggleButtonIconId));
+
+        if (buttonObj.hasClass("fa-compress"))
+            compressTable(id, buttonObj);
+        else
+            expandTable(id, buttonObj);
+    }
+
+    function expandTable(id, buttonObj) {
+        $('#'.concat(id)).show(500);
+        buttonObj.removeClass("fa-expand").addClass("fa-compress");
+    }
+
+    function compressTable(id, buttonObj) {
+        $('#'.concat(id)).hide(500);
+        buttonObj.removeClass("fa-compress").addClass("fa-expand");
+    }
 
 
 </script>
