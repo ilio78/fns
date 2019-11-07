@@ -110,13 +110,13 @@
     </form>
 
 <div class="card">
+    <div class="font-weight-bold bg-primary card-title">
+        <a class="btn btn-large btn-primary" onclick="toggleTable('wholeWeekTable', 'wholeWeekTableToggleButtonIcon');" style="cursor:pointer;">
+            <i class="fa fa-compress m-1" style="color:white" id="wholeWeekTableToggleButtonIcon" aria-hidden="true"></i>
+        </a>
+        Προϊόντα Εβδομάδας:@(Model?.OrderProductItems.Count ?? 0) - Συνολικό Kόστος:@String.Format("{0:n}€", Model.OrderProductItems.Sum(o => (o.Product.Price * o.Quantity) / 100))
+    </div>
     <div class="card-body">
-        <div class="font-weight-bold bg-primary card-title">
-            <a class="btn btn-large btn-primary" onclick="toggleTable('wholeWeekTable', 'toggleButtonIcon');" style="cursor:pointer;">
-                <i class="fa fa-compress m-1" style="color:white" id="toggleButtonIcon" aria-hidden="true"></i>
-            </a>
-            Προϊόντα Εβδομάδας:@(Model?.OrderProductItems.Count ?? 0) - Συνολικό Kόστος:@String.Format("{0:n}€", Model.OrderProductItems.Sum(o => (o.Product.Price * o.Quantity) / 100))
-        </div>
         <table id="wholeWeekTable" class="table table-sm table-striped">
             <tr>
                 <th>Τύπος</th>
@@ -144,10 +144,13 @@
 @foreach (ProductDeliveryDay day in Model.ProductDeliveryPerDay.Keys.OrderBy(k => (int)k))
 {
     <div class="card">
-        <div class="font-weight-bold card-title">
+        <div class="font-weight-bold bg-secondary card-title">
+            <a class="btn btn-secondary" onclick="toggleTable('@string.Format("div_"+day.ToString())', '@string.Format("toggleButtonIcon_"+day.ToString())');" style="cursor:pointer;">
+                <i class="fa fa-compress m-1" style="color:white" id="@string.Format("toggleButtonIcon_"+day.ToString())" aria-hidden="true"></i>
+            </a>
             Παράδοση @day.ToString() / Συνολικό Kόστος: @(String.Format("{0:n}€", Model.ProductDeliveryPerDay[day].Keys.ToList().Sum(i => (i.Price * Model.ProductDeliveryPerDay[day][i]) / 100)))
         </div>
-        <div class="card-body">
+        <div class="card-body" id="@string.Format("div_"+day.ToString())">
             @foreach (var supplierProductKey in Model.ProductDeliveryPerDay[day].Keys.ToList().GroupBy(p => p.Supplier))
             {
                 <div class="card">
@@ -189,6 +192,29 @@
 
 <script type="text/javascript">
 
+    $(function () {
+
+        recipeDisplaySelectionChanged('');
+
+        var orderEditMainTableIsCompressed = localStorage.getItem('wholeWeekTableToggleButtonIcon_IsCompressed');
+        if (orderEditMainTableIsCompressed) {
+            compressTable('wholeWeekTable', $('#wholeWeekTableToggleButtonIcon'), false);
+        }
+
+        var keys = Object.keys(localStorage);
+        for (i = 0; i < keys.length; i++) {
+            
+            if (!keys[i].endsWith('_IsCompressed') || !localStorage.getItem(keys[i]))
+                continue;
+
+            var info = keys[i].split('_');
+            if (info.length != 3)
+                continue;
+
+            compressTable('div_'.concat(info[1]), $('#toggleButtonIcon_'.concat(info[1])), false);
+        }        
+    });
+
     function validateQuantity(inputField) {
         if (inputField.value == '')
             inputField.value = '0';
@@ -222,29 +248,31 @@
         }
     }
 
-    $(function () {
-        recipeDisplaySelectionChanged('');
-    });
-
-    function toggleTable(id, toggleButtonIconId) {
-
-        var buttonObj = $('#'.concat(toggleButtonIconId));
-
-        if (buttonObj.hasClass("fa-compress"))
-            compressTable(id, buttonObj);
-        else
-            expandTable(id, buttonObj);
-    }
-
     function expandTable(id, buttonObj) {
         $('#'.concat(id)).show(500);
         buttonObj.removeClass("fa-expand").addClass("fa-compress");
     }
 
-    function compressTable(id, buttonObj) {
-        $('#'.concat(id)).hide(500);
+    function compressTable(id, buttonObj, fade) {
+        if (fade)
+            $('#'.concat(id)).hide(500);
+        else
+            $('#'.concat(id)).hide();
+
         buttonObj.removeClass("fa-compress").addClass("fa-expand");
     }
 
+    function toggleTable(id, toggleButtonIconId) {
+       var buttonObj = $('#'.concat(toggleButtonIconId));
+
+        if (buttonObj.hasClass("fa-compress")) {
+            compressTable(id, buttonObj, true);
+            localStorage.setItem(toggleButtonIconId.concat('_IsCompressed'), true);
+        }
+        else {
+            expandTable(id, buttonObj);
+            localStorage.removeItem(toggleButtonIconId.concat('_IsCompressed'));
+        }
+    }
 
 </script>
