@@ -145,10 +145,16 @@
 {
     <div class="card">
         <div class="font-weight-bold bg-secondary card-title">
-            <a class="btn btn-secondary" onclick="toggleTable('@string.Format("div_"+day.ToString())', '@string.Format("toggleButtonIcon_"+day.ToString())');" style="cursor:pointer;">
-                <i class="fa fa-compress m-1" style="color:white" id="@string.Format("toggleButtonIcon_"+day.ToString())" aria-hidden="true"></i>
-            </a>
-            Παράδοση @day.ToString() / Συνολικό Kόστος: @(String.Format("{0:n}€", Model.ProductDeliveryPerDay[day].Keys.ToList().Sum(i => (i.Price * Model.ProductDeliveryPerDay[day][i]) / 100)))
+            <div class="float-left">
+                <a class="btn btn-secondary" onclick="toggleTable('@string.Format("div_"+day.ToString())', '@string.Format("toggleButtonIcon_"+day.ToString())');" style="cursor:pointer;">
+                    <i class="fa fa-compress m-1" style="color:white" id="@string.Format("toggleButtonIcon_"+day.ToString())" aria-hidden="true"></i>
+                </a>
+                Παράδοση @day.ToString() : 
+                Προμηθευτές @Model.ProductDeliveryPerDay[day].Keys.ToList().Select(s => s.SupplierId).Distinct().Count() - Προϊόντα @Model.ProductDeliveryPerDay[day].Keys.Count()
+            </div>
+            <div class="float-right">
+                Συνολικό Kόστος: @(String.Format("{0:n}€", Model.ProductDeliveryPerDay[day].Keys.ToList().Sum(i => (i.Price * Model.ProductDeliveryPerDay[day][i]) / 100)))
+            </div>
         </div>
         <div class="card-body" id="@string.Format("div_"+day.ToString())">
             @foreach (var supplierProductKey in Model.ProductDeliveryPerDay[day].Keys.ToList().GroupBy(p => p.Supplier))
