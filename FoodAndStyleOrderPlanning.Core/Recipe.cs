@@ -31,10 +31,28 @@ namespace FoodAndStyleOrderPlanning.Core
 
         [Required]
         public int ResultingQuantityInGrams { get; set; }
+
         public ICollection<Ingredient> Ingredients { get; set; }
+
+        public RecipeType? RecipeType { get; set; }
 
         [Required]
         public bool IsActive { get; set; }
+    }
+
+    public class RecipeViewModel
+    {
+        public RecipeViewModel()
+        {
+            
+        }
+
+        public RecipeViewModel(Recipe recipe)
+        {
+            RecipeType = recipe?.RecipeType ?? RecipeType.OliveOil;
+        }
+
+        public RecipeType RecipeType { get; set; }
     }
 
     public class Ingredient

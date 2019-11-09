@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -31,6 +32,11 @@ namespace FoodAndStyleOrderPlanning.Pages.Recipes
         public DateTime RecipeCreatedOn { get; set; }
         public DateTime RecipeUpdatedOn { get; set; }
 
+        public SelectList RecipeType { get; set; }
+
+        [BindProperty]
+        public RecipeViewModel RecipeViewModel { get; set; }
+
         public string PageTitle { get; set; }
 
         public List<RecipeIngredientViewModel> RecipeIngredients { get; set; }
@@ -49,6 +55,7 @@ namespace FoodAndStyleOrderPlanning.Pages.Recipes
             RecipeQuantity = recipe.ResultingQuantityInGrams;
             RecipeCreatedOn = recipe.CreatedOn;
             RecipeUpdatedOn = recipe.UpdatedOn;
+            RecipeViewModel = new RecipeViewModel(recipe); 
 
             RecipeIngredients = new List<RecipeIngredientViewModel>();
             foreach (Ingredient i in recipe.Ingredients.OrderBy(i=>i.Product.Name))
@@ -58,11 +65,14 @@ namespace FoodAndStyleOrderPlanning.Pages.Recipes
         }
 
         public IActionResult OnGet(int? id)
-        {           
+        {
+            RecipeType = new SelectList((IEnumerable)LanguageResources.RecipeTypeTranslations.OrderBy(s => s.Value), "Key", "Value");
+
             if (id == null)
             {
                 PageTitle = "Προσθήκη Νέας Συνταγής";
                 RecipeIngredients = new List<RecipeIngredientViewModel>();
+                RecipeViewModel = new RecipeViewModel();
             }
             else
             {
@@ -85,27 +95,30 @@ namespace FoodAndStyleOrderPlanning.Pages.Recipes
             if (RecipeId > 0)
             {
                 recipe = recipeData.GetById(RecipeId);
-
-                recipe.Name = RecipeName.Trim();
-                recipe.ResultingQuantityInGrams = RecipeQuantity;
-                recipe.UpdatedOn = DateTime.Now;
+                SetRecipeProperties(recipe, DateTime.Now);
                 recipeData.Update(recipe);
-                recipeData.Commit();
             }
             else
             {
                 recipe = new Recipe();
-                recipe.Name = RecipeName;
                 recipe.CreatedOn = DateTime.Now;
-                recipe.UpdatedOn = recipe.CreatedOn;
-                recipe.ResultingQuantityInGrams = RecipeQuantity;
                 recipe.IsActive = true;
+                SetRecipeProperties(recipe, recipe.CreatedOn);
                 recipeData.Add(recipe);
-                recipeData.Commit();
             }
 
+            recipeData.Commit();
+
             return RedirectToPage("./Edit", new { id = recipe.Id });
-                       
+
+        }
+
+        private void SetRecipeProperties(Recipe recipe, DateTime updatedOn)
+        {
+            recipe.Name = RecipeName.Trim();
+            recipe.ResultingQuantityInGrams = RecipeQuantity;
+            recipe.RecipeType = RecipeViewModel.RecipeType;
+            recipe.UpdatedOn = updatedOn;
         }
     }
 }

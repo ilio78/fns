@@ -10,6 +10,7 @@ namespace FoodAndStyleOrderPlanning.Core
         public static Dictionary<string, string> ProductTypeTranslations;
         public static Dictionary<string, string> MeasuringUnitTranslations;
         public static Dictionary<string, string> ProductFreshnessTranslations;
+        public static Dictionary<string, string> RecipeTypeTranslations;
 
         public static string GetMeasuringUnitTranslation(MeasuringUnit measuringUnit)
         {
@@ -24,6 +25,11 @@ namespace FoodAndStyleOrderPlanning.Core
         {
             return LanguageResources.ProductFreshnessTranslations.First(p => p.Key == ((int)productFreshnessOption).ToString()).Value;
         }
+
+        //public static string GetMeasuringUnitTranslation(RecipeType recipeType)
+        //{
+        //    return LanguageResources.MeasuringUnitTranslations.First(p => p.Key == ((int)measuringUnit).ToString()).Value;
+        //}
 
 
         static LanguageResources()
@@ -50,6 +56,21 @@ namespace FoodAndStyleOrderPlanning.Core
             ProductFreshnessTranslations.Add(((int)ProductFreshness.FourDaysBeforeOrder).ToString(), "4 μέρες");
             ProductFreshnessTranslations.Add(((int)ProductFreshness.FiveDaysBeforeOrder).ToString(), "5 μέρες");
             ProductFreshnessTranslations.Add(((int)ProductFreshness.Indifferent).ToString(), "Αδιάφορο");
+
+            RecipeTypeTranslations = new Dictionary<string, string>();
+            RecipeTypeTranslations.Add(((int)RecipeType.OliveOil).ToString(), "OliveOil");
+            RecipeTypeTranslations.Add(((int)RecipeType.Ospria).ToString(), "Ospria");
+            RecipeTypeTranslations.Add(((int)RecipeType.Soup).ToString(), "Soup");
+            RecipeTypeTranslations.Add(((int)RecipeType.Pasta).ToString(), "Pasta");
+            RecipeTypeTranslations.Add(((int)RecipeType.Pies).ToString(), "Pies");
+            RecipeTypeTranslations.Add(((int)RecipeType.GroundMeat).ToString(), "GroundMeat");
+            RecipeTypeTranslations.Add(((int)RecipeType.Beef).ToString(), "Beef");
+            RecipeTypeTranslations.Add(((int)RecipeType.Pork).ToString(), "Pork");
+            RecipeTypeTranslations.Add(((int)RecipeType.Sausage).ToString(), "Sausage");
+            RecipeTypeTranslations.Add(((int)RecipeType.Tartes).ToString(), "Tartes");
+            RecipeTypeTranslations.Add(((int)RecipeType.StreetFood).ToString(), "StreetFood");
+            RecipeTypeTranslations.Add(((int)RecipeType.Salad).ToString(), "Salad");
+            RecipeTypeTranslations.Add(((int)RecipeType.Sandwich).ToString(), "Sandwich");
         }
 }
 

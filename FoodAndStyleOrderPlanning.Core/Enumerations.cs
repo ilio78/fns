@@ -32,6 +32,23 @@
         Indifferent = 50
     }
 
+    public enum RecipeType
+    {
+        OliveOil = 1,
+        Ospria,
+        Soup,
+        Pasta,
+        Pies,
+        GroundMeat,
+        Beef,
+        Pork,
+        Sausage,
+        Tartes,
+        StreetFood,
+        Salad,
+        Sandwich
+    }
+
     public enum ProductType
     {
         FruitAndVegetables_Fresh,
@@ -43,6 +60,7 @@
         Other,
         SpecialGroup1
     }
+
 
     public enum ProductDeliveryDay
     {

@@ -4,47 +4,51 @@
 @model FoodAndStyleOrderPlanning.Pages.Recipes.EditModel
 @{
 }
-    <form method="post">
-        
-        <div class="card">
-            <div class="card-body">
-                @*<h5 class="card-title">Στοιχεία Συνταγής</h5>*@
+<form method="post">
 
-                <div class="row">
-                    <div class="col-sm-8">
-                        <div class="form-group">
-                            <input type="hidden" asp-for="@Model.RecipeId" />
-                            <label asp-for="@Model.RecipeName">Ονομασία</label>
-                            <input asp-for="@Model.RecipeName" class="form-control w-100 font-weight-bold" />
-                            <span class="text-danger" asp-validation-for="@Model.RecipeName"></span>
-                        </div>
-                        <div class="form-group">
-                            <label asp-for="@Model.RecipeQuantity">Ποσότητα σε Γραμμάρια</label>
-                            <input asp-for="@Model.RecipeQuantity" class="form-control w-25 font-weight-bold" />
-                            <span class="text-danger" asp-validation-for="@Model.RecipeQuantity"></span>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Αποθήκευση</button>
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-sm-8">
+                    <div class="form-group">
+                        <input type="hidden" asp-for="@Model.RecipeId" />
+                        <label asp-for="@Model.RecipeName">Ονομασία</label>
+                        <input asp-for="@Model.RecipeName" class="form-control w-100 font-weight-bold" />
+                        <span class="text-danger" asp-validation-for="@Model.RecipeName"></span>
                     </div>
-                    <div class="col-sm-4">
-                        <br />
-                        <div class="card" style="width: 18rem;">
-                            @*<div class="card-header">Featured</div>*@
-                            <ul class="list-group list-group-flush">
-                                <li class="list-group-item">Δημιουργία: @Model.RecipeCreatedOn.ToString(Helpers.DateTimeFormater)</li>
-                                <li class="list-group-item">Τροποποίηση: @Model.RecipeUpdatedOn.ToString(Helpers.DateTimeFormater)</li>
-                                <li class="list-group-item">Αριθμός Υλικών: @Model.RecipeIngredients?.Count()</li>
-                            </ul>
-                        </div>
+                    <div class="form-group">
+                        <label asp-for="@Model.RecipeQuantity">Ποσότητα σε Γραμμάρια</label>
+                        <input asp-for="@Model.RecipeQuantity" class="form-control w-25 font-weight-bold" />
+                        <span class="text-danger" asp-validation-for="@Model.RecipeQuantity"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="RecipeViewModel.RecipeType">RecipeType</label>
+                        <select class="form-control" asp-for="RecipeViewModel.RecipeType" onchange="removeChoiceOption(this);" asp-items="Model.RecipeType">
+                            <option disabled value="-1">--- Επιλογή ---</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Αποθήκευση</button>
+                </div>
+                <div class="col-sm-4">
+                    <br />
+                    <div class="card" style="width: 18rem;">
+                        @*<div class="card-header">Featured</div>*@
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">Δημιουργία: @Model.RecipeCreatedOn.ToString(Helpers.DateTimeFormater)</li>
+                            <li class="list-group-item">Τροποποίηση: @Model.RecipeUpdatedOn.ToString(Helpers.DateTimeFormater)</li>
+                            <li class="list-group-item">Αριθμός Υλικών: @Model.RecipeIngredients?.Count()</li>
+                        </ul>
                     </div>
                 </div>
             </div>
         </div>
-    </form>
+    </div>
+</form>
 <hr />
 
 
 @if (@Model != null && @Model.RecipeId > 0)
-{    
+{
 
     <table class="table table-sm table-striped">
 
@@ -77,10 +81,35 @@
     </table>
 
     <a asp-page="/Ingredients/Edit" asp-route-recipeId="@Model.RecipeId" class="btn btn-primary">Προσθήκη Υλικού</a>
-    }
+}
 
 
-    @section Scripts
+@section Scripts
 {
-        <partial name="_ValidationScriptsPartial" />
+    <partial name="_ValidationScriptsPartial" />
+}
+
+
+
+<script type="text/javascript">
+
+    $(function () {
+
+        var recipeTypeId = '#'.concat('@Html.IdFor(o => o.RecipeViewModel.RecipeType)');
+
+        var hiddenInputId = '#'.concat('@Html.IdFor(o => o.RecipeId)');
+        var recipeId = $(hiddenInputId).val();
+        if (recipeId > 0) {
+            $(recipeTypeId.concat(" option[value='-1']")).remove();
+            return;
+        }
+        $(recipeTypeId).val('-1');
+    });
+
+    function removeChoiceOption(selectObj) {
+        $('#'.concat(selectObj.id.concat(" option[value='-1']"))).remove();
     }
+
+   
+
+</script>
