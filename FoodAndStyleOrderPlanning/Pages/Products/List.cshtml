@@ -22,7 +22,6 @@
 
 <table class="table table-sm table-striped table-hover">
     <tr>
-        <th>Id</th>
         <th><a asp-page="./List" asp-route-orderBy="name" asp-route-orderDir="@Model.SortOrderDirection">'Ονομα</a></th>
         <th>Ποιότητα</th>
         <th>Μ.Μ.</th>
@@ -35,7 +34,6 @@
     @foreach (var r in Model.Products)
     {
 <tr>
-    <td>@r.Id</td>
     <td>@r.Name</td>
     <td>@r.Quality</td>
     <td>@LanguageResources.GetMeasuringUnitTranslation(r.MeasuringUnit)</td>
