@@ -39,7 +39,7 @@ namespace FoodAndStyleOrderPlanning.Pages.Suppliers
         {
             Entity = data.Delete(id);
             
-            if (CanDelete())
+            if (!CanDelete())
                 return RedirectToPage("./List");
 
             data.Commit();

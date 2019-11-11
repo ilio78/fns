@@ -50,9 +50,9 @@ namespace FoodAndStyleOrderPlanning.Pages.Products
             if (id != null)
             {
                 var product = productData.GetById(id.Value);
-                ProductViewModel = new ProductViewModel(product);
                 if (product == null)
                     return RedirectToPage("./List");
+                ProductViewModel = new ProductViewModel(product);
             }
             else
             {

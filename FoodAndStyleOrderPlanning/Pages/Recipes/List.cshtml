@@ -17,11 +17,12 @@
         </div>
     </div>
 </form>
-<br />
+
+<a asp-page="./Edit" class="btn btn-primary mb-2">Προσθήκη</a>
 
 <table class="table table-sm table-striped table-hover">
-    <tr>        
-        <th><a asp-page="./List" asp-route-orderBy="name" asp-route-orderDir="@Model.SortOrderDirection">'Ονομα</a></th>        
+    <tr>
+        <th><a asp-page="./List" asp-route-orderBy="name" asp-route-orderDir="@Model.SortOrderDirection">'Ονομα</a></th>
         <th>Ποσότητα (Γραμ.)</th>
         <th>Υλικά</th>
         <th>
@@ -35,9 +36,9 @@
         <tr class='@(r.IsActive ? "" : "text-secondary")'>
             <td>
                 @if (r.IsActive)
-                    {@r.Name}
-                else
-                    {<del>@r.Name</del>}
+                {@r.Name}
+            else
+            {<del>@r.Name</del>}
             </td>
             <td>@String.Format("{0:n0}", r.ResultingQuantityInGrams)</td>
             <td>@r.Ingredients.Count</td>
@@ -56,7 +57,7 @@
 
                 @if (Model.RecipeIdsInOrders.Contains(r.Id))
                 {
-                    <a title="Διαγραφή δεν επιτρέπεται. Παραγγελίες στις οποίες η συνταγή έχει ποσότητα." class="btn btn-lg" asp-page="/Orders/List" asp-route-recipeId="@r.Id" >
+                    <a title="Διαγραφή δεν επιτρέπεται. Παραγγελίες στις οποίες η συνταγή έχει ποσότητα." class="btn btn-lg" asp-page="/Orders/List" asp-route-recipeId="@r.Id">
                         <i class="fa fa-apple"></i>
                     </a>
                 }
@@ -70,8 +71,4 @@
         </tr>
     }
 </table>
-
-<hr />
-<a asp-page="./Edit" class="btn btn-primary">Προσθήκη νέας</a>
-
 

@@ -34,6 +34,8 @@ namespace FoodAndStyleOrderPlanning.Pages.Recipes
 
         public SelectList RecipeType { get; set; }
 
+        private Recipe Recipe;
+
         [BindProperty]
         public RecipeViewModel RecipeViewModel { get; set; }
 
@@ -46,19 +48,17 @@ namespace FoodAndStyleOrderPlanning.Pages.Recipes
             this.recipeData = recipeData;
         }
 
-        private void LoadData(int id)
+        private void LoadData()
         {
-            var recipe = recipeData.GetById(id);
-
-            RecipeId = recipe.Id;
-            RecipeName = recipe.Name;
-            RecipeQuantity = recipe.ResultingQuantityInGrams;
-            RecipeCreatedOn = recipe.CreatedOn;
-            RecipeUpdatedOn = recipe.UpdatedOn;
-            RecipeViewModel = new RecipeViewModel(recipe); 
+            RecipeId = Recipe.Id;
+            RecipeName = Recipe.Name;
+            RecipeQuantity = Recipe.ResultingQuantityInGrams;
+            RecipeCreatedOn = Recipe.CreatedOn;
+            RecipeUpdatedOn = Recipe.UpdatedOn;
+            RecipeViewModel = new RecipeViewModel(Recipe); 
 
             RecipeIngredients = new List<RecipeIngredientViewModel>();
-            foreach (Ingredient i in recipe.Ingredients.OrderBy(i=>i.Product.Name))
+            foreach (Ingredient i in Recipe.Ingredients.OrderBy(i=>i.Product.Name))
                 RecipeIngredients.Add(new RecipeIngredientViewModel() {
                     IngredientId = i.Id, Quantity=(int)i.Quantity, MeasuringUnit = i.Product.MeasuringUnit,
                         ProductName = i.Product.Name, ProductId = i.Product.Id, ProductSupplierName = i.Product?.Supplier.Name });
@@ -77,7 +77,12 @@ namespace FoodAndStyleOrderPlanning.Pages.Recipes
             else
             {
                 PageTitle = "Επεξεργασία Συνταγής";
-                LoadData(id.Value);
+                Recipe = recipeData.GetById(id.Value);
+
+                if (Recipe == null)
+                    RedirectToPage("./List");
+
+                LoadData();
             }
            
             return Page();
@@ -90,27 +95,27 @@ namespace FoodAndStyleOrderPlanning.Pages.Recipes
             if (!ModelState.IsValid)
                 return Page();
 
-            Recipe recipe = null;
-
             if (RecipeId > 0)
             {
-                recipe = recipeData.GetById(RecipeId);
-                SetRecipeProperties(recipe, DateTime.Now);
-                recipeData.Update(recipe);
+                Recipe = recipeData.GetById(RecipeId);
+
+                if (Recipe == null)
+                    RedirectToPage("./List");
+
+                SetRecipeProperties(Recipe, DateTime.Now);
+                recipeData.Update(Recipe);
             }
             else
             {
-                recipe = new Recipe();
-                recipe.CreatedOn = DateTime.Now;
-                recipe.IsActive = true;
-                SetRecipeProperties(recipe, recipe.CreatedOn);
-                recipeData.Add(recipe);
+                Recipe = new Recipe();
+                Recipe.CreatedOn = DateTime.Now;
+                Recipe.IsActive = true;
+                SetRecipeProperties(Recipe, Recipe.CreatedOn);
+                recipeData.Add(Recipe);
             }
 
             recipeData.Commit();
-
-            return RedirectToPage("./Edit", new { id = recipe.Id });
-
+            return RedirectToPage("./Edit", new { id = Recipe.Id });
         }
 
         private void SetRecipeProperties(Recipe recipe, DateTime updatedOn)

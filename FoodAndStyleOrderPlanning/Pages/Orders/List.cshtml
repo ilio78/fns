@@ -6,7 +6,7 @@
 }
 
     <div class="d-flex justify-content-between mt-3 mb-3">
-        <div class="pull-left w-50" >
+        <div class="pull-left w-50">
             <select class="custom-select font-weight-bold" id="orderGridFilter" onchange="orderGridFilterChanged(this.value);">
                 <option value="0">Μόνο ενεργές</option>
                 <option value="1">Όλες</option>
@@ -16,7 +16,7 @@
             <a asp-page="./Edit" class="btn btn-primary">Δημιουργία Νέας Παραγγελίας</a>
         </div>
     </div>
-
+    <div class="text-info font-italic">@Model.OrdersWithRecipeText</div>
 <table id="orderGridTable" class="table table-sm table-striped table-hover">
     <tr>
         <th>Όνομα</th>
@@ -63,6 +63,15 @@
     }
 
     $(function () {
+
+        var recipeId = @Model.RecipeId;
+
+        if (recipeId > 0)
+        {
+            $('#orderGridFilter').hide();
+            return;
+        }
+
         orderGridFilterChanged('0');
     });
 

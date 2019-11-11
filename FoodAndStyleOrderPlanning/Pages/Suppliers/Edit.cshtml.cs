@@ -30,7 +30,7 @@ namespace FoodAndStyleOrderPlanning.Pages.Suppliers
                 Supplier = data.GetById(id.Value);
                 
             if (Supplier == null)
-                return RedirectToPage("./NotFound");
+                return RedirectToPage("./List");
 
             return Page();
         }
