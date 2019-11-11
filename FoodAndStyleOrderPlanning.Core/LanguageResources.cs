@@ -9,6 +9,7 @@ namespace FoodAndStyleOrderPlanning.Core
     {
         public static Dictionary<string, string> ProductTypeTranslations;
         public static Dictionary<string, string> MeasuringUnitTranslations;
+        public static Dictionary<string, string> MeasuringUnitTranslationsWithOutPieces;
         public static Dictionary<string, string> ProductFreshnessTranslations;
         public static Dictionary<string, string> RecipeTypeTranslations;
 
@@ -48,6 +49,10 @@ namespace FoodAndStyleOrderPlanning.Core
             MeasuringUnitTranslations.Add(((int)MeasuringUnit.Grams).ToString(), "Γραμμάρια");
             MeasuringUnitTranslations.Add(((int)MeasuringUnit.Millilitres).ToString(), "Χιλιοστόλιτρα");
             MeasuringUnitTranslations.Add(((int)MeasuringUnit.Pieces).ToString(), "Τεμάχια");
+
+            MeasuringUnitTranslationsWithOutPieces = new Dictionary<string, string>();
+            MeasuringUnitTranslationsWithOutPieces.Add(((int)MeasuringUnit.Grams).ToString(), "Γραμμάρια");
+            MeasuringUnitTranslationsWithOutPieces.Add(((int)MeasuringUnit.Millilitres).ToString(), "Χιλιοστόλιτρα");
 
             ProductFreshnessTranslations = new Dictionary<string, string>();
             ProductFreshnessTranslations.Add(((int)ProductFreshness.OneDayBeforeOrder).ToString(), "1 ημέρα");

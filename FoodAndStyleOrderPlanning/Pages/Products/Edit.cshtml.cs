@@ -39,10 +39,13 @@ namespace FoodAndStyleOrderPlanning.Pages.Products
         private void LoadData()
         {
             MeasuringUnit = new SelectList((IEnumerable)LanguageResources.MeasuringUnitTranslations.OrderBy(s => s.Value), "Key", "Value");
+
+            if (ProductViewModel.Id == 0)
+                MeasuringUnit = new SelectList((IEnumerable)LanguageResources.MeasuringUnitTranslationsWithOutPieces.OrderBy(s => s.Value), "Key", "Value");
+
             ProductType = new SelectList((IEnumerable)LanguageResources.ProductTypeTranslations.OrderBy(s => s.Value), "Key", "Value");
             Suppliers = new SelectList(supplierData.GetByName(null).Where(sup => sup.IsActive).OrderBy(s => s.Name),"Id", "Name");
             ProductFreshness = new SelectList((IEnumerable)LanguageResources.ProductFreshnessTranslations.OrderBy(s => s.Value), "Key", "Value");
-
         }
 
         public IActionResult OnGet(int? id)
