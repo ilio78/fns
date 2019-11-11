@@ -53,6 +53,8 @@ namespace FoodAndStyleOrderPlanning.Core
         [Required]
         public bool DeliveryOnSunday { get; set; }
 
+        public int PieceMassOrVolume { get; set; }
+
         public ICollection<Ingredient> Ingredients { get; set; }
 
         public void SetFromViewModel(ProductViewModel productViewModel)
@@ -63,6 +65,7 @@ namespace FoodAndStyleOrderPlanning.Core
             ProductType = productViewModel.ProductType;
             SupplierId = productViewModel.SupplierId;
             IsActive = productViewModel.IsActive;
+            PieceMassOrVolume = productViewModel.PieceMassOrVolume;
 
             if (MeasuringUnit == MeasuringUnit.Pieces)
                 Price = productViewModel.PriceEuroPart * 100 + productViewModel.PriceCentsPart;
@@ -168,6 +171,7 @@ namespace FoodAndStyleOrderPlanning.Core
             ProductType = product.ProductType;
             SupplierId = product.SupplierId;
             IsActive = product.IsActive;
+            PieceMassOrVolume = product.PieceMassOrVolume;
 
             var price = product.Price;
 
@@ -226,5 +230,8 @@ namespace FoodAndStyleOrderPlanning.Core
         public bool DeliveryOnFriday { get; set; }
         public bool DeliveryOnSaturday { get; set; }
         public bool DeliveryOnSunday { get; set; }
+
+        [Range(0, 500)]
+        public int PieceMassOrVolume { get; set; }
     }
 }

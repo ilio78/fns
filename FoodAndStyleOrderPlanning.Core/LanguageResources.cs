@@ -70,14 +70,14 @@ namespace FoodAndStyleOrderPlanning.Core
             RecipeTypeTranslations.Add(((int)RecipeType.Soup).ToString(), "Σούπες");
             RecipeTypeTranslations.Add(((int)RecipeType.Pasta).ToString(), "Ζυμαρικά");
             RecipeTypeTranslations.Add(((int)RecipeType.Pies).ToString(), "Πίτες");
-            RecipeTypeTranslations.Add(((int)RecipeType.GroundMeat).ToString(), "Με κιμά");
-            RecipeTypeTranslations.Add(((int)RecipeType.Beef).ToString(), "Μοσχάρι");
-            RecipeTypeTranslations.Add(((int)RecipeType.Pork).ToString(), "Χοιρινό");
-            RecipeTypeTranslations.Add(((int)RecipeType.Sausage).ToString(), "Λουκάνικο");
+            RecipeTypeTranslations.Add(((int)RecipeType.GroundMeat).ToString(), "Με Κιμά");
+            RecipeTypeTranslations.Add(((int)RecipeType.Beef).ToString(), "Με Μοσχάρι");
+            RecipeTypeTranslations.Add(((int)RecipeType.Pork).ToString(), "Με Χοιρινό");
+            RecipeTypeTranslations.Add(((int)RecipeType.Sausage).ToString(), "Με Λουκάνικο");
             RecipeTypeTranslations.Add(((int)RecipeType.Tartes).ToString(), "Τάρτες");
             RecipeTypeTranslations.Add(((int)RecipeType.StreetFood).ToString(), "Street Food");
             RecipeTypeTranslations.Add(((int)RecipeType.Salad).ToString(), "Σαλάτα");
-            RecipeTypeTranslations.Add(((int)RecipeType.Sandwich).ToString(), "Sandwich");
+            RecipeTypeTranslations.Add(((int)RecipeType.Sandwich).ToString(), "Σαντουιτς");
         }
 }
 

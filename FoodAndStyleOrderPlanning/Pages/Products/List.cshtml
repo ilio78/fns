@@ -22,6 +22,7 @@
 
 <table class="table table-sm table-striped table-hover">
     <tr>
+        <th class="d-none">Id</th>
         <th class="w-25"><a asp-page="./List" asp-route-orderBy="name" asp-route-orderDir="@Model.SortOrderDirection">'Ονομα</a></th>
         <th>Ποιότητα</th>
         <th>Μ.Μ.</th>
@@ -34,6 +35,7 @@
     @foreach (var r in Model.Products)
     {
         <tr>
+            <td class="d-none">@r.Id</td>
             <td>@r.Name</td>
             <td>@r.Quality</td>
             <td>@LanguageResources.GetMeasuringUnitTranslation(r.MeasuringUnit)</td>
@@ -100,9 +102,9 @@
             return $(this).text() == modifiedProductId;
         }).closest("tr");
 
-            $('html, body').animate({
-                scrollTop: blinkRow.offset().top - 100
-            }, 500);
+        $('html, body').animate({
+            scrollTop: blinkRow.offset().top - 100
+        }, 500);
 
         blinkRow.addClass('updateSuccess');
 
