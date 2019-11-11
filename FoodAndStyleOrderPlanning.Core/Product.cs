@@ -89,6 +89,60 @@ namespace FoodAndStyleOrderPlanning.Core
             return (ProductFreshness)OrderWindow;
         }
 
+        public ProductDeliveryDay GetProductDeliveryDay(OrderDay day)
+        {
+
+            if (day == OrderDay.Sunday)
+            {
+                if (DeliveryOnSaturday)
+                    return (ProductDeliveryDay)(day - 1);
+                else
+                    return GetProductDeliveryDay(day - 1);
+            }
+            if (day == OrderDay.Saturday)
+            {
+                if (DeliveryOnFriday)
+                    return (ProductDeliveryDay)(day - 1);
+                else
+                    return GetProductDeliveryDay(day - 1);
+            }
+            if (day == OrderDay.Friday)
+            {
+                if (DeliveryOnThursday)
+                    return (ProductDeliveryDay)(day - 1);
+                else
+                    return GetProductDeliveryDay(day - 1);
+            }
+            if (day == OrderDay.Thursday)
+            {
+                if (DeliveryOnWednesday)
+                    return (ProductDeliveryDay)(day - 1);
+                else
+                    return GetProductDeliveryDay(day - 1);
+            }
+            if (day == OrderDay.Wednesday)
+            {
+                if (DeliveryOnTuesday)
+                    return (ProductDeliveryDay)(day - 1);
+                else
+                    return GetProductDeliveryDay(day - 1);
+            }
+            if (day == OrderDay.Tuesday)
+            {
+                if (DeliveryOnMonday)
+                    return (ProductDeliveryDay)(day - 1);
+                else
+                    return GetProductDeliveryDay(day - 1);
+            }
+
+            if (DeliveryOnSunday)
+                return ProductDeliveryDay.PreviousSunday;
+            else if (DeliveryOnSaturday)
+                return ProductDeliveryDay.PreviousSaturday;
+            else
+                return ProductDeliveryDay.PreviousFriday;
+        }
+
     }
 
     public class ProductViewModel

@@ -174,18 +174,24 @@ namespace FoodAndStyleOrderPlanning.Pages.Orders
                 {
                     var product = products.Single(p => p.Id == productId);
 
-                    ProductDeliveryDay deliveryDay = ProductDeliveryDay.PreviousFriday;
+                    //ProductDeliveryDay deliveryDay = ProductDeliveryDay.PreviousFriday;
 
-                    // THIS IS REALLY CRUCIAL HERE!!! - MUST REVIEW THIS AGAIN!!!!
-                    if (product.OrderWindow > 0)
-                        deliveryDay = (ProductDeliveryDay)Math.Max((int)day - product.OrderWindow, (int)ProductDeliveryDay.PreviousFriday);
-                   
+                    // THIS IS NOW REMOVED!!! THIS IS REALLY CRUCIAL HERE!!! - MUST REVIEW THIS AGAIN!!!!
+                    //if (product.OrderWindow > 0)
+                    //    deliveryDay = (ProductDeliveryDay)Math.Max((int)day - product.OrderWindow, (int)ProductDeliveryDay.PreviousFriday);
+
+                    // New logic is based on delivery day as define per product:
+                    // We search for the previous available delivery day.
+                    ProductDeliveryDay deliveryDay = product.GetProductDeliveryDay(day);
+
                     if (!ProductDeliveryPerDay.ContainsKey(deliveryDay))
                         ProductDeliveryPerDay[deliveryDay] = new Dictionary<Product, int>();
 
                     ProductDeliveryPerDay[deliveryDay].TryGetValue(product, out int currentProductOrder);
                     ProductDeliveryPerDay[deliveryDay][product] =
                         currentProductOrder + productQuantityOrderedPerDay[day][productId];
+
+
                 }
             }
 
