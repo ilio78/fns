@@ -57,6 +57,7 @@ namespace FoodAndStyleOrderPlanning.Core
 
         public ICollection<Ingredient> Ingredients { get; set; }
 
+        
         public void SetFromViewModel(ProductViewModel productViewModel)
         {
             Name = productViewModel.Name;
