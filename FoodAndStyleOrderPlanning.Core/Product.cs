@@ -24,7 +24,7 @@ namespace FoodAndStyleOrderPlanning.Core
         public ProductType ProductType { get; set; }
 
         [Required]
-        public int SupplierId  { get; set; }
+        public int SupplierId { get; set; }
 
         public Supplier Supplier { get; set; }
 
@@ -38,6 +38,21 @@ namespace FoodAndStyleOrderPlanning.Core
         public bool IsActive { get; set; }
         // ALTER TABLE [Products] ADD [IsActive] bit NOT NULL DEFAULT 0;
 
+        [Required]
+        public bool DeliveryOnMonday { get; set; }
+        [Required]
+        public bool DeliveryOnTuesday { get; set; }
+        [Required]
+        public bool DeliveryOnWednesday { get; set; }
+        [Required]
+        public bool DeliveryOnThursday { get; set; }
+        [Required]
+        public bool DeliveryOnFriday { get; set; }
+        [Required]
+        public bool DeliveryOnSaturday { get; set; }
+        [Required]
+        public bool DeliveryOnSunday { get; set; }
+
         public ICollection<Ingredient> Ingredients { get; set; }
 
         public void SetFromViewModel(ProductViewModel productViewModel)
@@ -50,11 +65,19 @@ namespace FoodAndStyleOrderPlanning.Core
             IsActive = productViewModel.IsActive;
 
             if (MeasuringUnit == MeasuringUnit.Pieces)
-                Price = productViewModel.PriceEuroPart*100 + productViewModel.PriceCentsPart;
+                Price = productViewModel.PriceEuroPart * 100 + productViewModel.PriceCentsPart;
             else
-                Price = (float)(productViewModel.PriceEuroPart*100 + productViewModel.PriceCentsPart)/1000;
+                Price = (float)(productViewModel.PriceEuroPart * 100 + productViewModel.PriceCentsPart) / 1000;
 
             OrderWindow = (int)productViewModel.ProductFreshness;
+
+            DeliveryOnMonday = productViewModel.DeliveryOnMonday;
+            DeliveryOnTuesday = productViewModel.DeliveryOnTuesday;
+            DeliveryOnWednesday = productViewModel.DeliveryOnWednesday;
+            DeliveryOnThursday = productViewModel.DeliveryOnThursday;
+            DeliveryOnFriday = productViewModel.DeliveryOnFriday;
+            DeliveryOnSaturday = productViewModel.DeliveryOnSaturday;
+            DeliveryOnSunday = productViewModel.DeliveryOnSunday;
         }
 
         public ProductFreshness GetProductFreshness()
@@ -62,8 +85,8 @@ namespace FoodAndStyleOrderPlanning.Core
             if (OrderWindow < 1)
                 return ProductFreshness.OneDayBeforeOrder;
             if (OrderWindow > 5)
-                return  ProductFreshness.Indifferent;
-            return (ProductFreshness) OrderWindow;
+                return ProductFreshness.Indifferent;
+            return (ProductFreshness)OrderWindow;
         }
 
     }
@@ -73,6 +96,13 @@ namespace FoodAndStyleOrderPlanning.Core
         public ProductViewModel()
         {
             IsActive = true;
+            DeliveryOnMonday = false;
+            DeliveryOnTuesday = false;
+            DeliveryOnWednesday = false;
+            DeliveryOnThursday = false;
+            DeliveryOnFriday = false;
+            DeliveryOnSaturday = false;
+            DeliveryOnSunday = false;
         }
 
         public ProductViewModel(Product product)
@@ -89,11 +119,19 @@ namespace FoodAndStyleOrderPlanning.Core
 
             if (MeasuringUnit != MeasuringUnit.Pieces)
                 price = 1000 * price;
-            
+
             PriceEuroPart = (int)price / 100;
             PriceCentsPart = (int)price % 100;
 
             ProductFreshness = product.GetProductFreshness();
+
+            DeliveryOnMonday = product.DeliveryOnMonday;
+            DeliveryOnTuesday = product.DeliveryOnTuesday;
+            DeliveryOnWednesday = product.DeliveryOnWednesday;
+            DeliveryOnThursday = product.DeliveryOnThursday;
+            DeliveryOnFriday = product.DeliveryOnFriday;
+            DeliveryOnSaturday = product.DeliveryOnSaturday;
+            DeliveryOnSunday = product.DeliveryOnSunday;
         }
 
         public int Id { get; set; }
@@ -115,7 +153,7 @@ namespace FoodAndStyleOrderPlanning.Core
 
         [Required]
         public bool IsActive { get; set; }
-        
+
         [Required]
         [Range(0, 999)]
         public int PriceEuroPart { get; set; }
@@ -126,6 +164,13 @@ namespace FoodAndStyleOrderPlanning.Core
 
         [Required]
         public ProductFreshness ProductFreshness { get; set; }
-    }
 
+        public bool DeliveryOnMonday { get; set; }
+        public bool DeliveryOnTuesday { get; set; }
+        public bool DeliveryOnWednesday { get; set; }
+        public bool DeliveryOnThursday { get; set; }
+        public bool DeliveryOnFriday { get; set; }
+        public bool DeliveryOnSaturday { get; set; }
+        public bool DeliveryOnSunday { get; set; }
+    }
 }

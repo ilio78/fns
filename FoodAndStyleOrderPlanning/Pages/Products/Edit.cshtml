@@ -1,5 +1,5 @@
 ﻿@page "{id:int?}"
-
+@using FoodAndStyleOrderPlanning.Core
 @model FoodAndStyleOrderPlanning.Pages.Products.EditModel
 @{
     ViewData["Title"] = "Προϊόν";
@@ -40,28 +40,65 @@
         </select>
     </div>
 
-    <div class="text-info">Τιμή ανα κιλό, λίτρο ή τεμάχιο:</div>
-    <div class="form-inline">
-        <label asp-for="ProductViewModel.PriceEuroPart">Eυρώ&nbsp;&nbsp;</label>
-        <input asp-for="ProductViewModel.PriceEuroPart" class="form-control" />
-        <span class="text-danger" asp-validation-for="ProductViewModel.PriceEuroPart"></span>
-    </div>
-    <div class="form-inline mt-1">
-        <label asp-for="ProductViewModel.PriceCentsPart">Λεπτά&nbsp;</label>
-        <input asp-for="ProductViewModel.PriceCentsPart" class="form-control" />
-        <span class="text-danger" asp-validation-for="ProductViewModel.PriceCentsPart"></span>
-    </div>
+    <table class="w-100">
+        <tr class="w-100" style="vertical-align:text-top">
+            <td class="w-50">
+                <div class="text-info">Τιμή ανα κιλό, λίτρο ή τεμάχιο:</div>
+                <div class="form-inline">
+                    <label asp-for="ProductViewModel.PriceEuroPart">Eυρώ&nbsp;&nbsp;</label>
+                    <input asp-for="ProductViewModel.PriceEuroPart" class="form-control" />
+                    <span class="text-danger" asp-validation-for="ProductViewModel.PriceEuroPart"></span>
+                </div>
+                <div class="form-inline mt-1">
+                    <label asp-for="ProductViewModel.PriceCentsPart">Λεπτά&nbsp;</label>
+                    <input asp-for="ProductViewModel.PriceCentsPart" class="form-control" />
+                    <span class="text-danger" asp-validation-for="ProductViewModel.PriceCentsPart"></span>
+                </div>
+                <button type="submit" onclick="setStorage();" class="btn btn-primary mt-5">Save</button>
+            </td>
+            <td class="w-50">
+                <div class="text-info">Ημέρες Παράδοσης:</div>
+                <div class="custom-control custom-checkbox">
+                    <input asp-for="ProductViewModel.DeliveryOnMonday" class="form-control custom-control-input" />
+                    <label class="custom-control-label w-25 text-lg-left" asp-for="ProductViewModel.DeliveryOnMonday">Δευτέρα</label>
+                </div>
+                <div class="custom-control custom-checkbox">
+                    <input asp-for="ProductViewModel.DeliveryOnTuesday" class="form-control custom-control-input" />
+                    <label class="custom-control-label w-25 text-lg-left" asp-for="ProductViewModel.DeliveryOnTuesday">Τρίτη</label>
+                </div>
+                <div class="custom-control custom-checkbox">
+                    <input asp-for="ProductViewModel.DeliveryOnWednesday" class="form-control custom-control-input" />
+                    <label class="custom-control-label w-25 text-lg-left" asp-for="ProductViewModel.DeliveryOnWednesday">Τετάρτη</label>
+                </div>
+                <div class="custom-control custom-checkbox">
+                    <input asp-for="ProductViewModel.DeliveryOnThursday" class="form-control custom-control-input" />
+                    <label class="custom-control-label w-25 text-lg-left" asp-for="ProductViewModel.DeliveryOnThursday">Πέμπτη</label>
+                </div>
+                <div class="custom-control custom-checkbox">
+                    <input asp-for="ProductViewModel.DeliveryOnFriday" class="form-control custom-control-input" />
+                    <label class="custom-control-label w-25 text-lg-left" asp-for="ProductViewModel.DeliveryOnFriday">Παρασκευή</label>
+                </div>
+                <div class="custom-control custom-checkbox">
+                    <input asp-for="ProductViewModel.DeliveryOnSaturday" class="form-control custom-control-input" />
+                    <label class="custom-control-label w-25 text-lg-left" asp-for="ProductViewModel.DeliveryOnSaturday">Σάββατο</label>
+                </div>
+                <div class="custom-control custom-checkbox">
+                    <input asp-for="ProductViewModel.DeliveryOnSunday" class="form-control custom-control-input" />
+                    <label class="custom-control-label w-25 text-lg-left" asp-for="ProductViewModel.DeliveryOnSunday">Κυριακή</label>
+                </div>
+            </td>
+        </tr>
+    </table>
+
     <br />
-    <div class="form-group">
-        <label asp-for="ProductViewModel.ProductFreshness">Παραγγελία Πριν</label>
-        <select class="form-control" onchange="removeChoiceOption(this);" asp-for="ProductViewModel.ProductFreshness" asp-items="Model.ProductFreshness">
-            <option disabled value="-1">--- Επιλογή ---</option>
-        </select>
-        <span class="text-danger" asp-validation-for="ProductViewModel.ProductFreshness"></span>
+    @*<div class="form-group">
+            <label asp-for="ProductViewModel.ProductFreshness">Παραγγελία Πριν</label>
+            <select class="form-control" onchange="removeChoiceOption(this);" asp-for="ProductViewModel.ProductFreshness" asp-items="Model.ProductFreshness">
+                <option disabled value="-1">--- Επιλογή ---</option>
+            </select>
+            <span class="text-danger" asp-validation-for="ProductViewModel.ProductFreshness"></span>
+        </div>*@
 
-    </div>
-
-    <button type="submit" onclick="setStorage();" class="btn btn-primary">Save</button>
 </form>
 
 @section Scripts
@@ -108,7 +145,7 @@
         var productId = $(hiddernInputId).val();
         if (productId < 1)
             productId = 0;
-    
+
         localStorage.setItem('modifiedProductId', productId);
     }
 
