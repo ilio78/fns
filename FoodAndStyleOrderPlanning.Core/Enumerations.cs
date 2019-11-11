@@ -4,6 +4,7 @@
     public static class Helpers
     {
         public const string DateTimeFormater = "d MMM yyyy H:mm";
+        public const string DateFormater = "ddd, M MMM yyyy";
     }
 
 
@@ -34,7 +35,9 @@
 
     public enum RecipeType
     {
-        OliveOil = 1,
+        Unknown = 0,
+        Other = 1,
+        OliveOil,
         Ospria,
         Soup,
         Pasta,

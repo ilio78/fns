@@ -58,18 +58,20 @@ namespace FoodAndStyleOrderPlanning.Core
             ProductFreshnessTranslations.Add(((int)ProductFreshness.Indifferent).ToString(), "Αδιάφορο");
 
             RecipeTypeTranslations = new Dictionary<string, string>();
-            RecipeTypeTranslations.Add(((int)RecipeType.OliveOil).ToString(), "OliveOil");
-            RecipeTypeTranslations.Add(((int)RecipeType.Ospria).ToString(), "Ospria");
-            RecipeTypeTranslations.Add(((int)RecipeType.Soup).ToString(), "Soup");
-            RecipeTypeTranslations.Add(((int)RecipeType.Pasta).ToString(), "Pasta");
-            RecipeTypeTranslations.Add(((int)RecipeType.Pies).ToString(), "Pies");
-            RecipeTypeTranslations.Add(((int)RecipeType.GroundMeat).ToString(), "GroundMeat");
-            RecipeTypeTranslations.Add(((int)RecipeType.Beef).ToString(), "Beef");
-            RecipeTypeTranslations.Add(((int)RecipeType.Pork).ToString(), "Pork");
-            RecipeTypeTranslations.Add(((int)RecipeType.Sausage).ToString(), "Sausage");
-            RecipeTypeTranslations.Add(((int)RecipeType.Tartes).ToString(), "Tartes");
-            RecipeTypeTranslations.Add(((int)RecipeType.StreetFood).ToString(), "StreetFood");
-            RecipeTypeTranslations.Add(((int)RecipeType.Salad).ToString(), "Salad");
+            RecipeTypeTranslations.Add(((int)RecipeType.Unknown).ToString(), "Άγνωστη");
+            RecipeTypeTranslations.Add(((int)RecipeType.Other).ToString(), "Χωρίς Κατηγορία");
+            RecipeTypeTranslations.Add(((int)RecipeType.OliveOil).ToString(), "Λαδερά");
+            RecipeTypeTranslations.Add(((int)RecipeType.Ospria).ToString(), "Όσπρια");
+            RecipeTypeTranslations.Add(((int)RecipeType.Soup).ToString(), "Σούπες");
+            RecipeTypeTranslations.Add(((int)RecipeType.Pasta).ToString(), "Ζυμαρικά");
+            RecipeTypeTranslations.Add(((int)RecipeType.Pies).ToString(), "Πίτες");
+            RecipeTypeTranslations.Add(((int)RecipeType.GroundMeat).ToString(), "Με κιμά");
+            RecipeTypeTranslations.Add(((int)RecipeType.Beef).ToString(), "Μοσχάρι");
+            RecipeTypeTranslations.Add(((int)RecipeType.Pork).ToString(), "Χοιρινό");
+            RecipeTypeTranslations.Add(((int)RecipeType.Sausage).ToString(), "Λουκάνικο");
+            RecipeTypeTranslations.Add(((int)RecipeType.Tartes).ToString(), "Τάρτες");
+            RecipeTypeTranslations.Add(((int)RecipeType.StreetFood).ToString(), "Street Food");
+            RecipeTypeTranslations.Add(((int)RecipeType.Salad).ToString(), "Σαλάτα");
             RecipeTypeTranslations.Add(((int)RecipeType.Sandwich).ToString(), "Sandwich");
         }
 }

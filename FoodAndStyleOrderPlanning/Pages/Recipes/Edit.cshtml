@@ -22,7 +22,7 @@
                         <span class="text-danger" asp-validation-for="@Model.RecipeQuantity"></span>
                     </div>
                     <div class="form-group">
-                        <label asp-for="RecipeViewModel.RecipeType">RecipeType</label>
+                        <label asp-for="RecipeViewModel.RecipeType">Κατηγορία Συνταγής</label>
                         <select class="form-control" asp-for="RecipeViewModel.RecipeType" onchange="removeChoiceOption(this);" asp-items="Model.RecipeType">
                             <option disabled value="-1">--- Επιλογή ---</option>
                         </select>

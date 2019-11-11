@@ -49,7 +49,7 @@ namespace FoodAndStyleOrderPlanning.Core
 
         public RecipeViewModel(Recipe recipe)
         {
-            RecipeType = recipe?.RecipeType ?? RecipeType.OliveOil;
+            RecipeType = recipe?.RecipeType ?? RecipeType.Unknown;
         }
 
         public RecipeType RecipeType { get; set; }

@@ -20,8 +20,7 @@
 <br />
 
 <table class="table table-sm table-striped table-hover">
-    <tr>
-        <th>Id</th>
+    <tr>        
         <th><a asp-page="./List" asp-route-orderBy="name" asp-route-orderDir="@Model.SortOrderDirection">'Ονομα</a></th>        
         <th>Ποσότητα (Γραμ.)</th>
         <th>Υλικά</th>
@@ -34,7 +33,6 @@
     @foreach (var r in Model.Recipes)
     {
         <tr class='@(r.IsActive ? "" : "text-secondary")'>
-            <td>@r.Id</td>
             <td>
                 @if (r.IsActive)
                     {@r.Name}
@@ -43,8 +41,8 @@
             </td>
             <td>@String.Format("{0:n0}", r.ResultingQuantityInGrams)</td>
             <td>@r.Ingredients.Count</td>
-            <td>@r.CreatedOn.ToString(Helpers.DateTimeFormater)</td>
-            <td>@r.UpdatedOn.ToString(Helpers.DateTimeFormater)</td>
+            <td>@r.CreatedOn.ToString(Helpers.DateFormater)</td>
+            <td>@r.UpdatedOn.ToString(Helpers.DateFormater)</td>
             <td>
                 <a title="Επεξεργασία" class="btn btn-lg" asp-page="./Edit" asp-route-id="@r.Id">
                     <i class="fa fa-edit"></i>
@@ -58,8 +56,8 @@
 
                 @if (Model.RecipeIdsInOrders.Contains(r.Id))
                 {
-                    <a title="Διαγραφή δεν επιτρέπεται" style="color:gray" class="btn btn-lg">
-                        <i class="fa fa-trash"></i>
+                    <a title="Διαγραφή δεν επιτρέπεται. Παραγγελίες στις οποίες η συνταγή έχει ποσότητα." class="btn btn-lg" asp-page="/Orders/List" asp-route-recipeId="@r.Id" >
+                        <i class="fa fa-apple"></i>
                     </a>
                 }
                 else
