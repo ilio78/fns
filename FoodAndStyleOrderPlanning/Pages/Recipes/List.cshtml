@@ -57,7 +57,7 @@
 
                 @if (Model.RecipeIdsInOrders.Contains(r.Id))
                 {
-                    <a title="Διαγραφή δεν επιτρέπεται. Παραγγελίες στις οποίες η συνταγή έχει ποσότητα." class="btn btn-lg" asp-page="/Orders/List" asp-route-recipeId="@r.Id">
+                    <a title="Διαγραφή δεν επιτρέπεται. Μετάβαση στις παραγγελίες που εμπεριέχουν την συνταγή." class="btn btn-lg" asp-page="/Orders/List" asp-route-recipeId="@r.Id">
                         <i class="fa fa-apple"></i>
                     </a>
                 }

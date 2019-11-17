@@ -91,9 +91,18 @@
                 <a title="Επεξεργασία" class="btn btn-lg" asp-page="./Edit" asp-route-id="@r.Id">
                     <i class="fa fa-edit"></i>
                 </a>
-                <a title="Διαγραφή" style="color:red" class="btn btn-lg" asp-page="./Delete" asp-route-id="@r.Id">
-                    <i class="fa fa-trash"></i>
-                </a>
+                @if (Model.ProductIdContainedInAtLeastOneRecipe[r.Id])
+                {
+                    <a title="Διαγραφή δεν επιτρέπεται. Μετάβαση στις συνταγές που εμπεριέχουν το προϊόν." class="btn btn-lg" asp-page="/Recipes/List" asp-route-productId="@r.Id">
+                        <i class="fa fa-apple"></i>
+                    </a>
+                }
+                else
+                {
+                    <a title="Διαγραφή - NOT WORKING YET!" style="color:red" class="btn btn-lg" asp-page="./Delete" asp-route-id="@r.Id">
+                        <i class="fa fa-trash"></i>
+                    </a>
+                }
             </td>
         </tr>
     }

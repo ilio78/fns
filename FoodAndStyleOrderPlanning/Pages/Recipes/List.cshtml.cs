@@ -29,18 +29,26 @@ namespace FoodAndStyleOrderPlanning.Pages.Recipes
             this.orderRecipeItemData = orderRecipeItemData;
         }
 
-        public void OnGet(string orderBy, string orderDir)
+        public void OnGet(int productId, string orderBy, string orderDir)
         {
+            Recipes = recipeData.GetByName(SearchTerm);
+
+            if (productId > 0)
+            {
+                // need to filter Recipes
+                Recipes = Recipes.Where(r => r.Ingredients.Select(i=>i.ProductId).Contains(productId));
+            }
+
             if (orderBy == "createdDate")
                 if (orderDir == "desc")
-                    Recipes = recipeData.GetByName(SearchTerm).OrderByDescending(r => r.CreatedOn);
+                    Recipes = Recipes.OrderByDescending(r => r.CreatedOn);
                 else
-                    Recipes = recipeData.GetByName(SearchTerm).OrderBy(r => r.CreatedOn);
+                    Recipes = Recipes.OrderBy(r => r.CreatedOn);
             else
                 if (orderDir == "desc")
-                    Recipes = recipeData.GetByName(SearchTerm).OrderByDescending(r => r.Name);
+                    Recipes = Recipes.OrderByDescending(r => r.Name);
                 else
-                    Recipes = recipeData.GetByName(SearchTerm).OrderBy(r => r.Name);
+                    Recipes = Recipes.OrderBy(r => r.Name);
 
             if (orderDir == "asc")
                 SortOrderDirection = "desc";

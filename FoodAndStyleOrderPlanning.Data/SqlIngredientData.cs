@@ -40,7 +40,7 @@ namespace FoodAndStyleOrderPlanning.Data
 
         public IEnumerable<Ingredient> GetByName(string name)
         {
-            throw new NotImplementedException();
+            return db.Ingredients.ToListAsync().Result;
         }
 
         public int GetCount()

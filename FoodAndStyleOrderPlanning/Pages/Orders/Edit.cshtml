@@ -43,12 +43,12 @@
     </div>
     <hr />
     <table cellpadding="0" cellspacing="0" id="recipeQuantityTable" class="table table-sm table-striped table-hover">
-        <thead>
+        <thead class="bg-primary">
             <tr>
                 <th class="w-25">
                     <select class="custom-select font-weight-bold" id="recipeDisplaySelect" onchange="recipeDisplaySelectionChanged(this.value);">
-                        <option class="font-weight-bold" style="background-color:blue; color:white" value="1000">'Ολες οι συνταγές</option>
-                        <option class="font-weight-bold" style="background-color:blue; color:white" value="2000">Συνταγές με ποσότητα</option>
+                        <option class="font-weight-bold" style="background-color:gray; color:white" value="1000">'Ολες οι συνταγές</option>
+                        <option class="font-weight-bold" style="background-color:gray; color:white" value="2000">Συνταγές με ποσότητα</option>
                         @foreach (var type in Model.RecipeTypes.OrderBy(r => r.Value))
                         {
                             <option class="fa-bold" value="@type.Key">@type.Value</option>
