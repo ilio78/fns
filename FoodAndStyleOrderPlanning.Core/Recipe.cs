@@ -121,6 +121,7 @@ namespace FoodAndStyleOrderPlanning.Core
     {
         public int Id { get; set; }
         public int RecipeId { get; set; }
+        public int RecipeTypeId { get; set; }
         public bool IsActive { get; set; }
         public string Name { get; set; }
         public string RecipeResultingQuantity { get; set; }

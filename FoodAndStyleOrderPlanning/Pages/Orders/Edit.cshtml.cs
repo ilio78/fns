@@ -21,6 +21,8 @@ namespace FoodAndStyleOrderPlanning.Pages.Orders
 
         public IList<OrderProductItem> OrderProductItems { get; set; }
 
+        public Dictionary<string, string> RecipeTypes { get; set; }
+
         private readonly IData<Recipe> recipeData;
         private readonly IData<Order> orderData;
         private readonly IData<OrderRecipeItem> orderRecipeItemData;
@@ -51,8 +53,9 @@ namespace FoodAndStyleOrderPlanning.Pages.Orders
             if (Order == null)
                 return RedirectToPage("./List");
 
+            RecipeTypes = new Dictionary<string, string>(LanguageResources.RecipeTypeTranslations);
+          
             var Recipes = recipeData.GetByName(null).ToList();
-
             RecipeChoices = new RecipeChoicesViewModel();
 
             // RecipeChoicesViewModel only contains a list of ChoiceViewModel items. They are the rows of the recipe quantity table.
@@ -62,7 +65,7 @@ namespace FoodAndStyleOrderPlanning.Pages.Orders
                 RecipeChoices.Choices.Add(new ChoiceViewModel()
                 {
                     Id = i++, Name = r.Name, RecipeResultingQuantity = String.Format("{0:n0}", r.ResultingQuantityInGrams),
-                    RecipeId = r.Id, IsActive = r.IsActive
+                    RecipeId = r.Id, IsActive = r.IsActive, RecipeTypeId = (int)(r.RecipeType ?? RecipeType.Unknown)
                 });
             }
 
