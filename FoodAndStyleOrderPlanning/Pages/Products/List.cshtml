@@ -30,12 +30,13 @@
         <th><a asp-page="./List" asp-route-orderBy="supplier" asp-route-orderDir="@Model.SortOrderDirection">Προμηθευτής</a></th>
         <th>Τιμή</th>
         <th>Δ</th>
-        <th>Τ</th>
-        <th>Τ</th>
-        <th>Π</th>
-        <th>Π</th>
-        <th>Σ</th>
-        <th>Κ</th>
+            <th>Τ</th>
+            <th>Τ</th>
+            <th>Π</th>
+            <th>Π</th>
+            <th>Σ</th>
+            <th>Κ</th>
+        @*<th>Παράδοση</th>*@
         <th class="w-25">Ενέργειες</th>
     </tr>
     @foreach (var r in Model.Products)
@@ -58,33 +59,62 @@
 
             <td>@r.Price¢</td>
 
+            @*<td>
+                    @if (@r.DeliveryOnMonday)
+                    {<i title="Δευτέρα" style="color:green" class="fa fa-check"></i>}
+                </td>
+                <td>
+                    @if (@r.DeliveryOnTuesday)
+                    {<i title="Τρίτη" style="color:green" class="fa fa-check"></i>}
+                </td>
+                <td>
+                    @if (@r.DeliveryOnWednesday)
+                    {<i title="Τετάρτη" style="color:green" class="fa fa-check"></i>}
+                </td>
+                <td>
+                    @if (@r.DeliveryOnThursday)
+                    {<i title="Πέμπτη"  style="color:green" class="fa fa-check"></i>}
+                </td>
+                <td>
+                    @if (@r.DeliveryOnFriday)
+                    {<i title="Παρασκευή" style="color:green" class="fa fa-check"></i>}
+                </td>
+                <td>
+                    @if (@r.DeliveryOnSaturday)
+                    {<i title="Σάββατο" style="color:green" class="fa fa-check"></i>}
+                </td>
+                <td>
+                    @if (@r.DeliveryOnSunday)
+                    {<i title="Κυριακή" style="color:green" class="fa fa-check"></i>}
+                </td>*@
+
             <td>
                 @if (@r.DeliveryOnMonday)
-                {<i title="Δευτέρα" class="fa fa-check"></i>}
+                {<span>Δευ.</span>}
             </td>
             <td>
                 @if (@r.DeliveryOnTuesday)
-                {<i title="Τρίτη" class="fa fa-check"></i>}
+                {<span>Τρι.</span>}
             </td>
             <td>
                 @if (@r.DeliveryOnWednesday)
-                {<i title="Τετάρτη" class="fa fa-check"></i>}
+                {<span>Τετ.</span>}
             </td>
             <td>
                 @if (@r.DeliveryOnThursday)
-                {<i title="Πέμπτη" class="fa fa-check"></i>}
+                {<span>Πεμ.</span>}
             </td>
             <td>
                 @if (@r.DeliveryOnFriday)
-                {<i title="Παρασκευή" class="fa fa-check"></i>}
+                {<span>Παρ.</span>}
             </td>
             <td>
                 @if (@r.DeliveryOnSaturday)
-                {<i title="Σάββατο" class="fa fa-check"></i>}
+                {<span>Σαβ.</span>}
             </td>
             <td>
                 @if (@r.DeliveryOnSunday)
-                {<i title="Κυριακή" class="fa fa-check"></i>}
+                {<span>Κυρ.</span>}
             </td>
 
             <td>
@@ -99,7 +129,7 @@
                 }
                 else
                 {
-                    <a title="Διαγραφή - NOT WORKING YET!" style="color:red" class="btn btn-lg" asp-page="./Delete" asp-route-id="@r.Id">
+                    <a title="Διαγραφή" style="color:red" class="btn btn-lg" asp-page="./Delete" asp-route-id="@r.Id">
                         <i class="fa fa-trash"></i>
                     </a>
                 }

@@ -1,0 +1,16 @@
+﻿@page "{id:int}"
+
+@model FoodAndStyleOrderPlanning.Pages.Products.DeleteModel
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<br />
+<div class="alert alert-danger">
+    Διαγραφή προϊόν @Model.Product.Name?
+</div>
+<br />
+<form method="post">
+    <button type="submit" class="btn btn-danger">Διαγραφή</button>&nbsp;&nbsp;&nbsp;
+    <a asp-page="List" class="btn btn-outline-dark">Ακύρωση</a>
+</form>
