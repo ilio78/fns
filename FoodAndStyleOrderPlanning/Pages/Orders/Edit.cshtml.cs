@@ -41,10 +41,13 @@ namespace FoodAndStyleOrderPlanning.Pages.Orders
             if (id == null)
             {
                 Order = new Order();
-                Order.CreatedBy = "";
-                Order.UpdatedBy = "";
+                Order.CreatedOn = DateTime.Now;
+                Order.UpdatedOn = Order.CreatedOn;
+                Order.CreatedBy = Helpers.User.GetUPN(HttpContext);
+                Order.UpdatedBy = Helpers.User.GetUPN(HttpContext);
                 RecipeChoices = new RecipeChoicesViewModel();
                 OrderProductItems = new List<OrderProductItem>();
+                RecipeTypes = new Dictionary<string, string>(LanguageResources.RecipeTypeTranslations);
                 ProductDeliveryPerDay = new Dictionary<ProductDeliveryDay, Dictionary<Product, int>>();
                 return Page();
             }
