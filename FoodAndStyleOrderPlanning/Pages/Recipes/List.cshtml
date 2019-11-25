@@ -51,7 +51,7 @@
                 <a title="Αντιγραφή" class="btn btn-lg" asp-page="./Copy" asp-route-id="@r.Id">
                     <i class="fa fa-copy"></i>
                 </a>
-                <a title='@(r.IsActive ? "Απενεργοποίηση" : "Ένεργοποιηση")' class="btn btn-lg" asp-page="./ToggleActive" asp-route-id="@r.Id">
+                <a title='Μετάβαση σε @(r.IsActive ? "Απενεργοποίηση" : "Ένεργοποιηση")' style='color:@(r.IsActive ? "darkgreen" : "red");' class="btn btn-lg" asp-page="./ToggleActive" asp-route-id="@r.Id">
                     <i class='@(r.IsActive ? "fa fa-toggle-off" : "fa fa-toggle-on")'></i>
                 </a>
 

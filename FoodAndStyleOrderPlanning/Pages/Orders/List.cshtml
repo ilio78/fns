@@ -38,7 +38,7 @@
                 <a class="btn btn-lg" asp-page="./Edit" asp-route-id="@i.Id">
                     <i class="fa fa-edit"></i>
                 </a>
-                <a title='@(i.IsActive ? "Απενεργοποίηση" : "Ένεργοποιηση")' class="btn btn-lg" asp-page="./ToggleActive" asp-route-id="@i.Id">
+                <a title='Μετάβαση σε @(i.IsActive ? "Απενεργοποίηση" : "Ένεργοποιηση")' style='color:@(i.IsActive ? "darkgreen" : "red");' class="btn btn-lg" asp-page="./ToggleActive" asp-route-id="@i.Id">
                     <i class='@(i.IsActive ? "fa fa-toggle-off" : "fa fa-toggle-on")'></i>
                 </a>
             </td>

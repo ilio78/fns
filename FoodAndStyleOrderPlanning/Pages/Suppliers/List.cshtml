@@ -40,7 +40,7 @@
             <td>@s.Telephone</td>
             <td>
                 <a class="btn btn-lg" asp-page="./Edit" asp-route-id="@s.Id"><i class="fa fa-edit"></i></a>
-                <a title='@(s.IsActive ? "Απενεργοποίηση" : "Ένεργοποιηση")' class="btn btn-lg" asp-page="./ToggleActive" asp-route-id="@s.Id">
+                <a title='Μετάβαση σε @(s.IsActive ? "Απενεργοποίηση" : "Ένεργοποιηση")' style='color:@(s.IsActive ? "darkgreen" : "red");' class="btn btn-lg" asp-page="./ToggleActive" asp-route-id="@s.Id">
                     <i class='@(s.IsActive ? "fa fa-toggle-off" : "fa fa-toggle-on")'></i>
                 </a>
 
