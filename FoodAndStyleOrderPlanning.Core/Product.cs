@@ -34,6 +34,8 @@ namespace FoodAndStyleOrderPlanning.Core
         [Required]
         public int OrderWindow { get; set; }
 
+        public int? QuantityToPiece { get; set; }
+
         [Required]
         public bool IsActive { get; set; }
         // ALTER TABLE [Products] ADD [IsActive] bit NOT NULL DEFAULT 0;
@@ -66,7 +68,7 @@ namespace FoodAndStyleOrderPlanning.Core
             ProductType = productViewModel.ProductType;
             SupplierId = productViewModel.SupplierId;
             IsActive = productViewModel.IsActive;
-            PieceMassOrVolume = productViewModel.PieceMassOrVolume;
+            QuantityToPiece = productViewModel.QuantityToPiece;
 
             if (MeasuringUnit == MeasuringUnit.Pieces)
                 Price = productViewModel.PriceEuroPart * 100 + productViewModel.PriceCentsPart;
@@ -172,7 +174,7 @@ namespace FoodAndStyleOrderPlanning.Core
             ProductType = product.ProductType;
             SupplierId = product.SupplierId;
             IsActive = product.IsActive;
-            PieceMassOrVolume = product.PieceMassOrVolume;
+            QuantityToPiece = product.QuantityToPiece ?? 0;
 
             var price = product.Price;
 
@@ -233,6 +235,6 @@ namespace FoodAndStyleOrderPlanning.Core
         public bool DeliveryOnSunday { get; set; }
 
         [Range(0, 500)]
-        public int PieceMassOrVolume { get; set; }
+        public int? QuantityToPiece { get; set; }
     }
 }

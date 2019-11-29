@@ -49,7 +49,8 @@
         Tartes,
         StreetFood,
         Salad,
-        Sandwich
+        Sandwich,
+        Garnish
     }
 
     public enum ProductType

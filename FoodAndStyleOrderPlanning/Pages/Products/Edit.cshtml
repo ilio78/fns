@@ -54,10 +54,11 @@
                     <input asp-for="ProductViewModel.PriceCentsPart" class="form-control" />
                     <span class="text-danger" asp-validation-for="ProductViewModel.PriceCentsPart"></span>
                 </div>
-                <div class="text-info">Γραμμάρια ή Χιλιοστόλιστρα ανά τεμάχιο:</div>
+                <div class="text-info">Γραμμάρια (gr) ή Χιλιοστόλιστρα (ml) ανά τεμάχιο:</div>
                 <div class="form-inline mt-1">
-                    <input asp-for="ProductViewModel.PieceMassOrVolume" class="form-control" />
-                    <span class="text-danger" asp-validation-for="ProductViewModel.PieceMassOrVolume"></span>
+                    <input asp-for="ProductViewModel.QuantityToPiece" class="form-control" />
+                    <span class="text-danger" asp-validation-for="ProductViewModel.QuantityToPiece"></span>
+                    <i class="fa fa-info-circle ml-1" style="color:orange" data-toggle="tooltip" title="Εάν η ποσότητα είναι μεγαλύτερη του 0, η παραγγελία θα μετατραπεί σε τεμάχια."></i>
                 </div>
                 <button type="submit" onclick="setStorage();" class="btn btn-primary mt-5">Save</button>
             </td>
@@ -81,8 +82,11 @@
                 </div>
                 <div class="custom-control custom-checkbox">
                     <input asp-for="ProductViewModel.DeliveryOnFriday" class="form-control custom-control-input" />
-                    <label class="custom-control-label w-25 text-lg-left" asp-for="ProductViewModel.DeliveryOnFriday">Παρασκευή</label>
-                </div>
+                    <label class="custom-control-label w-25 text-lg-left" asp-for="ProductViewModel.DeliveryOnFriday">
+                        Παρασκευή
+                        <i class="fa fa-info-circle ml-1" style="color:orange" data-toggle="tooltip" title="Εάν δεν έχει οριστεί καμία μέρα παράδοσης το σύστημα αυτόματα θα θεωρίσει την Παρασκευή σας την μοναδική μέρα παράδοσης."></i>
+                    </label>
+                    </div>
                 <div class="custom-control custom-checkbox">
                     <input asp-for="ProductViewModel.DeliveryOnSaturday" class="form-control custom-control-input" />
                     <label class="custom-control-label w-25 text-lg-left" asp-for="ProductViewModel.DeliveryOnSaturday">Σάββατο</label>

@@ -4,14 +4,16 @@ using FoodAndStyleOrderPlanning.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace FoodAndStyleOrderPlanning.Data.Migrations
 {
     [DbContext(typeof(FoodAndStyleOrderPlanningDbContext))]
-    partial class FoodAndStyleOrderPlanningDbContextModelSnapshot : ModelSnapshot
+    [Migration("20191129074945_EmailCC_QuantityToPiece")]
+    partial class EmailCC_QuantityToPiece
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

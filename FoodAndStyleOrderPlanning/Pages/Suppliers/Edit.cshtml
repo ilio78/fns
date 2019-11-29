@@ -18,6 +18,11 @@
             <span class="text-danger" asp-validation-for="Supplier.Email"></span>
         </div>
         <div class="form-group">
+            <label asp-for="Supplier.EmailCC">CC Email</label>
+            <input asp-for="Supplier.EmailCC" class="form-control" />
+            <span class="text-danger" asp-validation-for="Supplier.EmailCC"></span>
+        </div>
+        <div class="form-group">
             <label asp-for="Supplier.Telephone">Τηλέφωνο</label>
             <input asp-for="Supplier.Telephone" class="form-control" />
             <span class="text-danger" asp-validation-for="Supplier.Telephone"></span>

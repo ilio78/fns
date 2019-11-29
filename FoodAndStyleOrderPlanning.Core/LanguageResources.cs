@@ -78,6 +78,7 @@ namespace FoodAndStyleOrderPlanning.Core
             RecipeTypeTranslations.Add(((int)RecipeType.StreetFood).ToString(), "Street Food");
             RecipeTypeTranslations.Add(((int)RecipeType.Salad).ToString(), "Σαλάτα");
             RecipeTypeTranslations.Add(((int)RecipeType.Sandwich).ToString(), "Σαντουιτς");
+            RecipeTypeTranslations.Add(((int)RecipeType.Garnish).ToString(), "Γαρνιτούρες");
         }
 }
 

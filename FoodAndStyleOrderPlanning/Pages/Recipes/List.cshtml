@@ -36,9 +36,9 @@
         <tr class='@(r.IsActive ? "" : "text-secondary")'>
             <td>
                 @if (r.IsActive)
-                {@r.Name}
-            else
-            {<del>@r.Name</del>}
+                    {@r.Name}
+                else
+                    {<del>@r.Name</del>}
             </td>
             <td>@String.Format("{0:n0}", r.ResultingQuantityInGrams)</td>
             <td>@r.Ingredients.Count</td>

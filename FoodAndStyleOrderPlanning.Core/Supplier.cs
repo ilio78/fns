@@ -12,9 +12,11 @@ namespace FoodAndStyleOrderPlanning.Core
         [Required, StringLength(50, MinimumLength = 5)]
         public string Name { get; set; }
 
-        [Required]
         [EmailAddress]
         public string Email { get; set; }
+
+        [EmailAddress]
+        public string EmailCC { get; set; }
 
         [Required]
         [Phone]
@@ -27,13 +29,5 @@ namespace FoodAndStyleOrderPlanning.Core
         //ALTER TABLE [Suppliers] ADD [IsActive] bit NOT NULL DEFAULT 0;
     }
 
-    //public class ProductType
-    //{
-    //    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    //    public int Id { get; set; }
-
-    //    [Required]
-    //    public string Name { get; set; }
-    //}
 
 }

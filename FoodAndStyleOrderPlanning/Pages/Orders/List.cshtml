@@ -29,7 +29,12 @@
     @foreach (var i in Model.Orders)
     {
         <tr class='@(!i.IsActive ? "inActive" : "")'>
-            <td>@i.Name</td>
+            <td>
+                @if (i.IsActive)
+                    {@i.Name}
+                else
+                    {<del>@i.Name</del>}
+            </td>
             <td>@i.CreatedOn.ToString(Helpers.DateTimeFormater)</td>
             <td>@i.CreatedBy</td>
             <td>@i.UpdatedOn.ToString(Helpers.DateTimeFormater)</td>
