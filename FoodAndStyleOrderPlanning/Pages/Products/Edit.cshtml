@@ -82,10 +82,7 @@
                 </div>
                 <div class="custom-control custom-checkbox">
                     <input asp-for="ProductViewModel.DeliveryOnFriday" class="form-control custom-control-input" />
-                    <label class="custom-control-label w-25 text-lg-left" asp-for="ProductViewModel.DeliveryOnFriday">
-                        Παρασκευή
-                        <i class="fa fa-info-circle ml-1" style="color:orange" data-toggle="tooltip" title="Εάν δεν έχει οριστεί καμία μέρα παράδοσης το σύστημα αυτόματα θα θεωρίσει την Παρασκευή σαν την μοναδική μέρα παράδοσης."></i>
-                    </label>
+                    <label class="custom-control-label w-25 text-lg-left" asp-for="ProductViewModel.DeliveryOnFriday">Παρασκευή</label>
                     </div>
                 <div class="custom-control custom-checkbox">
                     <input asp-for="ProductViewModel.DeliveryOnSaturday" class="form-control custom-control-input" />
@@ -94,6 +91,9 @@
                 <div class="custom-control custom-checkbox">
                     <input asp-for="ProductViewModel.DeliveryOnSunday" class="form-control custom-control-input" />
                     <label class="custom-control-label w-25 text-lg-left" asp-for="ProductViewModel.DeliveryOnSunday">Κυριακή</label>
+                </div>
+                <div>
+                    <i class="fa fa-info-circle ml-1" style="color:orange" data-toggle="tooltip" title="Εάν δεν έχει οριστεί καμία μέρα παράδοσης το σύστημα αυτόματα θα θεωρίσει την Προηγούμενη Παρασκευή (LastFriday) σαν την μοναδική μέρα παράδοσης."></i>
                 </div>
             </td>
         </tr>

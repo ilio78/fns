@@ -141,6 +141,7 @@ namespace FoodAndStyleOrderPlanning.Core
                     return GetProductDeliveryDay(day - 1);
             }
 
+            // last day is Monday!
             if (DeliveryOnSunday)
                 return ProductDeliveryDay.PreviousSunday;
             else if (DeliveryOnSaturday)
